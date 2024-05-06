@@ -1,22 +1,24 @@
-import { useRef } from "react"
-import Canvas from "./components/Canvas"
-import Header from "./components/Header"
-import Leftbar from "./components/Leftbar"
-import Rightbar from "./components/Rightbar"
+import Canvas from "./components/Canvas";
+import Header from "./components/Header";
+import Leftbar from "./components/Leftbar";
+import Rightbar from "./components/Rightbar";
+import { CanvasProvider } from "./components/CanvasContext";
 
 function App() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
   return (
     <>
-      <Header/>
+      <Header />
       <div className="flex">
-        <Leftbar/>
-        <Canvas canvasRef={canvasRef}/>
-        <Rightbar/>
+        <CanvasProvider>
+          <>
+            <Leftbar />
+            <Canvas />
+            <Rightbar />
+          </>
+        </CanvasProvider>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
