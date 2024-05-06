@@ -101,6 +101,7 @@ export class Renderer {
     this.glProgram = program;
   }
 
+  // TODO: change renderer to accept GLTF models instead of accepting attributes of single geometry
   static setPositions() {
     // TODO: replace with appropriate function content
 
