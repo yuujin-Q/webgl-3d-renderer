@@ -210,6 +210,4 @@ export class M4 {
     ]);
   }
 
-  // oblique projection matrix
-
 }
