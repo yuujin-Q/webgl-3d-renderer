@@ -210,4 +210,29 @@ export class M4 {
     ]);
   }
 
+  // perspective projection matrix
+  static perspective(fov: number, aspect: number, near: number, far: number): M4 {
+    const f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
+    const rangeInv = 1 / (near - far);
+    return new M4([
+      f / aspect, 0, 0, 0,
+      0, f, 0, 0,
+      0, 0, (near + far) * rangeInv, -1,
+      0, 0, near * far * rangeInv * 2, 0,
+    ]);
+  }
+
+  // oblique projection matrix
+  static oblique(left: number, right: number, bottom: number, top: number, near: number, far: number, skew: Vec3): M4 {
+    const rl = right - left;
+    const tb = top - bottom;
+    const fn = far - near;
+    return new M4([
+      2 / rl, 0, 0, 0,
+      0, 2 / tb, 0, 0,
+      skew.x / rl, skew.y / tb, -2 / fn, 0,
+      -(right + left) / rl, -(top + bottom) / tb, -(far + near) / fn, 1,
+    ]);
+  }
+
 }

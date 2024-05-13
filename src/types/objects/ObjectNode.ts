@@ -42,7 +42,12 @@ export class ObjectNode {
       this.computeWorldMatrix(false, true);
     }
   }
-
+  // localMatrix should be updated when position, rotation, or scale changed
+  set position(p: Vec3) {
+    this._position = p;
+    this.computeLocalMatrix();
+  }
+  
   computeLocalMatrix() {
     this._localMatrix = M4.multiply(
       M4.translation(this._position),
@@ -88,6 +93,11 @@ export class ObjectNode {
   remove(n: ObjectNode) {
     console.log(n)
     // TODO: hapus ObjectNode dari this.children (jangan lupa set ObjectNode.parent = null)
+    const index = this.children.indexOf(n);
+    if (index !== -1) {
+      n.parent = undefined;
+      this.children.splice(index, 1);
+    }
     return this;
   }
 
