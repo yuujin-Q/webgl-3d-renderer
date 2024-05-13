@@ -126,11 +126,11 @@ const Canvas = () => {
       160, 160, 220, 160, 160, 220, 160, 160, 220, 160, 160, 220, 160, 160, 220,
       160, 160, 220,
     ]);
-    Renderer.renderLoop();
+    Renderer.renderScene();
   }, [canvasRef]);
 
   useEffect(() => {
-    Renderer.renderLoop();
+    Renderer.renderScene();
   });
 
   return (

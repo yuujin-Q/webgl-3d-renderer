@@ -167,7 +167,7 @@ export class Renderer {
     if (z !== undefined) {
       this._translate.z = z;
     }
-    this.renderLoop();
+    this.renderScene();
   }
   static setRotation(
     { x, y, z }: { x?: number; y?: number; z?: number },
@@ -183,7 +183,7 @@ export class Renderer {
     if (z !== undefined) {
       this._rotate.z = isDegree ? degToRad(z) : z;
     }
-    this.renderLoop();
+    this.renderScene();
   }
   static setScale({ x, y, z }: { x?: number; y?: number; z?: number }) {
     if (x !== undefined) {
@@ -195,7 +195,7 @@ export class Renderer {
     if (z !== undefined) {
       this._scale.z = z;
     }
-    this.renderLoop();
+    this.renderScene();
   }
 
   static setCamera() {
@@ -206,7 +206,7 @@ export class Renderer {
     // todo: implement
   }
 
-  static renderLoop() {
+  static renderScene() {
     // args for buffer data parsing
     const size = 3;
     const vertexType = WebGLType.FLOAT;
