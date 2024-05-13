@@ -1,5 +1,5 @@
-import { M4 } from "../math/m4";
-import { Vec3 } from "../math/vec3";
+import { M4 } from "../math/M4";
+import { Vec3 } from "../math/Vec3";
 
 export class ObjectNode {
   private _position: Vec3 = new Vec3();

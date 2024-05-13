@@ -1,4 +1,4 @@
-import {BufferAttribute} from './bufferattribute';
+import {BufferAttribute} from './BufferAttribute';
 
 export class BufferGeometry {
     private _attributes: {[name: string]: BufferAttribute};

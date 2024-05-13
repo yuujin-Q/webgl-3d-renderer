@@ -1,4 +1,4 @@
-import { BufferAttribute } from './bufferattribute';
+import { BufferAttribute } from './BufferAttribute';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class ShaderMaterial {

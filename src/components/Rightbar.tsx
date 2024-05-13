@@ -8,7 +8,7 @@ import {
   ArrowsIn,
   ArrowsOut,
 } from "phosphor-react";
-import { Renderer } from "../lib/renderer";
+import { Renderer } from "../lib/Renderer";
 
 const Rightbar = () => {
   const updateXRotate = (val: number) => {
@@ -19,6 +19,20 @@ const Rightbar = () => {
   };
   const updateZRotate = (val: number) => {
     Renderer.setRotation({ z: val }, true);
+  };
+  const updateTranslation = ({
+    x,
+    y,
+    z,
+  }: {
+    x?: number;
+    y?: number;
+    z?: number;
+  }) => {
+    const newX = x ? Renderer.translation().x + x : Renderer.translation().x;
+    const newY = y ? Renderer.translation().y + y : Renderer.translation().y;
+    const newZ = z ? Renderer.translation().z + z : Renderer.translation().z;
+    Renderer.setTranslation({ x: newX, y: newY, z: newZ });
   };
   return (
     <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
@@ -134,12 +148,14 @@ const Rightbar = () => {
                 <button
                   id="button-translate-left"
                   className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+                  onClick={() => updateTranslation({ x: -1 })}
                 >
                   <ArrowLeft />
                 </button>
                 <button
                   id="button-translate-right"
                   className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+                  onClick={() => updateTranslation({ x: 1 })}
                 >
                   <ArrowRight />
                 </button>
@@ -150,12 +166,14 @@ const Rightbar = () => {
                 <button
                   id="button-translate-up"
                   className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+                  onClick={() => updateTranslation({ y: 1 })}
                 >
                   <ArrowUp />
                 </button>
                 <button
                   id="button-translate-down"
                   className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+                  onClick={() => updateTranslation({ y: -1 })}
                 >
                   <ArrowDown />
                 </button>
@@ -166,12 +184,14 @@ const Rightbar = () => {
                 <button
                   id="button-translate-out"
                   className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+                  onClick={() => updateTranslation({ z: -1 })}
                 >
                   <ArrowDownLeft />
                 </button>
                 <button
                   id="button-translate-in"
                   className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+                  onClick={() => updateTranslation({ z: 1 })}
                 >
                   <ArrowUpRight />
                 </button>
@@ -186,7 +206,7 @@ const Rightbar = () => {
               <label className="text-sm font-semibold mr-3">Scale</label>
               <input
                 type="number"
-                value= {Renderer.scaler().x}
+                value={Renderer.scaler().x}
                 id="scale"
                 name="scale"
                 min="0.1"
