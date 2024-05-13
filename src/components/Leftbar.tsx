@@ -1,18 +1,9 @@
 import { MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
 import { useAppAction, useAppStore } from "../stores";
-import { useCanvas } from "./CanvasContext";
-import { Renderer } from "../lib/renderer";
 
 const Leftbar = () => {
-  const { canvasRef } = useCanvas();
   const selected3D = useAppStore((state) => state.selected3D);
   const { setSelected3D } = useAppAction();
-  const gl = canvasRef?.current?.getContext("webgl");
-
-  //   todo: replace this testing function
-  const onClickReset = () => {
-    Renderer.setPositions();
-  };
 
   return (
     <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
@@ -98,7 +89,6 @@ const Leftbar = () => {
           <button
             id="button-reset"
             className="w-9/12 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            onClick={onClickReset}
           >
             Reset
           </button>
