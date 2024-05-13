@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useCanvas } from "./CanvasContext";
-import { Renderer } from "../lib/renderer";
+import { Renderer } from "../lib/Renderer";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
