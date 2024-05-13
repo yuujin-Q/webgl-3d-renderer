@@ -90,7 +90,9 @@ const Rightbar = () => {
               name="scale"
               min="0.1"
               max="5"
+              defaultValue={Renderer.scaler().x}
               step="0.05"
+              onChange={(e) => Renderer.setScale({ x: Number(e.target.value) })}
             />
           </div>
           <div className="flex flex-row">
@@ -102,7 +104,9 @@ const Rightbar = () => {
               name="scale"
               min="0.1"
               max="5"
+              defaultValue={Renderer.scaler().y}
               step="0.05"
+              onChange={(e) => Renderer.setScale({ y: Number(e.target.value) })}
             />
           </div>
           <div className="flex flex-row">
@@ -114,7 +118,9 @@ const Rightbar = () => {
               name="scale"
               min="0.1"
               max="5"
+              defaultValue={Renderer.scaler().z}
               step="0.05"
+              onChange={(e) => Renderer.setScale({ z: Number(e.target.value) })}
             />
           </div>
         </div>
@@ -180,7 +186,7 @@ const Rightbar = () => {
               <label className="text-sm font-semibold mr-3">Scale</label>
               <input
                 type="number"
-                value="1"
+                value= {Renderer.scaler().x}
                 id="scale"
                 name="scale"
                 min="0.1"
