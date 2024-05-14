@@ -1,4 +1,4 @@
-import { BufferAttribute } from "../../types/objects/BufferAttribute";
+import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 
 export type AttributeSingleDataType = BufferAttribute | Float32Array | number[];
 export type AttributeDataType = [AttributeSingleDataType] | number[];

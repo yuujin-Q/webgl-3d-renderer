@@ -1,4 +1,4 @@
-import { BufferAttribute } from "../../types/objects/BufferAttribute";
+import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 
 // TODO: replace uniform setter implementation placeholders
 export type UniformSingleDataType = BufferAttribute | Float32Array | number[];
