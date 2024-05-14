@@ -1,12 +1,16 @@
 import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
+import { BufferAttribute } from "../types/objects/mesh/geometry/BufferAttribute";
+import { createAttributeSetters } from "./webglutils/AttributeSetter";
+import { ProgramInfo, setAttribute } from "./webglutils/ProgramInfo";
+import { createUniformSetters } from "./webglutils/UniformSetter";
 import { WebGLType } from "./webglutils/WebGLType";
 
 export class Renderer {
   // gl classes
-  private static glProgram: WebGLProgram;
   private static gl: WebGLRenderingContext;
-  private static positionBuffer: WebGLBuffer;
+  // private static glProgram: WebGLProgram;
+  private static glProgram: ProgramInfo;
   private static colorBuffer: WebGLBuffer;
 
   // shaders
@@ -128,25 +132,18 @@ export class Renderer {
       return;
     }
     gl.useProgram(program);
-    this.glProgram = program;
+    this.glProgram = {
+      program: program,
+      attributeSetters: createAttributeSetters(gl, program),
+      uniformSetters: createUniformSetters(gl, program),
+    };
+    console.log(this.glProgram);
+    console.log(this.glProgram.attributeSetters);
   }
 
   static setGeometry(vertex: number[]) {
     this.positions = vertex;
-    const gl = this.gl;
 
-    const positionAttribute = gl.getAttribLocation(
-      this.glProgram,
-      "a_position"
-    );
-    gl.enableVertexAttribArray(positionAttribute);
-    this.positionBuffer = gl.createBuffer()!;
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array(this.positions),
-      gl.STATIC_DRAW
-    );
     this.vertexCount = vertex.length / 3;
   }
   static setColors(color: number[]) {
@@ -157,7 +154,10 @@ export class Renderer {
     this.colors = color;
     const gl = this.gl;
 
-    const colorAttribute = gl.getAttribLocation(this.glProgram, "a_color");
+    const colorAttribute = gl.getAttribLocation(
+      this.glProgram.program,
+      "a_color"
+    );
     gl.enableVertexAttribArray(colorAttribute);
     this.colorBuffer = gl.createBuffer()!;
     gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
@@ -224,7 +224,7 @@ export class Renderer {
     const offset = 0;
 
     const gl = this.gl;
-    const program = this.glProgram;
+    const program = this.glProgram.program;
 
     // todo: viewport and resize canvas
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -234,17 +234,15 @@ export class Renderer {
     gl.enable(gl.DEPTH_TEST);
 
     // link vertex buffer to vertex attribute
-    const positionAttribute = gl.getAttribLocation(program, "a_position");
-    gl.enableVertexAttribArray(positionAttribute);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-    // Set up the position attribute pointer
-    gl.vertexAttribPointer(
-      positionAttribute,
-      size,
-      vertexType,
-      normalizeVertex,
-      stride,
-      offset
+    setAttribute(
+      this.glProgram,
+      "a_position",
+      new BufferAttribute(new Float32Array(this.positions), 3, {
+        dtype: vertexType,
+        normalize: normalizeVertex,
+        stride: stride,
+        offset: offset,
+      })
     );
 
     // link color buffer to color attribute

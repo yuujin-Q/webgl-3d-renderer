@@ -5,19 +5,20 @@ import {
 } from "./AttributeSetter";
 import { UniformMapSetters } from "./UniformSetter";
 
-type ProgramInfo = {
+export type ProgramInfo = {
   program: WebGLProgram;
   uniformSetters: UniformMapSetters;
   attributeSetters: AttributeMapSetters;
 };
-function setAttribute(
+export function setAttribute(
   programInfo: ProgramInfo,
   attributeName: string,
   ...data: AttributeDataType
 ) {
+  // accepts attributeName in format "a_attribute"
   const setters = programInfo.attributeSetters;
   if (attributeName in setters) {
-    const shaderName = `a_${attributeName}`;
+    const shaderName = `${attributeName}`;
     setters[shaderName](...data);
   }
 }

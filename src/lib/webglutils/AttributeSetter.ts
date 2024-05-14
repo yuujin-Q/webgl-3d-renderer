@@ -33,9 +33,11 @@ export function createAttributeSetters(
         );
       } else {
         gl.disableVertexAttribArray(loc);
-        if (v instanceof Float32Array)
+
+        if (v instanceof Float32Array) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (gl as any)[`vertexAttrib${v.length}fv`](loc, v);
+        }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         else (gl as any)[`vertexAttrib${values.length}f`](loc, ...values);
       }

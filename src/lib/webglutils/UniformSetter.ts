@@ -5,7 +5,7 @@ export type UniformSingleDataType = BufferAttribute | Float32Array | number[];
 export type UniformDataType = [UniformSingleDataType] | number[];
 export type UniformSetters = (...v: UniformDataType) => void;
 export type UniformMapSetters = { [key: string]: UniformSetters };
-export function createAttributeSetters(
+export function createUniformSetters(
   gl: WebGLRenderingContext,
   program: WebGLProgram
 ): UniformMapSetters {
