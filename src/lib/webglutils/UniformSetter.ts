@@ -1,55 +1,70 @@
-import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
+import { UniformSetterWebGLType } from "./WebGLType";
 
-// TODO: replace uniform setter implementation placeholders
-export type UniformSingleDataType = BufferAttribute | Float32Array | number[];
+export type UniformSingleDataType = Float32Array | number[];
 export type UniformDataType = [UniformSingleDataType] | number[];
 export type UniformSetters = (...v: UniformDataType) => void;
 export type UniformMapSetters = { [key: string]: UniformSetters };
+// reference implementation: https://github.com/Fi1osof/webgl-utils.git
 export function createUniformSetters(
   gl: WebGLRenderingContext,
   program: WebGLProgram
 ): UniformMapSetters {
-  function createAttributeSetter(info: WebGLActiveInfo): UniformSetters {
+  function createUniformSetter(info: WebGLActiveInfo): UniformSetters {
     // Initialization Time
-    const loc = gl.getAttribLocation(program, info.name);
-    const buf = gl.createBuffer();
+    const loc = gl.getUniformLocation(program, info.name);
+    const uniformType = info.type;
+    const isArray = info.size > 1 && info.name.slice(-3) === "[0]";
     return (...values) => {
       // Render Time (saat memanggil setAttributes() pada render loop)
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
       const v = values[0];
-      if (v instanceof BufferAttribute) {
-        if (v.isDirty) {
-          // Data Changed Time (note that buffer is already binded)
-          gl.bufferData(gl.ARRAY_BUFFER, v.data, gl.STATIC_DRAW);
-          v.consume();
+      if (uniformType === gl.SAMPLER_2D || uniformType === gl.SAMPLER_CUBE) {
+        if (isArray) {
+          console.error("todo: implement handler for samplers");
+        } else {
+          console.error("todo: implement handler for samplers");
         }
-        gl.enableVertexAttribArray(loc);
-        gl.vertexAttribPointer(
-          loc,
-          v.size,
-          v.dtype,
-          v.normalize,
-          v.stride,
-          v.offset
-        );
       } else {
-        gl.disableVertexAttribArray(loc);
-        if (v instanceof Float32Array)
+        if (
+          v instanceof Float32Array &&
+          !(
+            uniformType === gl.FLOAT_MAT2 ||
+            uniformType === gl.FLOAT_MAT3 ||
+            uniformType === gl.FLOAT_MAT4
+          )
+        ) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (gl as any)[`vertexAttrib${v.length}fv`](loc, v);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        else (gl as any)[`vertexAttrib${values.length}f`](loc, ...values);
+          (gl as any)[`uniform${UniformSetterWebGLType[info.type]}v`](loc, v);
+        } else {
+          if (
+            uniformType === gl.FLOAT_MAT2 ||
+            uniformType === gl.FLOAT_MAT3 ||
+            uniformType === gl.FLOAT_MAT4
+          ) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (gl as any)[`uniform${UniformSetterWebGLType[info.type]}`](
+              loc,
+              false,
+              ...values
+            );
+          } else {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (gl as any)[`uniform${UniformSetterWebGLType[info.type]}`](
+              loc,
+              ...values
+            );
+          }
+        }
       }
     };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const attribSetters: { [key: string]: any } = {};
-  const numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
-  for (let i = 0; i < numAttribs; i++) {
-    const info = gl.getActiveAttrib(program, i);
+  const uniformSetters: { [key: string]: any } = {};
+  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  for (let i = 0; i < numUniforms; i++) {
+    const info = gl.getActiveUniform(program, i);
     if (!info) continue;
-    attribSetters[info.name] = createAttributeSetter(info);
+    uniformSetters[info.name] = createUniformSetter(info);
   }
-  return attribSetters;
+  return uniformSetters;
 }

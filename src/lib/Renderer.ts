@@ -2,7 +2,11 @@ import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
 import { BufferAttribute } from "../types/objects/mesh/geometry/BufferAttribute";
 import { createAttributeSetters } from "./webglutils/AttributeSetter";
-import { ProgramInfo, setAttribute } from "./webglutils/ProgramInfo";
+import {
+  ProgramInfo,
+  setAttribute,
+  setUniform,
+} from "./webglutils/ProgramInfo";
 import { createUniformSetters } from "./webglutils/UniformSetter";
 import { WebGLType } from "./webglutils/WebGLType";
 
@@ -137,8 +141,6 @@ export class Renderer {
       attributeSetters: createAttributeSetters(gl, program),
       uniformSetters: createUniformSetters(gl, program),
     };
-    console.log(this.glProgram);
-    console.log(this.glProgram.attributeSetters);
   }
 
   static setGeometry(vertex: number[]) {
@@ -259,8 +261,7 @@ export class Renderer {
       offset
     );
 
-    const uniformLocation = gl.getUniformLocation(program, "u_matrix");
-
+    // set matrix for image projection
     let transformationMatrix = M4.projection(
       gl.canvas.width,
       gl.canvas.height,
@@ -272,8 +273,7 @@ export class Renderer {
     transformationMatrix = M4.zRotate(transformationMatrix, this._rotate.z);
     transformationMatrix = M4.scale(transformationMatrix, this._scale);
 
-    // todo: is this correct?
-    gl.uniformMatrix4fv(uniformLocation, false, transformationMatrix.elements);
+    setUniform(this.glProgram, "u_matrix", transformationMatrix.elements);
 
     // Render the shader program
     gl.drawArrays(gl.TRIANGLES, 0, this.vertexCount);

@@ -3,19 +3,24 @@ import {
   AttributeMapSetters,
   AttributeSingleDataType,
 } from "./AttributeSetter";
-import { UniformMapSetters } from "./UniformSetter";
+import {
+  UniformDataType,
+  UniformMapSetters,
+  UniformSingleDataType,
+} from "./UniformSetter";
 
 export type ProgramInfo = {
   program: WebGLProgram;
   uniformSetters: UniformMapSetters;
   attributeSetters: AttributeMapSetters;
 };
+
+// set attribute methods
 export function setAttribute(
   programInfo: ProgramInfo,
   attributeName: string,
   ...data: AttributeDataType
 ) {
-  // accepts attributeName in format "a_attribute"
   const setters = programInfo.attributeSetters;
   if (attributeName in setters) {
     const shaderName = `${attributeName}`;
@@ -28,4 +33,25 @@ export function setAttributes(
 ) {
   for (const attributeName in attributes)
     setAttribute(programInfo, attributeName, attributes[attributeName]);
+}
+
+// set uniform methods
+export function setUniform(
+  programInfo: ProgramInfo,
+  uniformName: string,
+  ...data: UniformDataType
+) {
+  // accepts attributeName in format "a_attribute"
+  const setters = programInfo.uniformSetters;
+  if (uniformName in setters) {
+    const shaderName = `${uniformName}`;
+    setters[shaderName](...data);
+  }
+}
+export function setUniforms(
+  programInfo: ProgramInfo,
+  uniforms: { [uniformName: string]: UniformSingleDataType }
+) {
+  for (const uniformName in uniforms)
+    setAttribute(programInfo, uniformName, uniforms[uniformName]);
 }
