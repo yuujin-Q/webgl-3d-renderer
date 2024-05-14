@@ -58,9 +58,16 @@ export class Renderer {
 
   static initializeRenderer(
     gl: WebGLRenderingContext | undefined | null,
-    vertexShaderSource: string = this.defaultVertexShader,
-    fragmentShaderSource: string = this.defaultFragmentShader
+    vertexShaderSource?: string,
+    fragmentShaderSource?: string
   ) {
+    // use default shaders if source not provided
+    if (vertexShaderSource === undefined) {
+      vertexShaderSource = this.defaultVertexShader;
+    }
+    if (fragmentShaderSource === undefined) {
+      fragmentShaderSource = this.defaultFragmentShader;
+    }
     // INIT FUNCTIONS
     const createShader = (
       glc: WebGLRenderingContext,
