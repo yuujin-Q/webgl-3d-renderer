@@ -1,5 +1,6 @@
 import { MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
 import { useAppAction, useAppStore } from "../stores";
+import Header from "./Header";
 
 const Leftbar = () => {
   const selected3D = useAppStore((state) => state.selected3D);
@@ -7,6 +8,7 @@ const Leftbar = () => {
 
   return (
     <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
+      <Header />
       <div className="flex flex-col pl-4 pr-6 py-4 border-b border-gray-500 text-white w-full">
         <div className="flex items-center">
           <label

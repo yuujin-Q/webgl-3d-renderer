@@ -1,5 +1,4 @@
 import Canvas from "./components/Canvas";
-import Header from "./components/Header";
 import Leftbar from "./components/Leftbar";
 import Rightbar from "./components/Rightbar";
 import { CanvasProvider } from "./components/CanvasContext";
@@ -9,18 +8,13 @@ document.addEventListener("keydown", keyboardInput);
 
 function App() {
   return (
-    <>
-      <Header />
-      <div className="flex">
-        <CanvasProvider>
-          <>
-            <Leftbar />
-            <Canvas />
-            <Rightbar />
-          </>
-        </CanvasProvider>
+    <CanvasProvider>
+      <div className="h-screen flex">
+        <Leftbar />
+        <Canvas />
+        <Rightbar />
       </div>
-    </>
+    </CanvasProvider>
   );
 }
 

@@ -134,7 +134,7 @@ const Canvas = () => {
   });
 
   return (
-    <div className="flex flex-col w-6/12 bg-gray-700">
+    <div className="flex flex-col w-6/12 bg-gray-700 h-full">
       <canvas
         ref={canvasRef}
         id="canvas"
