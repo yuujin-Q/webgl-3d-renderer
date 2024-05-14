@@ -47,7 +47,7 @@ export class ObjectNode {
     this._position = p;
     this.computeLocalMatrix();
   }
-  
+
   computeLocalMatrix() {
     this._localMatrix = M4.multiply(
       M4.translation(this._position),
@@ -64,7 +64,10 @@ export class ObjectNode {
     // Update this ObjectNode
     this.computeLocalMatrix();
     if (this.parent) {
-      this._worldMatrix = M4.multiply(this.parent.worldMatrix, this._localMatrix);
+      this._worldMatrix = M4.multiply(
+        this.parent.worldMatrix,
+        this._localMatrix
+      );
     } else {
       this._worldMatrix = this._localMatrix.clone();
     }
@@ -91,8 +94,7 @@ export class ObjectNode {
   }
 
   remove(n: ObjectNode) {
-    console.log(n)
-    // TODO: hapus ObjectNode dari this.children (jangan lupa set ObjectNode.parent = null)
+    console.log(n);
     const index = this.children.indexOf(n);
     if (index !== -1) {
       n.parent = undefined;
