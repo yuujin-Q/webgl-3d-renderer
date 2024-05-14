@@ -1,6 +1,6 @@
 import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
-import { WebGLType } from "./WebGLType";
+import { WebGLType } from "./webglutils/WebGLType";
 
 export class Renderer {
   // gl classes
