@@ -1,7 +1,6 @@
 import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
 import { Camera } from "../types/objects/camera/Camera";
-import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
 import { BufferAttribute } from "../types/objects/mesh/geometry/BufferAttribute";
 import { Mesh } from "../types/objects/mesh/Mesh";
 import { ObjectNode } from "../types/objects/ObjectNode";
@@ -12,7 +11,6 @@ import {
   setAttribute,
   setAttributes,
   setUniform,
-  setUniforms,
 } from "./webglutils/ProgramInfo";
 import { createUniformSetters } from "./webglutils/UniformSetter";
 import { WebGLType } from "./webglutils/WebGLType";
@@ -20,9 +18,7 @@ import { WebGLType } from "./webglutils/WebGLType";
 export class Renderer {
   // gl classes
   private static gl: WebGLRenderingContext;
-  // private static glProgram: WebGLProgram;
   private static glProgram: ProgramInfo;
-  private static colorBuffer: WebGLBuffer;
 
   // shaders
   private static defaultVertexShader = `
@@ -62,7 +58,7 @@ export class Renderer {
   private static vertexCount = 0;
 
   // transformation
-  private static _translate: Vec3 = new Vec3(0, 0, 0);
+  private static _translate: Vec3 = new Vec3(95, 15, 15);
   private static _rotate: Vec3 = new Vec3(0, 0, 0);
   private static _scale: Vec3 = new Vec3(1, 1, 1);
   static translation() {
@@ -207,7 +203,8 @@ export class Renderer {
     }
     this.renderScene();
   }
-  private static setCamera(cam: Camera) {
+
+  static setCamera(cam: Camera) {
     this.camera = cam;
   }
   static setTexture() {
@@ -216,13 +213,12 @@ export class Renderer {
 
   static setScene(sc: Scene) {
     this.scene = sc;
-
-    this.renderScene();
   }
 
   private static processNodes(object: ObjectNode) {
     // Proses mesh, kamera, dan lainnya yang
     // terkait pada node
+    console.log(object);
     if (object instanceof Mesh) {
       console.log("process mesh");
       // render mesh component
@@ -238,72 +234,81 @@ export class Renderer {
 
     // Proses secara rekursif semua anak dari node
 
-    // Proses secara rekursif semua anak dari node
-    this.scene.children.forEach((child) => {
+    object.children.forEach((child) => {
       this.processNodes(child);
     });
   }
 
   private static renderMesh(object: Mesh) {
     const geometry = object.geometry;
-    // const material = object.material;
+    const material = object.material;
 
     setAttributes(this.glProgram, geometry.attributes);
-    // setUniform(
-    //   this.glProgram,
-    //   "u_matrix",
-    //   this.camera.viewProjectionMatrix.elements
-    // );
-    // setAttributes(this.glProgram, material.attributes);
+    setAttributes(this.glProgram, material.attributes);
+    this.camera.computeProjectionMatrix();
+    let transformationMatrix = this.camera.viewProjectionMatrix;
+    transformationMatrix = M4.translate(transformationMatrix, this._translate);
+    transformationMatrix = M4.xRotate(transformationMatrix, this._rotate.x);
+    transformationMatrix = M4.yRotate(transformationMatrix, this._rotate.y);
+    transformationMatrix = M4.zRotate(transformationMatrix, this._rotate.z);
+    transformationMatrix = M4.scale(transformationMatrix, this._scale);
+
+    setUniform(this.glProgram, "u_matrix", transformationMatrix.elements);
+    console.log(geometry.getAttribute("a_position").length / 3);
+    // console.log(material.attributes["a_color"].length / 3);
+    this.gl.drawArrays(
+      this.gl.TRIANGLES,
+      0,
+      geometry.getAttribute("a_position").length / 3
+    );
+  }
+  static initscene() {
+    const gl = this.gl;
+
+    // todo: viewport and resize canvas
+    gl.useProgram(this.glProgram.program);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.CULL_FACE);
+    gl.enable(gl.DEPTH_TEST);
   }
 
   static renderScene() {
     // args for buffer data parsing
-    const vertexType = WebGLType.FLOAT;
-    const colorType = WebGLType.UNSIGNED_BYTE;
-    const normalizeVertex = false;
-    const normalizeColor = true;
-    const stride = 0;
-    const offset = 0;
-
-    const gl = this.gl;
-    // const program = this.glProgram.program;
-
-    // todo: viewport and resize canvas
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.enable(gl.CULL_FACE);
-    gl.enable(gl.DEPTH_TEST);
-
-    gl.useProgram(this.glProgram.program);
+    // const vertexType = WebGLType.FLOAT;
+    // const colorType = WebGLType.UNSIGNED_BYTE;
+    // const normalizeVertex = false;
+    // const normalizeColor = true;
+    // const stride = 0;
+    // const offset = 0;
 
     // todo:
-    // this.processNodes(this.scene);
+    this.processNodes(this.scene.children[0]);
+    console.log(this.scene);
 
     // // link vertex buffer to vertex attribute
-    setAttribute(
-      this.glProgram,
-      "a_position",
-      new BufferAttribute(new Float32Array(this.positions), 3, {
-        dtype: vertexType,
-        normalize: normalizeVertex,
-        stride: stride,
-        offset: offset,
-      })
-    );
+    // setAttribute(
+    //   this.glProgram,
+    //   "a_position",
+    //   new BufferAttribute(new Float32Array(this.positions), 3, {
+    //     dtype: vertexType,
+    //     normalize: normalizeVertex,
+    //     stride: stride,
+    //     offset: offset,
+    //   })
+    // );
 
-    // link color buffer to color attribute
-    setAttribute(
-      this.glProgram,
-      "a_color",
-      new BufferAttribute(new Uint8Array(this.colors), 3, {
-        dtype: colorType,
-        normalize: normalizeColor,
-        stride: stride,
-        offset: offset,
-      })
-    );
+    // // link color buffer to color attribute
+    // setAttribute(
+    //   this.glProgram,
+    //   "a_color",
+    //   new BufferAttribute(new Uint8Array(this.colors), 3, {
+    //     dtype: colorType,
+    //     normalize: normalizeColor,
+    //     stride: stride,
+    //     offset: offset,
+    //   })
+    // );
     // const program = this.glProgram.program
     // const colorAttribute = gl.getAttribLocation(program, "a_color");
     // gl.enableVertexAttribArray(colorAttribute);
@@ -324,23 +329,8 @@ export class Renderer {
     //   gl.canvas.height,
     //   400
     // );
-    const camera: Camera = new OrthographicCamera(0, 500, 0, 500, 0, 500);
-    camera.computeProjectionMatrix();
-    let transformationMatrix = camera.viewProjectionMatrix;
-    transformationMatrix = M4.translate(transformationMatrix, this._translate);
-    transformationMatrix = M4.xRotate(transformationMatrix, this._rotate.x);
-    transformationMatrix = M4.yRotate(transformationMatrix, this._rotate.y);
-    transformationMatrix = M4.zRotate(transformationMatrix, this._rotate.z);
-    transformationMatrix = M4.scale(transformationMatrix, this._scale);
-
-    // setUniform(
-    //   this.glProgram,
-    //   "u_matrix",
-    //   camera.viewProjectionMatrix.elements
-    // );
-    setUniform(this.glProgram, "u_matrix", transformationMatrix.elements);
 
     // // Render the shader program
-    gl.drawArrays(gl.TRIANGLES, 0, this.vertexCount);
+    // gl.drawArrays(gl.TRIANGLES, 0, this.vertexCount);
   }
 }

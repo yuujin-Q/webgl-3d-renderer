@@ -325,7 +325,7 @@ const Rightbar = () => {
             <div className="w-1/3 flex flex-row items-center">
               <input
                 type="number"
-                value="1000"
+                // value="1000"
                 id="duration"
                 name="duration"
                 min="1"

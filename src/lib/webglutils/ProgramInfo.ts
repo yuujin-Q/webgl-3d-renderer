@@ -23,6 +23,8 @@ export function setAttribute(
 ) {
   const setters = programInfo.attributeSetters;
   if (attributeName in setters) {
+    console.log(attributeName);
+    console.log(data);
     const shaderName = `${attributeName}`;
     setters[shaderName](...data);
   }
@@ -31,8 +33,9 @@ export function setAttributes(
   programInfo: ProgramInfo,
   attributes: { [attributeName: string]: AttributeSingleDataType }
 ) {
-  for (const attributeName in attributes)
+  for (const attributeName in attributes) {
     setAttribute(programInfo, attributeName, attributes[attributeName]);
+  }
 }
 
 // set uniform methods
