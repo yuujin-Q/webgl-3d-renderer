@@ -165,16 +165,6 @@ export class Renderer {
       return;
     }
     this.colors = color;
-    const gl = this.gl;
-
-    const colorAttribute = gl.getAttribLocation(
-      this.glProgram.program,
-      "a_color"
-    );
-    gl.enableVertexAttribArray(colorAttribute);
-    this.colorBuffer = gl.createBuffer()!;
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(this.colors), gl.STATIC_DRAW);
   }
 
   static setTranslation({ x, y, z }: { x?: number; y?: number; z?: number }) {
@@ -303,17 +293,30 @@ export class Renderer {
       })
     );
 
-    // // link color buffer to color attribute
+    // link color buffer to color attribute
     setAttribute(
       this.glProgram,
       "a_color",
-      new BufferAttribute(new Float32Array(this.colors), 3, {
+      new BufferAttribute(new Uint8Array(this.colors), 3, {
         dtype: colorType,
         normalize: normalizeColor,
         stride: stride,
         offset: offset,
       })
     );
+    // const program = this.glProgram.program
+    // const colorAttribute = gl.getAttribLocation(program, "a_color");
+    // gl.enableVertexAttribArray(colorAttribute);
+    // gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
+    // // Set up the position attribute pointer
+    // gl.vertexAttribPointer(
+    //   colorAttribute,
+    //   3,
+    //   colorType,
+    //   normalizeColor,
+    //   stride,
+    //   offset
+    // );
 
     // // set matrix for image projection
     // let transformationMatrix = M4.projection(

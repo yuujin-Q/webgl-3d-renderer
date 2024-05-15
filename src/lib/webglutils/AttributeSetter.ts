@@ -1,6 +1,10 @@
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 
-export type AttributeSingleDataType = BufferAttribute | Float32Array | number[];
+export type AttributeSingleDataType =
+  | BufferAttribute
+  | Float32Array
+  | Uint8Array
+  | number[];
 export type AttributeDataType = [AttributeSingleDataType] | number[];
 export type AttributeSetters = (...v: AttributeDataType) => void;
 export type AttributeMapSetters = { [key: string]: AttributeSetters };
@@ -34,7 +38,7 @@ export function createAttributeSetters(
       } else {
         gl.disableVertexAttribArray(loc);
 
-        if (v instanceof Float32Array) {
+        if (v instanceof Float32Array || v instanceof Uint8Array) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (gl as any)[`vertexAttrib${v.length}fv`](loc, v);
         }
