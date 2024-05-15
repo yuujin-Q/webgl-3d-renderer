@@ -1,19 +1,16 @@
 import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
 import { Camera } from "../types/objects/camera/Camera";
-import { BufferAttribute } from "../types/objects/mesh/geometry/BufferAttribute";
 import { Mesh } from "../types/objects/mesh/Mesh";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { Scene } from "../types/objects/Scene";
 import { createAttributeSetters } from "./webglutils/AttributeSetter";
 import {
   ProgramInfo,
-  setAttribute,
   setAttributes,
   setUniform,
 } from "./webglutils/ProgramInfo";
 import { createUniformSetters } from "./webglutils/UniformSetter";
-import { WebGLType } from "./webglutils/WebGLType";
 
 export class Renderer {
   // gl classes
@@ -51,11 +48,6 @@ export class Renderer {
   // scene data
   private static scene: Scene;
   private static camera: Camera;
-
-  // vertex and colors
-  private static positions: number[] = [];
-  private static colors: number[] = [];
-  private static vertexCount = 0;
 
   // transformation
   private static _translate: Vec3 = new Vec3(95, 15, 15);
@@ -122,7 +114,6 @@ export class Renderer {
       return;
     }
     this.gl = gl;
-    console.log("yes");
 
     // create vertex shaders and fragment shaders
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
@@ -148,19 +139,6 @@ export class Renderer {
       attributeSetters: createAttributeSetters(gl, program),
       uniformSetters: createUniformSetters(gl, program),
     };
-  }
-
-  static setGeometry(vertex: number[]) {
-    this.positions = vertex;
-
-    this.vertexCount = vertex.length / 3;
-  }
-  static setColors(color: number[]) {
-    if (color.length / 3 != this.vertexCount) {
-      console.error("unequal length");
-      return;
-    }
-    this.colors = color;
   }
 
   static setTranslation({ x, y, z }: { x?: number; y?: number; z?: number }) {
@@ -218,22 +196,17 @@ export class Renderer {
   private static processNodes(object: ObjectNode) {
     // Proses mesh, kamera, dan lainnya yang
     // terkait pada node
-    console.log(object);
     if (object instanceof Mesh) {
-      console.log("process mesh");
-      // render mesh component
-      // process geometry
-      this.renderMesh(object);
+      console.log("Process node instanceof mesh");
 
-      // process material
+      this.renderMesh(object);
     } else if (object instanceof Camera) {
-      console.log("process camera");
+      console.log("Set renderer camera to Camera");
 
       this.setCamera(object);
     }
 
     // Proses secara rekursif semua anak dari node
-
     object.children.forEach((child) => {
       this.processNodes(child);
     });
@@ -254,83 +227,22 @@ export class Renderer {
     transformationMatrix = M4.scale(transformationMatrix, this._scale);
 
     setUniform(this.glProgram, "u_matrix", transformationMatrix.elements);
-    console.log(geometry.getAttribute("a_position").length / 3);
-    // console.log(material.attributes["a_color"].length / 3);
     this.gl.drawArrays(
       this.gl.TRIANGLES,
       0,
       geometry.getAttribute("a_position").length / 3
     );
   }
-  static initscene() {
+
+  static renderScene() {
     const gl = this.gl;
 
-    // todo: viewport and resize canvas
+    // todo: viewport and resize canvas?
     gl.useProgram(this.glProgram.program);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
-  }
-
-  static renderScene() {
-    // args for buffer data parsing
-    // const vertexType = WebGLType.FLOAT;
-    // const colorType = WebGLType.UNSIGNED_BYTE;
-    // const normalizeVertex = false;
-    // const normalizeColor = true;
-    // const stride = 0;
-    // const offset = 0;
-
-    // todo:
     this.processNodes(this.scene.children[0]);
-    console.log(this.scene);
-
-    // // link vertex buffer to vertex attribute
-    // setAttribute(
-    //   this.glProgram,
-    //   "a_position",
-    //   new BufferAttribute(new Float32Array(this.positions), 3, {
-    //     dtype: vertexType,
-    //     normalize: normalizeVertex,
-    //     stride: stride,
-    //     offset: offset,
-    //   })
-    // );
-
-    // // link color buffer to color attribute
-    // setAttribute(
-    //   this.glProgram,
-    //   "a_color",
-    //   new BufferAttribute(new Uint8Array(this.colors), 3, {
-    //     dtype: colorType,
-    //     normalize: normalizeColor,
-    //     stride: stride,
-    //     offset: offset,
-    //   })
-    // );
-    // const program = this.glProgram.program
-    // const colorAttribute = gl.getAttribLocation(program, "a_color");
-    // gl.enableVertexAttribArray(colorAttribute);
-    // gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-    // // Set up the position attribute pointer
-    // gl.vertexAttribPointer(
-    //   colorAttribute,
-    //   3,
-    //   colorType,
-    //   normalizeColor,
-    //   stride,
-    //   offset
-    // );
-
-    // // set matrix for image projection
-    // let transformationMatrix = M4.projection(
-    //   gl.canvas.width,
-    //   gl.canvas.height,
-    //   400
-    // );
-
-    // // Render the shader program
-    // gl.drawArrays(gl.TRIANGLES, 0, this.vertexCount);
   }
 }

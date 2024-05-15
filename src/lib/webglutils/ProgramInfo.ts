@@ -23,7 +23,7 @@ export function setAttribute(
 ) {
   const setters = programInfo.attributeSetters;
   if (attributeName in setters) {
-    console.log(attributeName);
+    console.log("Set Attribute", attributeName);
     console.log(data);
     const shaderName = `${attributeName}`;
     setters[shaderName](...data);
@@ -47,6 +47,8 @@ export function setUniform(
   // accepts attributeName in format "a_attribute"
   const setters = programInfo.uniformSetters;
   if (uniformName in setters) {
+    console.log("Set Uniform", uniformName);
+    console.log(data);
     const shaderName = `${uniformName}`;
     setters[shaderName](...data);
   }
