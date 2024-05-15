@@ -1,9 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/Renderer";
+import { Mesh } from "../types/objects/mesh/Mesh";
+import { PlaneGeometry } from "../types/objects/mesh/geometry/PlaneGeometry";
+import { ShaderMaterial } from "../types/objects/mesh/material/ShaderMaterial";
+import { Scene } from "../types/objects/Scene";
+import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
+import { Camera } from "../types/objects/camera/Camera";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
+
+  const scene: Scene = useMemo(() => {
+    const mesh: Mesh = new Mesh(
+      new PlaneGeometry(10, 20),
+      new ShaderMaterial("", "")
+    );
+    const camera: Camera = new OrthographicCamera(0, 1000, 0, 1000, 100, 2000);
+    const s = new Scene();
+    mesh.parent = s;
+    camera.parent = s;
+    return s;
+  }, []);
 
   // INIT WEBGL
   useEffect(() => {
@@ -11,7 +29,8 @@ const Canvas = () => {
 
     Renderer.initializeRenderer(gl);
 
-    // test
+    // Renderer.setScene(scene);
+    // // test
     Renderer.setGeometry([
       // left column front
       0, 0, 0, 0, 150, 0, 30, 0, 0, 0, 150, 0, 30, 150, 0, 30, 0, 0,
@@ -127,7 +146,7 @@ const Canvas = () => {
       160, 160, 220,
     ]);
     Renderer.renderScene();
-  }, [canvasRef]);
+  }, [canvasRef, scene]);
 
   useEffect(() => {
     Renderer.renderScene();

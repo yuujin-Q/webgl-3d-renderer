@@ -167,23 +167,29 @@ export class M4 {
   static zRotate(m: M4, angleInRadians: number): M4 {
     return M4.multiply(m, M4.zRotation(angleInRadians));
   }
-  
+
   static scale(m: M4, s: Vec3): M4 {
     return M4.multiply(m, M4.scaling(s));
   }
 
   // inverse of matrix
   static inv(m: M4): M4 {
-    const det = m.elements[0] * (m.elements[5] * m.elements[10] - m.elements[6] * m.elements[9]) -
-      m.elements[1] * (m.elements[4] * m.elements[10] - m.elements[6] * m.elements[8]) +
-      m.elements[2] * (m.elements[4] * m.elements[9] - m.elements[5] * m.elements[8]);
+    const det =
+      m.elements[0] *
+        (m.elements[5] * m.elements[10] - m.elements[6] * m.elements[9]) -
+      m.elements[1] *
+        (m.elements[4] * m.elements[10] - m.elements[6] * m.elements[8]) +
+      m.elements[2] *
+        (m.elements[4] * m.elements[9] - m.elements[5] * m.elements[8]);
     const invDet = 1 / det;
     const result = new M4([
       (m.elements[5] * m.elements[10] - m.elements[6] * m.elements[9]) * invDet,
-      -(m.elements[1] * m.elements[10] - m.elements[2] * m.elements[9]) * invDet,
+      -(m.elements[1] * m.elements[10] - m.elements[2] * m.elements[9]) *
+        invDet,
       (m.elements[1] * m.elements[6] - m.elements[2] * m.elements[5]) * invDet,
       0,
-      -(m.elements[4] * m.elements[10] - m.elements[6] * m.elements[8]) * invDet,
+      -(m.elements[4] * m.elements[10] - m.elements[6] * m.elements[8]) *
+        invDet,
       (m.elements[0] * m.elements[10] - m.elements[2] * m.elements[8]) * invDet,
       -(m.elements[0] * m.elements[6] - m.elements[2] * m.elements[4]) * invDet,
       0,
@@ -191,48 +197,106 @@ export class M4 {
       -(m.elements[0] * m.elements[9] - m.elements[1] * m.elements[8]) * invDet,
       (m.elements[0] * m.elements[5] - m.elements[1] * m.elements[4]) * invDet,
       0,
-      0, 0, 0, 1
+      0,
+      0,
+      0,
+      1,
     ]);
     return result;
   }
 
   // camera matrix
   // orthographic projection matrix
-  static orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): M4 {
+  static orthographic(
+    left: number,
+    right: number,
+    bottom: number,
+    top: number,
+    near: number,
+    far: number
+  ): M4 {
     const lr = 1 / (left - right);
     const bt = 1 / (bottom - top);
     const nf = 1 / (near - far);
     return new M4([
-      -2 * lr, 0, 0, 0,
-      0, -2 * bt, 0, 0,
-      0, 0, 2 * nf, 0,
-      (left + right) * lr, (top + bottom) * bt, (far + near) * nf, 1,
+      -2 * lr,
+      0,
+      0,
+      0,
+      0,
+      -2 * bt,
+      0,
+      0,
+      0,
+      0,
+      2 * nf,
+      0,
+      (left + right) * lr,
+      (top + bottom) * bt,
+      (far + near) * nf,
+      1,
     ]);
   }
 
   // perspective projection matrix
-  static perspective(fov: number, aspect: number, near: number, far: number): M4 {
+  static perspective(
+    fov: number,
+    aspect: number,
+    near: number,
+    far: number
+  ): M4 {
     const f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
     const rangeInv = 1 / (near - far);
     return new M4([
-      f / aspect, 0, 0, 0,
-      0, f, 0, 0,
-      0, 0, (near + far) * rangeInv, -1,
-      0, 0, near * far * rangeInv * 2, 0,
+      f / aspect,
+      0,
+      0,
+      0,
+      0,
+      f,
+      0,
+      0,
+      0,
+      0,
+      (near + far) * rangeInv,
+      -1,
+      0,
+      0,
+      near * far * rangeInv * 2,
+      0,
     ]);
   }
 
   // oblique projection matrix
-  static oblique(left: number, right: number, bottom: number, top: number, near: number, far: number, skew: Vec3): M4 {
+  static oblique(
+    left: number,
+    right: number,
+    bottom: number,
+    top: number,
+    near: number,
+    far: number,
+    skew: Vec3
+  ): M4 {
     const rl = right - left;
     const tb = top - bottom;
     const fn = far - near;
     return new M4([
-      2 / rl, 0, 0, 0,
-      0, 2 / tb, 0, 0,
-      skew.x / rl, skew.y / tb, -2 / fn, 0,
-      -(right + left) / rl, -(top + bottom) / tb, -(far + near) / fn, 1,
+      2 / rl,
+      0,
+      0,
+      0,
+      0,
+      2 / tb,
+      0,
+      0,
+      skew.x / rl,
+      skew.y / tb,
+      -2 / fn,
+      0,
+      -(right + left) / rl,
+      -(top + bottom) / tb,
+      -(far + near) / fn,
+      1,
     ]);
   }
-
 }
