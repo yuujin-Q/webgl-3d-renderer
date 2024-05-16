@@ -43,16 +43,24 @@ export class ShaderMaterial {
   static fromJSON(json: any): ShaderMaterial {
     const material = new ShaderMaterial(json.vertexShader, json.fragmentShader);
     material.uniforms = json.uniforms;
-    material.attributes = json.attributes;
+    // set attributes
+    for (const name in json.attributes) {
+      material.attributes[name] = BufferAttribute.fromJSON(json.attributes[name]);
+    }
+    // material.attributes = json.attributes;
     return material;
   }
 
   static toJSON(material: ShaderMaterial): object {
-    return {
+    const json: any = {
       vertexShader: material.vertexShader,
       fragmentShader: material.fragmentShader,
       uniforms: material.uniforms,
-      attributes: material.attributes,
+      attributes: {},
     };
+    for (const name in material.attributes) {
+      json.attributes[name] = BufferAttribute.toJSON(material.attributes[name]);
+    }
+    return json;
   }
 }

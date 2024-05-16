@@ -129,7 +129,7 @@ export class GLTFConverter {
                 nodes[nodesData[i].parent].children.push(nodes[i]);
             }
         }
-
+        console.log("nodes: ", nodes);
           Renderer.setScene(nodes[0]);
     Renderer.renderScene();
     return nodes[0];
