@@ -3,6 +3,7 @@
 // import { Vec3 } from "../types/math/Vec3";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { Mesh } from "../types/objects/mesh/Mesh";
+import { Renderer } from "./Renderer";
 // import { ShaderMaterial } from "../types/objects/mesh/material/ShaderMaterial";
 // import { WebGLType } from "./webglutils/WebGLType";
 // import { BufferAttribute } from "../types/objects/mesh/geometry/BufferAttribute";
@@ -69,10 +70,68 @@ export class GLTFConverter {
   
       return JSON.stringify(gltf, null, 2);
   }
-  // static load(json: string): ObjectNode {
-  //     const data = JSON.parse(json);
-  //     const nodesData = data.nodes;
-  //     const rootNode = GLTFConverter.fromJSON(nodesData[0]);
-  //     for 
-  // }
+  
+  static load(json: string): ObjectNode {
+      const data = JSON.parse(json);
+      const nodesData = data.nodes;
+      const nodes: ObjectNode[] = [];
+      const nodeIndices = new Map<number, ObjectNode>();
+
+      // combine geometry and material inside element in nodesData
+      // alert(JSON.stringify(nodesData.length));
+      // for (let i = 0; i < nodesData.length; i++) {
+      //   if (nodesData[i].geometry && nodesData[i].material) {
+      //     const nodeDataMesh: any = {};
+      //     nodeDataMesh.geometry = nodesData[i].geometry;
+      //     nodeDataMesh.material = nodesData[i+1].material;
+      //     // remove the geometry and material from nodesData and 
+      //     // add change the nodeDataMesh to nodesData
+      //     nodes.push(GLTFConverter.fromJSON(nodeDataMesh));
+      //     alert(JSON.stringify(nodeDataMesh));
+      //     // check parent
+      //     if (nodesData[i].parent !== null) {
+      //       nodes[i].parent = nodes[nodesData[i+1].parent];
+      //       // set children for parent
+      //       nodes[nodesData[i+1].parent].children.push(nodes[i]);
+      //     }
+      //     i++;
+      //   } else {
+      //     nodes.push(GLTFConverter.fromJSON(nodesData[i]));
+      //     // check parent
+      //     if (nodesData[i].parent !== null) {
+      //       nodes[i].parent = nodes[nodesData[i].parent];
+      //       // set children for parent
+      //       nodes[nodesData[i].parent].children.push(nodes[i]);
+      //     }
+      //   }
+      //   nodeIndices.set(i, nodes[i]);
+      // }
+
+      // for (const nodeData of nodesData) {
+      //     const node = GLTFConverter.fromJSON(nodeData);
+      //     alert(JSON.stringify(nodeData));
+      //     nodes.push(node);
+      //         if (nodeData.parent !== null) {
+      //           const parentNode = nodeIndices.get(nodeData.parent);
+      //           if (parentNode !== undefined) {
+      //             node.parent = parentNode;
+      //             // set children for parent
+      //             parentNode.children.push(node);
+      //           }
+      //         }
+      //       }
+        for (let i = 0; i < nodesData.length; i++) {
+            const node = GLTFConverter.fromJSON(nodesData[i]);
+            nodes.push(node);
+            if (nodesData[i].parent !== null) {
+                nodes[i].parent = nodes[nodesData[i].parent];
+                // set children for parent
+                nodes[nodesData[i].parent].children.push(nodes[i]);
+            }
+        }
+
+          Renderer.setScene(nodes[0]);
+    Renderer.renderScene();
+    return nodes[0];
+  }
 }

@@ -1,5 +1,4 @@
 import { GLTFConverter } from "../lib/SaveLoad";
-import { ObjectNode } from "../types/objects/ObjectNode";
 import { Renderer } from "../lib/Renderer";
 import { useRef } from "react";
 
@@ -27,9 +26,10 @@ const Header = () => {
     reader.onload = (e) => {
       const content = e.target?.result;
       if (typeof content === "string") {
-        const json = JSON.parse(content);
-        const rootNode = ObjectNode.fromJSON(json);
-        Renderer.setScene(rootNode);
+        GLTFConverter.load(content);
+        // const json = JSON.parse(content);
+        // const rootNode = ObjectNode.fromJSON(json);
+        // Renderer.setScene(rootNode);
       }
     };
     reader.readAsText(file);
@@ -53,7 +53,7 @@ const Header = () => {
           ref={fileInputRef}
           className="hidden"
           type="file"
-          accept=".json"
+          accept=".gltf"
           id="load"
           name="filename"
           onChange={handleLoad}
