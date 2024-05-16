@@ -7,6 +7,7 @@ export class BufferAttribute {
     private _normalize = false;
     private _stride = 0;
     private _offset = 0;
+    private _buffer: WebGLBuffer | undefined;
 
     private _isDirty = true; // kita copy atribut minimal sekali di awal terlebih dahulu
 
@@ -45,6 +46,7 @@ export class BufferAttribute {
     get stride() { return this._stride; }
     get offset() { return this._offset; }
     get isDirty() { return this._isDirty; }
+    get buffer() : WebGLBuffer | undefined { return this._buffer; }
     // Public set accessor to private properties.
     // Should toggle isDirty flag to true.
     set data(data: TypedArray) {
@@ -69,6 +71,10 @@ export class BufferAttribute {
     }
     set offset(offset: number) {
         this._offset = offset;
+        this._isDirty = true;
+    }
+    set buffer(buffer: WebGLBuffer) {
+        this._buffer = buffer;
         this._isDirty = true;
     }
 

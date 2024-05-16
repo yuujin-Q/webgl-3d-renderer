@@ -15,12 +15,12 @@ export function createAttributeSetters(
   function createAttributeSetter(info: WebGLActiveInfo): AttributeSetters {
     // Initialization Time
     const loc = gl.getAttribLocation(program, info.name);
-    const buf = gl.createBuffer();
     return (...values) => {
       // Render Time (saat memanggil setAttributes() pada render loop)
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
       const v = values[0];
       if (v instanceof BufferAttribute) {
+        v.buffer = v.buffer || gl.createBuffer()!;
+        gl.bindBuffer(gl.ARRAY_BUFFER, v.buffer);
         if (v.isDirty) {
           // Data Changed Time (note that buffer is already binded)
           gl.bufferData(gl.ARRAY_BUFFER, v.data, gl.STATIC_DRAW);
