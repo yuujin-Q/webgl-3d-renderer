@@ -62,6 +62,9 @@ export class Renderer {
   static scaler() {
     return this._scale;
   }
+  static getScene() {
+    return this.scene;
+  }
 
   static initializeRenderer(
     gl: WebGLRenderingContext | undefined | null,

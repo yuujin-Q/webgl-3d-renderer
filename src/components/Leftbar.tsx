@@ -38,7 +38,7 @@ const Leftbar = () => {
         <h1 className="text-md font-bold">Camera Angle</h1>
         <div className="flex flex-col gap-2">
           <div className="flex flex-row">
-            <label className="text-sm font-semibold w-2/12">Angle</label>
+            <label className="text-sm font-semibold w-2/12">Angle X</label>
             <input
               className="w-10/12"
               type="range"
@@ -49,8 +49,8 @@ const Leftbar = () => {
               step="0.05"
             />
           </div>
-          <div className="flex flex-row hidden">
-            <label className="text-sm font-semibold w-2/12">Angle</label>
+          <div className="flex flex-row">
+            <label className="text-sm font-semibold w-2/12">Angle Y</label>
             <input
               className="w-10/12"
               type="range"

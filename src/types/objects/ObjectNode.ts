@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { M4 } from "../math/M4";
 import { Vec3 } from "../math/Vec3";
 
@@ -42,10 +43,43 @@ export class ObjectNode {
       this.computeWorldMatrix(false, true);
     }
   }
-  // localMatrix should be updated when position, rotation, or scale changed
+  // set position, rotation, scale
   set position(p: Vec3) {
     this._position = p;
     this.computeLocalMatrix();
+  }
+  set rotation(r: Vec3) {
+    this._rotation = r;
+    this.computeLocalMatrix();
+  }
+  set scale(s: Vec3) {
+    this._scale = s;
+    this.computeLocalMatrix();
+  }
+  set children(c: ObjectNode[]) {
+    this._children = c;
+    this.computeWorldMatrix(false, true);
+  }
+
+  // convert to json gltf format
+  static toJSON(node: ObjectNode): object {
+    return {
+      position: Vec3.toJSON(node.position),
+      rotation: Vec3.toJSON(node.rotation),
+      scale: Vec3.toJSON(node.scale),
+      // children: node.children.map((child) => ObjectNode.toJSON(child)),
+    };
+  }
+
+  // convert from json gltf format
+  static fromJSON(json: any): ObjectNode {
+    const node = new ObjectNode();
+    if (json.position) node.position = Vec3.fromJSON(json.position);
+    if (json.rotation) node.rotation = Vec3.fromJSON(json.rotation);
+    if (json.scale) node.scale = Vec3.fromJSON(json.scale);
+    if (json.children)
+      node.children = json.children.map((child: any) => ObjectNode.fromJSON(child));
+    return node;
   }
 
   computeLocalMatrix() {

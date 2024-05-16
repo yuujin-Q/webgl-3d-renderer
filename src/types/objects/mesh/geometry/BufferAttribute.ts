@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type TypedArray = Float32Array | Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array;
 
 export class BufferAttribute {
@@ -130,6 +131,31 @@ export class BufferAttribute {
         }
         return data;
     }
+
+    static toJSON(attr: BufferAttribute) : object {
+        return {
+            data: Array.from(attr.data),
+            size: attr.size,
+            dtype: attr.dtype,
+            normalize: attr.normalize,
+            stride: attr.stride,
+            offset: attr.offset,
+        };
+    }
+
+    static fromJSON(json: any) : BufferAttribute {
+        return new BufferAttribute(
+            new Float32Array(json.data),
+            json.size,
+            {
+                dtype: json.dtype,
+                normalize: json.normalize,
+                stride: json.stride,
+                offset: json.offset,
+            }
+        );
+    }
+
 }
 
 // const attr = new BufferAttribute(new Float32Array([

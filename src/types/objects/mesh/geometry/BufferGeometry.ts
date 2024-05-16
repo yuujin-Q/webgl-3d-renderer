@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {BufferAttribute} from './BufferAttribute';
 
 export class BufferGeometry {
@@ -19,6 +20,27 @@ export class BufferGeometry {
         return this._indices;
     }
 
+    static fromJSON(json: any): BufferGeometry {
+        const geometry = new BufferGeometry();
+        for (const name in json.attributes) {
+            geometry.setAttribute(name, BufferAttribute.fromJSON(json.attributes[name]));
+        }
+        if (json.indices) {
+            geometry.setIndices(BufferAttribute.fromJSON(json.indices));
+        }
+        return geometry;
+    }
+
+    static toJSON(geometry: BufferGeometry): object {
+        const json: any = {attributes: {}};
+        for (const name in geometry.attributes) {
+            json.attributes[name] = BufferAttribute.toJSON(geometry.attributes[name]);
+        }
+        if (geometry.indices) {
+            json.indices = BufferAttribute.toJSON(geometry.indices);
+        }
+        return json;
+    }
 
     setIndices(indices: BufferAttribute) {
         this._indices = indices;

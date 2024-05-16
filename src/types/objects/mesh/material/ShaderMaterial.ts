@@ -39,4 +39,20 @@ export class ShaderMaterial {
   set attributes(attributes: { [name: string]: BufferAttribute }) {
     this._attributes = attributes;
   }
+
+  static fromJSON(json: any): ShaderMaterial {
+    const material = new ShaderMaterial(json.vertexShader, json.fragmentShader);
+    material.uniforms = json.uniforms;
+    material.attributes = json.attributes;
+    return material;
+  }
+
+  static toJSON(material: ShaderMaterial): object {
+    return {
+      vertexShader: material.vertexShader,
+      fragmentShader: material.fragmentShader,
+      uniforms: material.uniforms,
+      attributes: material.attributes,
+    };
+  }
 }
