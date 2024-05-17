@@ -32,7 +32,7 @@ const Canvas = () => {
     <div className="flex flex-col w-6/12 bg-gray-700 h-full">
       <canvas
         onMouseDown={(e) => {
-          MouseInput.initAngles(e.clientX, e.clientY);
+          MouseInput.initAngles(e);
           setDrag(true);
         }}
         onMouseUp={() => {
