@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/Renderer";
@@ -6,7 +5,6 @@ import { Scene } from "../types/objects/Scene";
 import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
 import { Camera } from "../types/objects/camera/Camera";
 import { MouseInput } from "../lib/Mouse";
-// import { OrbitControls } from "../types/objects/camera/OrbitControls";
 import { fmesh, planemesh } from "./Example";
 
 const Canvas = () => {
@@ -16,14 +14,6 @@ const Canvas = () => {
   // INIT WEBGL
   useEffect(() => {
     const camera: Camera = new OrthographicCamera(0, 400, 0, 400, -2000, 2000);
-    // const controls = new OrbitControls(
-    //   camera,
-    //   400,
-    //   MouseInput.deltaTheta,
-    //   MouseInput.deltaPhi
-    // );
-    // controls.update();
-    // camera.rotation.x = Math.PI / 4;
     MouseInput.camera = camera;
 
     const scene = new Scene();
@@ -36,7 +26,7 @@ const Canvas = () => {
 
     Renderer.setScene(scene);
     Renderer.renderScene();
-  }, [canvasRef, MouseInput.deltaPhi, MouseInput.deltaTheta]);
+  }, [canvasRef]);
 
   return (
     <div className="flex flex-col w-6/12 bg-gray-700 h-full">
