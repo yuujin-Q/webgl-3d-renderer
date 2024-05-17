@@ -21,27 +21,76 @@ export class Renderer {
   private static defaultVertexShader = `
     attribute vec4 a_position;
     attribute vec4 a_color;
-
+    attribute vec4 a_normal;
+    
     uniform mat4 u_matrix;
-
+    
     varying vec4 v_color;
+    varying vec3 v_eyevec;
+    varying vec3 v_normal;
 
     void main() {
       // Multiply the position by the matrix.
-      gl_Position = u_matrix * a_position;
-
+      vec4 vertex = u_matrix * a_position;
+      
       // Pass the color to the fragment shader.
       v_color = a_color;
+      v_eyevec = -vec3(vertex);
+      v_normal = vec3(u_matrix * a_normal);
+      gl_Position = vertex;
     }
     `;
   private static defaultFragmentShader = `
-    precision mediump float;
+    precision highp float;
 
-    // Passed in from the vertex shader.
     varying vec4 v_color;
+    varying vec3 v_eyevec;
+    varying vec3 v_normal;
 
     void main() {
-      gl_FragColor = v_color;
+      float uShininess = 255.0;       
+      vec3 uLightDirection = vec3(0.0, -1.0, 10.0); 
+      vec4 uLightAmbient = vec4(0.4, 0.4, 0.4, 1.0);
+      vec4 uLightDiffuse = vec4(255.0, 255.0, 255.0, 1.0);
+      vec4 uLightSpecular = vec4(0.3, 0.3, 0.3, 1.0);
+  
+      vec4 uMaterialAmbient = vec4(0.5, 0.5, 0.5, 1.0);
+      // vec4 uMaterialDiffuse = vec4(128, 205, 26, 1.0);
+      vec4 uMaterialDiffuse = v_color;
+      vec4 uMaterialSpecular = vec4(0.34, 0.34, 0.34, 1.0);
+      vec3 L = normalize(uLightDirection);
+      vec3 N = normalize(v_normal);
+      
+      //Lambert's cosine law
+      float lambertTerm = dot(N,-L);
+      
+      //Ambient Term
+      vec4 Ia = uLightAmbient * uMaterialAmbient;
+      
+      //Diffuse Term
+      vec4 Id = vec4(0.0,0.0,0.0,1.0);
+      
+      //Specular Term
+      vec4 Is = vec4(0.0,0.0,0.0,1.0);
+      
+      if(lambertTerm > 0.0) //only if lambertTerm is positive
+      {
+            Id = uLightDiffuse * uMaterialDiffuse * lambertTerm; //add diffuse term
+            
+            vec3 E = normalize(v_eyevec);
+            vec3 R = reflect(L, N);
+            float specular = pow( max(dot(R, E), 0.0), uShininess);
+            
+            Is = uLightSpecular * uMaterialSpecular * specular; //add specular term 
+      }
+      
+      //Final color
+      vec4 finalColor = Ia + Id + Is;
+      finalColor.a = 1.0;
+      
+      gl_FragColor = finalColor;
+      // gl_FragColor = v_color;
+      // gl_FragColor = vec4(0.2, 0.2, 0.2, 1.0);
     }
     `;
 
