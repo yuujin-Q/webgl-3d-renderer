@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/Renderer";
 import { Mesh } from "../types/objects/mesh/Mesh";
@@ -10,9 +10,12 @@ import { BufferAttribute } from "../types/objects/mesh/geometry/BufferAttribute"
 import { WebGLType } from "../lib/webglutils/WebGLType";
 import { BufferGeometry } from "../types/objects/mesh/geometry/BufferGeometry";
 import { PlaneGeometry } from "../types/objects/mesh/geometry/PlaneGeometry";
+import { MouseInput } from "../lib/Mouse";
+// import { OrbitControls } from "../types/objects/camera/OrbitControls";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
+  const [drag, setDrag] = useState(false);
 
   // INIT WEBGL
   useEffect(() => {
@@ -187,6 +190,16 @@ const Canvas = () => {
     const planemesh: Mesh = new Mesh(pgeo, materialplane);
     const fmesh = new Mesh(fobject, material);
     const camera: Camera = new OrthographicCamera(0, 400, 0, 400, -2000, 2000);
+    // const controls = new OrbitControls(
+    //   camera,
+    //   400,
+    //   MouseInput.deltaTheta,
+    //   MouseInput.deltaPhi
+    // );
+    // controls.update();
+    // camera.rotation.x = Math.PI / 8;
+    // MouseInput.camera = camera;
+
     const scene = new Scene();
     Renderer.setCamera(camera);
     scene.add(fmesh);
@@ -198,11 +211,24 @@ const Canvas = () => {
 
     Renderer.setScene(scene);
     Renderer.renderScene();
-  }, [canvasRef]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvasRef, MouseInput.deltaPhi, MouseInput.deltaTheta]);
 
   return (
     <div className="flex flex-col w-6/12 bg-gray-700 h-full">
       <canvas
+        onMouseDown={(e) => {
+          MouseInput.initAngles(e.clientX, e.clientY);
+          setDrag(true);
+        }}
+        onMouseUp={() => {
+          setDrag(false);
+        }}
+        onMouseMove={(e) => {
+          if (drag) {
+            MouseInput.onMouseMove(e);
+          }
+        }}
         ref={canvasRef}
         id="canvas"
         width="600"

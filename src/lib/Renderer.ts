@@ -1,3 +1,4 @@
+import { degToRad } from "../types/math/Degree";
 import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
 import { Camera } from "../types/objects/camera/Camera";
@@ -160,7 +161,6 @@ export class Renderer {
     { x, y, z }: { x?: number; y?: number; z?: number },
     isDegree: boolean
   ) {
-    const degToRad = (val: number) => (val * Math.PI) / 180;
     if (x !== undefined) {
       this._rotate.x = isDegree ? degToRad(x) : x;
     }
