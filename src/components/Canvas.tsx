@@ -182,7 +182,6 @@ const Canvas = () => {
     Renderer.initializeRenderer(gl);
 
     Renderer.setScene(scene);
-
     Renderer.renderScene();
   }, [canvasRef]);
 

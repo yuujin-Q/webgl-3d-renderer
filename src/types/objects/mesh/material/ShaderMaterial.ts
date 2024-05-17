@@ -45,7 +45,10 @@ export class ShaderMaterial {
     material.uniforms = json.uniforms;
     // set attributes
     for (const name in json.attributes) {
-      material.attributes[name] = BufferAttribute.fromJSON(json.attributes[name]);
+      material.attributes[name] = BufferAttribute.fromJSON(
+        json.attributes[name],
+        name === "a_color"
+      );
     }
     // material.attributes = json.attributes;
     return material;
