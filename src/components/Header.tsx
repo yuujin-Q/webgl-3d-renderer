@@ -1,4 +1,4 @@
-import { GLTFConverter } from "../lib/SaveLoad";
+import { GLTFConverter } from "../lib/GLTFConverter";
 import { Renderer } from "../lib/Renderer";
 import { useRef } from "react";
 
@@ -13,7 +13,7 @@ const Header = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "model.gltf";
+    a.download = "model.json";
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -26,10 +26,8 @@ const Header = () => {
     reader.onload = (e) => {
       const content = e.target?.result;
       if (typeof content === "string") {
-        GLTFConverter.load(content);
-        // const json = JSON.parse(content);
-        // const rootNode = ObjectNode.fromJSON(json);
-        // Renderer.setScene(rootNode);
+        Renderer.setScene(GLTFConverter.load(content));
+        Renderer.renderScene();
       }
     };
     reader.readAsText(file);
@@ -39,7 +37,9 @@ const Header = () => {
     <header className="w-full px-10 py-2 border-b border-slate-900/10 bg-gradient-to-r from-green-800 to-purple-800 text-white">
       <div className="grid grid-cols-3">
         <div className="items-center justify-center col-span-3">
-          <h1 className="text-2xl font-bold text-center py-2">3D Articulated Model</h1>
+          <h1 className="text-2xl font-bold text-center py-2">
+            3D Articulated Model
+          </h1>
         </div>
         <label
           id="load-button"
@@ -53,7 +53,7 @@ const Header = () => {
           ref={fileInputRef}
           className="hidden"
           type="file"
-          accept=".gltf"
+          accept=".json"
           id="load"
           name="filename"
           onChange={handleLoad}
