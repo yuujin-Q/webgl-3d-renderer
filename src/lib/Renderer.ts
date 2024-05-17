@@ -51,7 +51,7 @@ export class Renderer {
   private static camera: Camera;
 
   // transformation
-  private static _translate: Vec3 = new Vec3(95, 15, 15);
+  private static _translate: Vec3 = new Vec3(200, 200, 0);
   private static _rotate: Vec3 = new Vec3(0, 0, 0);
   private static _scale: Vec3 = new Vec3(1, 1, 1);
   static translation() {
@@ -200,11 +200,11 @@ export class Renderer {
     // Proses mesh, kamera, dan lainnya yang
     // terkait pada node
     if (object instanceof Mesh) {
-      console.log("Process node instanceof mesh");
+      // console.log("Process node instanceof mesh");
 
       this.renderMesh(object);
     } else if (object instanceof Camera) {
-      console.log("Set renderer camera to Camera");
+      // console.log("Set renderer camera to Camera");
 
       this.setCamera(object);
     }

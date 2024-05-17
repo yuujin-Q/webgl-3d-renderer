@@ -28,10 +28,12 @@ export class OrbitControls {
         const xRot = Math.atan2(z, y) / 100;
         const yRot = Math.atan2(x, z) / 100;
         const zRot = Math.atan2(y, x) / 100;
-        // this.camera.position = new Vec3(x, y, z);
+        this.camera.position = new Vec3(x, y, z);
         this.camera.rotation.x = this.lastCameraRotationState.x + xRot;
         this.camera.rotation.y = this.lastCameraRotationState.y + yRot;
         this.camera.rotation.z = this.lastCameraRotationState.z + zRot;
+        
+        // console.log("camera.rotation", this.camera.rotation);
         this.camera.computeWorldMatrix();
     }
 }

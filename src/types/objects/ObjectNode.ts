@@ -128,7 +128,7 @@ export class ObjectNode {
   }
 
   remove(n: ObjectNode) {
-    console.log("Remove Node", n);
+    // console.log("Remove Node", n);
     const index = this.children.indexOf(n);
     if (index !== -1) {
       n.parent = undefined;
