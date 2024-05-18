@@ -1,9 +1,12 @@
+import { degToRad } from "../types/math/Degree";
 import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
 import { Camera } from "../types/objects/camera/Camera";
+import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
 import { Mesh } from "../types/objects/mesh/Mesh";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { Scene } from "../types/objects/Scene";
+import { MouseInput } from "./Mouse";
 import { createAttributeSetters } from "./webglutils/AttributeSetter";
 import {
   ProgramInfo,
@@ -94,10 +97,10 @@ export class Renderer {
 
   // scene data
   private static scene: Scene;
-  private static camera: Camera;
+  private static camera: Camera = new OrthographicCamera(-400, 400, -400, 400, -2000, 2000);
 
   // transformation
-  private static _translate: Vec3 = new Vec3(95, 15, 15);
+  private static _translate: Vec3 = new Vec3(0, 0, 0);
   private static _rotate: Vec3 = new Vec3(0, 0, 0);
   private static _scale: Vec3 = new Vec3(1, 1, 1);
   static translation() {
@@ -189,6 +192,9 @@ export class Renderer {
       attributeSetters: createAttributeSetters(gl, program),
       uniformSetters: createUniformSetters(gl, program),
     };
+
+    // init mouse orbit
+    this.setCamera(this.camera);
   }
 
   static setTranslation({ x, y, z }: { x?: number; y?: number; z?: number }) {
@@ -207,7 +213,6 @@ export class Renderer {
     { x, y, z }: { x?: number; y?: number; z?: number },
     isDegree: boolean
   ) {
-    const degToRad = (val: number) => (val * Math.PI) / 180;
     if (x !== undefined) {
       this._rotate.x = isDegree ? degToRad(x) : x;
     }
@@ -234,6 +239,7 @@ export class Renderer {
 
   static setCamera(cam: Camera) {
     this.camera = cam;
+    MouseInput.camera = cam;
   }
   static setTexture() {
     // todo: implement
@@ -247,11 +253,11 @@ export class Renderer {
     // Proses mesh, kamera, dan lainnya yang
     // terkait pada node
     if (object instanceof Mesh) {
-      console.log("Process node instanceof mesh");
+      // console.log("Process node instanceof mesh");
 
       this.renderMesh(object);
     } else if (object instanceof Camera) {
-      console.log("Set renderer camera to Camera");
+      // console.log("Set renderer camera to Camera");
 
       this.setCamera(object);
     }
