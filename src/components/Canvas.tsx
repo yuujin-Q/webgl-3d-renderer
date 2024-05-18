@@ -10,6 +10,7 @@ import { BufferAttribute } from "../types/objects/mesh/geometry/BufferAttribute"
 import { WebGLType } from "../lib/webglutils/WebGLType";
 import { BufferGeometry } from "../types/objects/mesh/geometry/BufferGeometry";
 import { PlaneGeometry } from "../types/objects/mesh/geometry/PlaneGeometry";
+import { CubeGeometry } from "../types/objects/mesh/geometry/CubeGeometry";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
@@ -152,13 +153,22 @@ const Canvas = () => {
     );
     const pgeo = new PlaneGeometry(100, 200);
 
-    const materialplane = new ShaderMaterial("", "");
-    materialplane.attributes["a_color"] = new BufferAttribute(
+    
+    const materialCube = new ShaderMaterial("", "");
+    materialCube.attributes["a_color"] = new BufferAttribute(
       new Uint8Array([
-        // 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
-        // left column front
-        200, 70, 120, 200, 70, 120, 200, 70, 120, 200, 70, 120, 200, 70, 120,
-        200, 70, 120,
+        // Front face colors (red)
+        255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0,
+        // Back face colors (green)
+        0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0,
+        // Top face colors (blue)
+        0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255,
+        // Bottom face colors (yellow)
+        255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0,
+        // Right face colors (magenta)
+        255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255,
+        // Left face colors (cyan)
+        0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255,
       ]),
       3,
       {
@@ -169,13 +179,12 @@ const Canvas = () => {
       }
     );
 
-    const planemesh: Mesh = new Mesh(pgeo, materialplane);
+    const planemesh: Mesh = new Mesh(pgeo, materialCube);
     const fmesh = new Mesh(fobject, material);
     const camera: Camera = new OrthographicCamera(0, 400, 0, 400, -2000, 2000);
     const scene = new Scene();
     Renderer.setCamera(camera);
-    scene.add(fmesh);
-    // fmesh.add(planemesh);
+    scene.add(planemesh);
 
     const gl = canvasRef?.current?.getContext("webgl");
 

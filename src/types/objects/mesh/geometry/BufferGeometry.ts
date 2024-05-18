@@ -72,9 +72,9 @@ export class BufferGeometry {
 
 
     calculateNormals(forceNewAttribute=false) {
-        const position = this.getAttribute('position');
+        const position = this.getAttribute('a_position');
         if (!position) return;
-        let normal = this.getAttribute('normal');
+        let normal = this.getAttribute('a_normal');
         if (forceNewAttribute || !normal)
             normal = new BufferAttribute(new Float32Array(position.length), position.size);
         else
@@ -133,8 +133,7 @@ export class BufferGeometry {
             normData[i + 1] /= length;
             normData[i + 2] /= length;
         }
-
-        this.setAttribute('normal', normal);
+        this.setAttribute('a_normal', normal);
         return this;
     }
 }

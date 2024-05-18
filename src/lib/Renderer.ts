@@ -35,7 +35,7 @@ export class Renderer {
       
       // Pass the color to the fragment shader.
       v_color = a_color;
-      v_eyevec = -vec3(vertex);
+      v_eyevec = -vertex.xyz;
       v_normal = vec3(u_matrix * a_normal);
       gl_Position = vertex;
     }
@@ -47,17 +47,17 @@ export class Renderer {
     varying vec3 v_eyevec;
     varying vec3 v_normal;
 
+    uniform float uShininess;       
+    uniform vec3 uLightDirection; 
+    uniform vec4 uLightAmbient;
+    uniform vec4 uLightDiffuse;
+    uniform vec4 uLightSpecular;
+
+    uniform vec4 uMaterialAmbient;
+    uniform vec4 uMaterialDiffuse;
+    uniform vec4 uMaterialSpecular;
+
     void main() {
-      float uShininess = 255.0;       
-      vec3 uLightDirection = vec3(0.0, -1.0, 10.0); 
-      vec4 uLightAmbient = vec4(0.4, 0.4, 0.4, 1.0);
-      vec4 uLightDiffuse = vec4(255.0, 255.0, 255.0, 1.0);
-      vec4 uLightSpecular = vec4(0.3, 0.3, 0.3, 1.0);
-  
-      vec4 uMaterialAmbient = vec4(0.5, 0.5, 0.5, 1.0);
-      // vec4 uMaterialDiffuse = vec4(128, 205, 26, 1.0);
-      vec4 uMaterialDiffuse = v_color;
-      vec4 uMaterialSpecular = vec4(0.34, 0.34, 0.34, 1.0);
       vec3 L = normalize(uLightDirection);
       vec3 N = normalize(v_normal);
       
@@ -75,21 +75,19 @@ export class Renderer {
       
       if(lambertTerm > 0.0) //only if lambertTerm is positive
       {
-            Id = uLightDiffuse * uMaterialDiffuse * lambertTerm; //add diffuse term
+            Id = uLightDiffuse * uMaterialDiffuse * lambertTerm;
             
             vec3 E = normalize(v_eyevec);
             vec3 R = reflect(L, N);
             float specular = pow( max(dot(R, E), 0.0), uShininess);
             
-            Is = uLightSpecular * uMaterialSpecular * specular; //add specular term 
+            Is = uLightSpecular * uMaterialSpecular * specular;
       }
       
-      //Final color
       vec4 finalColor = Ia + Id + Is;
-      finalColor.a = 1.0;
       
-      gl_FragColor = finalColor;
-      // gl_FragColor = v_color;
+      // gl_FragColor = finalColor;
+      gl_FragColor = v_color;
       // gl_FragColor = vec4(0.2, 0.2, 0.2, 1.0);
     }
     `;
@@ -265,8 +263,11 @@ export class Renderer {
   }
 
   private static renderMesh(object: Mesh) {
+    
     const geometry = object.geometry;
     const material = object.material;
+
+    console.log(geometry)
 
     setAttributes(this.glProgram, geometry.attributes);
     setAttributes(this.glProgram, material.attributes);
@@ -279,6 +280,16 @@ export class Renderer {
     transformationMatrix = M4.scale(transformationMatrix, this._scale);
 
     setUniform(this.glProgram, "u_matrix", transformationMatrix.elements);
+    setUniform(this.glProgram, "uShininess", 100);
+    setUniform(this.glProgram, "uLightDirection", [0.0, -1.0, 10.0]);
+    setUniform(this.glProgram, "uLightAmbient", [0.4, 0.4, 0.4, 1.0]);
+    setUniform(this.glProgram, "uLightDiffuse", [255.0, 255.0, 255.0, 1.0]);
+    setUniform(this.glProgram, "uLightSpecular", [0.3, 0.3, 0.3, 1.0]);
+    setUniform(this.glProgram, "uMaterialAmbient", [0.5, 0.5, 0.5, 1.0]);
+    setUniform(this.glProgram, "uMaterialDiffuse", [128, 205, 26, 1.0]);
+    setUniform(this.glProgram, "uMaterialSpecular", [0.34, 0.34, 0.34, 1.0]);
+
+
     this.gl.drawArrays(
       this.gl.TRIANGLES,
       0,
