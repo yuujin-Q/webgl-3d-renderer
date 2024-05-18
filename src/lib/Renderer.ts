@@ -2,9 +2,11 @@ import { degToRad } from "../types/math/Degree";
 import { M4 } from "../types/math/M4";
 import { Vec3 } from "../types/math/Vec3";
 import { Camera } from "../types/objects/camera/Camera";
+import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
 import { Mesh } from "../types/objects/mesh/Mesh";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { Scene } from "../types/objects/Scene";
+import { MouseInput } from "./Mouse";
 import { createAttributeSetters } from "./webglutils/AttributeSetter";
 import {
   ProgramInfo,
@@ -48,10 +50,10 @@ export class Renderer {
 
   // scene data
   private static scene: Scene;
-  private static camera: Camera;
+  private static camera: Camera = new OrthographicCamera(-400, 400, -400, 400, -2000, 2000);
 
   // transformation
-  private static _translate: Vec3 = new Vec3(200, 200, 0);
+  private static _translate: Vec3 = new Vec3(0, 0, 0);
   private static _rotate: Vec3 = new Vec3(0, 0, 0);
   private static _scale: Vec3 = new Vec3(1, 1, 1);
   static translation() {
@@ -143,6 +145,9 @@ export class Renderer {
       attributeSetters: createAttributeSetters(gl, program),
       uniformSetters: createUniformSetters(gl, program),
     };
+
+    // init mouse orbit
+    this.setCamera(this.camera);
   }
 
   static setTranslation({ x, y, z }: { x?: number; y?: number; z?: number }) {
@@ -187,6 +192,7 @@ export class Renderer {
 
   static setCamera(cam: Camera) {
     this.camera = cam;
+    MouseInput.camera = cam;
   }
   static setTexture() {
     // todo: implement

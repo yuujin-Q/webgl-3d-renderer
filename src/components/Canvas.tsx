@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/Renderer";
 import { Scene } from "../types/objects/Scene";
-import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
-import { Camera } from "../types/objects/camera/Camera";
 import { MouseInput } from "../lib/Mouse";
 import { fmesh, planemesh } from "./Example";
 
@@ -13,11 +11,7 @@ const Canvas = () => {
 
   // INIT WEBGL
   useEffect(() => {
-    const camera: Camera = new OrthographicCamera(0, 400, 0, 400, -2000, 2000);
-    MouseInput.camera = camera;
-
     const scene = new Scene();
-    Renderer.setCamera(camera);
     scene.add(fmesh.add(planemesh));
 
     const gl = canvasRef?.current?.getContext("webgl");
