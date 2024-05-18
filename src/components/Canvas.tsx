@@ -3,7 +3,7 @@ import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/Renderer";
 import { Scene } from "../types/objects/Scene";
 import { MouseInput } from "../lib/Mouse";
-import { fmesh, planemesh } from "./Example";
+import { cube, fmesh, planemesh } from "./Example";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
@@ -12,7 +12,7 @@ const Canvas = () => {
   // INIT WEBGL
   useEffect(() => {
     const scene = new Scene();
-    scene.add(fmesh.add(planemesh));
+    scene.add(cube);
 
     const gl = canvasRef?.current?.getContext("webgl");
 

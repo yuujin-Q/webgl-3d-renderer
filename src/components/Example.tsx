@@ -4,6 +4,7 @@ import { BufferGeometry } from "../types/objects/mesh/geometry/BufferGeometry";
 import { PlaneGeometry } from "../types/objects/mesh/geometry/PlaneGeometry";
 import { Mesh } from "../types/objects/mesh/Mesh";
 import { ShaderMaterial } from "../types/objects/mesh/material/ShaderMaterial";
+import { CubeGeometry } from "../types/objects/mesh/geometry/CubeGeometry";
 
 const material = new ShaderMaterial("", "");
 const colorType = WebGLType.UNSIGNED_BYTE;
@@ -172,7 +173,10 @@ materialplane.attributes["a_color"] = new BufferAttribute(
   }
 );
 
+const cubeObject = new CubeGeometry(100,100,200)
+
 const planemesh: Mesh = new Mesh(pgeo, materialplane);
 const fmesh = new Mesh(fobject, material);
+const cube = new Mesh(cubeObject, material);
 
-export { fmesh, planemesh };
+export { fmesh, planemesh, cube };
