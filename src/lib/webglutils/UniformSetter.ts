@@ -25,7 +25,6 @@ export function createUniformSetters(
         }
       } else {
         if (
-          v instanceof Float32Array &&
           !(
             uniformType === gl.FLOAT_MAT2 ||
             uniformType === gl.FLOAT_MAT3 ||
@@ -35,24 +34,12 @@ export function createUniformSetters(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (gl as any)[`uniform${UniformSetterWebGLType[info.type]}v`](loc, v);
         } else {
-          if (
-            uniformType === gl.FLOAT_MAT2 ||
-            uniformType === gl.FLOAT_MAT3 ||
-            uniformType === gl.FLOAT_MAT4
-          ) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (gl as any)[`uniform${UniformSetterWebGLType[info.type]}`](
-              loc,
-              false,
-              ...values
-            );
-          } else {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (gl as any)[`uniform${UniformSetterWebGLType[info.type]}`](
-              loc,
-              ...values
-            );
-          }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (gl as any)[`uniform${UniformSetterWebGLType[info.type]}`](
+            loc,
+            false,
+            v
+          );
         }
       }
     };
