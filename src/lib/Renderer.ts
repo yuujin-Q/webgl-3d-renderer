@@ -252,7 +252,7 @@ export class Renderer {
     const geometry = object.geometry;
     const material = object.material;
 
-    console.log(geometry)
+    // console.log(geometry)
 
     setAttributes(this.glProgram, geometry.attributes);
     setAttributes(this.glProgram, material.attributes);

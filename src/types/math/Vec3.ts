@@ -12,6 +12,30 @@ export class Vec3 {
     }
   }
 
+  static add(v1: Vec3, v2: Vec3) {
+    v1.x += v2.x;
+    v1.y += v2.y;
+    v1.z += v2.z;
+  }
+
+  static sub(v1: Vec3, v2: Vec3) {
+    v1.x -= v2.x;
+    v1.y -= v2.y;
+    v1.z -= v2.z;
+  }
+
+  static mul(v1: Vec3, x: number) {
+    v1.x *= x;
+    v1.y *= x;
+    v1.z *= x;
+  }
+
+  length(): number {
+    return Math.sqrt(
+      Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2)
+    );
+  }
+
   static fromJSON(json: any): Vec3 {
     return new Vec3(json.x, json.y, json.z);
   }
