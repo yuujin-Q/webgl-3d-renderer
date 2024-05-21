@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/renderer/Renderer";
-import { Scene } from "../types/objects/Scene";
 import { MouseInput } from "../lib/Mouse";
-import { cube, fcubeScene, fmesh, planemesh } from "./Example";
+import { fcubeScene, } from "./Example";
+import { useAppAction } from "../stores";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
+  const { setScene, setActiveObject } = useAppAction()
   const [drag, setDrag] = useState(false);
 
   // INIT WEBGL
@@ -18,7 +19,11 @@ const Canvas = () => {
     Renderer.initializeRenderer(gl);
     
     Renderer.setScene(scene);
+    setScene(scene)
+    Renderer.setActiveObject(scene.name)
+    setActiveObject(scene.name)
     Renderer.renderScene();
+    console.log(scene)
   }, [canvasRef]);
 
   return (

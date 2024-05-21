@@ -1,5 +1,4 @@
 import { MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
-import { useAppAction, useAppStore } from "../stores";
 import Header from "./Header";
 
 const Leftbar = () => {

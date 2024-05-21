@@ -10,10 +10,12 @@ import {
 } from "phosphor-react";
 import { Renderer } from "../lib/renderer/Renderer";
 import { ObjectNode } from "../types/objects/ObjectNode";
-import { useAppStore } from "../stores";
+import { useAppAction, useAppStore } from "../stores";
 
 const Rightbar = () => {
+  const { scene } = useAppStore(state => state)
   // const { gl, glProgram } = useAppStore(state => state)
+  const { setActiveObject } = useAppAction()
   const updateXRotate = (val: number) => {
     Renderer.setRotation({ x: val }, true);
   };
@@ -42,7 +44,7 @@ const Rightbar = () => {
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Active Component :</h1>
         {
-          // RenderTree(renderer.getScene())
+          RenderTree(scene, setActiveObject)
         }
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
@@ -403,18 +405,21 @@ const Rightbar = () => {
   );
 };
 
-const RenderTree = (object: ObjectNode) => {
-  console.log(object)
+const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void) => {
+
   return <div className="pl-2">
     {
       Renderer.getActiveObject() == object.name ?
-        <span className="my-2 px-2 py-1 bg-green-500 rounded-md hover:opacity-80">{object.name}</span>
+        <span className="my-2 px-2 py-1 bg-green-500 rounded-md hover:opacity-80 cursor-pointer">{object.name}</span>
       :
-        <span className="my-2 px-2 py-1 bg-slate-500 rounded-md hover:opacity-80" onClick={() => Renderer.setActiveObject(object.name)}>{object.name}</span>
+        <span className="my-2 px-2 py-1 bg-slate-500 rounded-md hover:opacity-80 cursor-pointer" onClick={() => {
+          Renderer.setActiveObject(object.name)
+          setActiveObject(object.name)
+        }}>{object.name}</span>
     }
     {
       object.children.map(child => {
-        return RenderTree(child)
+        return RenderTree(child, setActiveObject)
       })
     }
   </div>

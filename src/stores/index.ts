@@ -93,7 +93,7 @@ export const useAppStore = create<AppState>((set) => ({
     gl_Position = vertex;
     }
     `,
-    camera:new OrthographicCamera(-400, 400, -400, 400, -2000, 2000),
+    camera: new OrthographicCamera(-400, 400, -400, 400, -2000, 2000),
     scene: new Scene(),
     activeObject: "",
     globalTranslate: new Vec3(0, 0, 0),
