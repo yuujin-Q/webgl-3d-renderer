@@ -17,7 +17,7 @@ const Canvas = () => {
     const gl = canvasRef?.current?.getContext("webgl");
 
     Renderer.initializeRenderer(gl);
-
+    
     Renderer.setScene(scene);
     Renderer.renderScene();
   }, [canvasRef]);

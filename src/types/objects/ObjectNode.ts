@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { v4 } from "uuid";
 import { M4 } from "../math/M4";
 import { Vec3 } from "../math/Vec3";
 
@@ -10,6 +11,7 @@ export class ObjectNode {
   private _worldMatrix: M4 = M4.identity();
   private _parent?: ObjectNode;
   private _children: ObjectNode[] = [];
+  private _name = v4(); 
   visible = true;
 
   // Public getter, prevent re-instance new object
@@ -33,6 +35,9 @@ export class ObjectNode {
   }
   get children() {
     return this._children;
+  }
+  get name() {
+    return this._name;
   }
 
   // Public setter

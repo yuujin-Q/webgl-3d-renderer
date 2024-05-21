@@ -9,8 +9,11 @@ import {
   ArrowsOut,
 } from "phosphor-react";
 import { Renderer } from "../lib/Renderer";
+import { ObjectNode } from "../types/objects/ObjectNode";
+import { useAppStore } from "../stores";
 
 const Rightbar = () => {
+  // const { gl, glProgram } = useAppStore(state => state)
   const updateXRotate = (val: number) => {
     Renderer.setRotation({ x: val }, true);
   };
@@ -44,12 +47,9 @@ const Rightbar = () => {
     <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Active Component :</h1>
-        <div
-          id="active-component"
-          className="w-1/3 flex flex-col items-center py-1 bg-green-600 border border-slate-900/10 text-xs font-bold rounded-lg"
-        >
-          Tes
-        </div>
+        {
+          // RenderTree(renderer.getScene())
+        }
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Rotate</h1>
@@ -408,5 +408,22 @@ const Rightbar = () => {
     </div>
   );
 };
+
+const RenderTree = (object: ObjectNode) => {
+  console.log(object)
+  return <div className="pl-2">
+    {
+      Renderer.getActiveObject() == object.name ?
+        <span className="my-2 px-2 py-1 bg-green-500 rounded-md hover:opacity-80">{object.name}</span>
+      :
+        <span className="my-2 px-2 py-1 bg-slate-500 rounded-md hover:opacity-80" onClick={() => Renderer.setActiveObject(object.name)}>{object.name}</span>
+    }
+    {
+      object.children.map(child => {
+        return RenderTree(child)
+      })
+    }
+  </div>
+}
 
 export default Rightbar;

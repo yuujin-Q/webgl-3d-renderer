@@ -66,7 +66,7 @@ export class Renderer {
       vec3 lighting = vec3(0.0, 0.0, 0.0);
       lighting = ambient;
       lighting = ambient*0.0+diffuse;
-      lighting = ambient*0.0+diffuse*0.5+specular*0.5;
+      lighting = ambient*0.0+diffuse+specular;
 
       vec4 colorr = vec4(0.75, 0.75, 0.75, 0.75);
       vec3 color = v_color.xyz * lighting;
@@ -77,11 +77,13 @@ export class Renderer {
   // scene data
   private static scene: Scene;
   private static camera: Camera = new OrthographicCamera(-400, 400, -400, 400, -2000, 2000);
+  private static activeObject: string = "";
 
   // transformation
   private static _translate: Vec3 = new Vec3(0, 0, 0);
   private static _rotate: Vec3 = new Vec3(0, 0, 0);
   private static _scale: Vec3 = new Vec3(1, 1, 1);
+
   static translation() {
     return this._translate;
   }
@@ -93,6 +95,9 @@ export class Renderer {
   }
   static getScene() {
     return this.scene;
+  }
+  static getActiveObject() {
+    return this.activeObject;
   }
 
   static initializeRenderer(
@@ -186,8 +191,12 @@ export class Renderer {
     if (z !== undefined) {
       this._translate.z = z;
     }
+
+    this.setAttribObjectRecurrent(this.scene, true, false, false)
+
     this.renderScene();
   }
+
   static setRotation(
     { x, y, z }: { x?: number; y?: number; z?: number },
     isDegree: boolean
@@ -201,8 +210,11 @@ export class Renderer {
     if (z !== undefined) {
       this._rotate.z = isDegree ? degToRad(z) : z;
     }
+    this.setAttribObjectRecurrent(this.scene, false, true, false)
+
     this.renderScene();
   }
+
   static setScale({ x, y, z }: { x?: number; y?: number; z?: number }) {
     if (x !== undefined) {
       this._scale.x = x;
@@ -213,6 +225,9 @@ export class Renderer {
     if (z !== undefined) {
       this._scale.z = z;
     }
+
+    this.setAttribObjectRecurrent(this.scene, false, false, true)
+
     this.renderScene();
   }
 
@@ -225,7 +240,47 @@ export class Renderer {
   }
 
   static setScene(sc: Scene) {
+    console.log(sc)
     this.scene = sc;
+    this.activeObject = sc.name
+  }
+
+  static setActiveObject(name: string){
+    this.activeObject = name;
+    this.getAttribObjectRecurrent(this.scene, true, true, true)
+  }
+
+  static setAttribObjectRecurrent(object: ObjectNode, translate: boolean = false, rotation: boolean = false, scale: boolean = false){
+    if(object.name == this.activeObject){
+      if(translate){
+        object.position = this._translate
+      }
+      if(rotation){
+        object.rotation = this._rotate
+      }
+      if(scale){
+        object.scale = this._scale
+      }
+      object.computeWorldMatrix(false, true)
+    }else{
+      object.children.forEach(child => this.setAttribObjectRecurrent(child, translate, rotation, scale))
+    }
+  }
+
+  static getAttribObjectRecurrent(object: ObjectNode, translate: boolean = false, rotation: boolean = false, scale: boolean = false){
+    if(object.name == this.activeObject){
+      if(translate){
+        this._translate = object.position
+      }
+      if(rotation){
+        this._rotate = object.rotation 
+      }
+      if(scale){
+        this._scale = object.scale
+      }
+    }else{
+      object.children.forEach(child => this.getAttribObjectRecurrent(child, translate, rotation, scale))
+    }
   }
 
   private static processNodes(object: ObjectNode) {

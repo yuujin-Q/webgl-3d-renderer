@@ -3,8 +3,6 @@ import { useAppAction, useAppStore } from "../stores";
 import Header from "./Header";
 
 const Leftbar = () => {
-  const selected3D = useAppStore((state) => state.selected3D);
-  const { setSelected3D } = useAppAction();
 
   return (
     <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
@@ -20,8 +18,7 @@ const Leftbar = () => {
           <select
             id="model"
             className="border text-sm font-semibold rounded-lg w-7/12 p-3 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-            onChange={(e) => setSelected3D(e.currentTarget.value)}
-            value={selected3D}
+            
           >
             <option value="3D1">3D Satu</option>
             <option value="3D2">3D Dua</option>
