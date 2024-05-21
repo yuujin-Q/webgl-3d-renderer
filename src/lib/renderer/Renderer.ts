@@ -3,22 +3,16 @@ import { M4 } from "../../types/math/M4";
 import { Vec3 } from "../../types/math/Vec3";
 import { Camera } from "../../types/objects/camera/Camera";
 import { OrthographicCamera } from "../../types/objects/camera/OrthographicCamera";
-import {
-  phongFragmentShader,
-  phongVertexShader,
-} from "../../types/objects/mesh/material/DefaultShaders";
 import { Mesh } from "../../types/objects/mesh/Mesh";
 import { ObjectNode } from "../../types/objects/ObjectNode";
 import { Scene } from "../../types/objects/Scene";
 import { MouseInput } from "../Mouse";
-import { createAttributeSetters } from "../webglutils/AttributeSetter";
 import {
   ProgramInfo,
   setAttributes,
   setUniform,
 } from "../webglutils/ProgramInfo";
-import { createUniformSetters } from "../webglutils/UniformSetter";
-import { createProgram, createShader } from "./ShaderManager";
+import { fetchShaderProgram } from "./ShaderManager";
 
 export class Renderer {
   // gl classes
@@ -32,10 +26,6 @@ export class Renderer {
       this.currentProgram = info;
     }
   }
-
-  // shaders
-  private static defaultVertexShader = phongVertexShader;
-  private static defaultFragmentShader = phongFragmentShader;
 
   // scene data
   private static scene: Scene;
@@ -65,49 +55,12 @@ export class Renderer {
     return this.scene;
   }
 
-  static initializeRenderer(
-    gl: WebGLRenderingContext | undefined | null,
-    vertexShaderSource?: string,
-    fragmentShaderSource?: string
-  ) {
-    // use default shaders if source not provided
-    if (vertexShaderSource === undefined) {
-      vertexShaderSource = this.defaultVertexShader;
-    }
-    if (fragmentShaderSource === undefined) {
-      fragmentShaderSource = this.defaultFragmentShader;
-    }
-
+  static initializeRenderer(gl: WebGLRenderingContext | undefined | null) {
     if (!gl) {
       console.error("No GL");
       return;
     }
     this.gl = gl;
-
-    // create vertex shaders and fragment shaders
-    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    const fragmentShader = createShader(
-      gl,
-      gl.FRAGMENT_SHADER,
-      fragmentShaderSource
-    );
-    if (vertexShader === undefined || fragmentShader === undefined) {
-      console.error("Shader initialization failed");
-      return;
-    }
-
-    // create gl program
-    const program = createProgram(gl, vertexShader, fragmentShader);
-    if (program === undefined) {
-      console.error("GL Program initialization failed");
-      return;
-    }
-    gl.useProgram(program);
-    this.currentProgram = {
-      program: program,
-      attributeSetters: createAttributeSetters(gl, program),
-      uniformSetters: createUniformSetters(gl, program),
-    };
 
     // init mouse orbit
     this.setCamera(this.camera);
@@ -169,12 +122,8 @@ export class Renderer {
     // Proses mesh, kamera, dan lainnya yang
     // terkait pada node
     if (object instanceof Mesh) {
-      // console.log("Process node instanceof mesh");
-
       this.renderMesh(object);
     } else if (object instanceof Camera) {
-      // console.log("Set renderer camera to Camera");
-
       this.setCamera(object);
     }
 
@@ -188,10 +137,11 @@ export class Renderer {
     const geometry = object.geometry;
     const material = object.material;
 
-    // console.log(geometry)
+    this.setProgramInfo(fetchShaderProgram(this.gl, material));
 
     setAttributes(this.currentProgram, geometry.attributes);
     setAttributes(this.currentProgram, material.attributes);
+
     this.camera.computeProjectionMatrix();
     let transformationMatrix = this.camera.viewProjectionMatrix;
     transformationMatrix = M4.translate(transformationMatrix, this._translate);
@@ -221,11 +171,10 @@ export class Renderer {
     const gl = this.gl;
 
     // todo: viewport and resize canvas?
-    gl.useProgram(this.currentProgram.program);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
-    this.processNodes(this.scene.children[0]);
+    this.processNodes(this.scene);
   }
 }
