@@ -1,40 +1,26 @@
-import { Vec3 } from "../types/math/Vec3";
-import { ObjectNode } from "../types/objects/ObjectNode";
-import { Renderer } from "./renderer/Renderer";
+import { Camera } from "../types/objects/camera/Camera";
 
 export class MouseInput {
-  private static deltaPhi = 0;
-  private static deltaTheta = 0;
-  private static prevDeltaPhi = 0;
-  private static prevDeltaTheta = 0;
+  private static deltaX = 0;
+  private static deltaY = 0;
+  private static prevDeltaX = 0;
+  private static prevDeltaY = 0;
   static sensitivity = 0.01;
-  static camera: ObjectNode;
+  static camera: Camera;
 
   static initAngles(e: React.MouseEvent<HTMLCanvasElement>) {
-    this.prevDeltaPhi = e.clientX;
-    this.prevDeltaTheta = e.clientY;
+    this.prevDeltaX = e.clientX;
+    this.prevDeltaY = e.clientY;
   }
 
   static onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    this.deltaPhi = e.clientX - this.prevDeltaPhi;
-    this.deltaTheta = e.clientY - this.prevDeltaTheta;
+    // deltaX is deltaPhi, deltaY is deltaTheta
+    this.deltaX = e.clientX - this.prevDeltaX;
+    this.deltaY = e.clientY - this.prevDeltaY;
 
-    const radius = this.camera.position.length();
-    const x = radius * Math.sin(this.deltaPhi) * Math.cos(this.deltaTheta);
-    const y = radius * Math.cos(this.deltaPhi);
-    const z = radius * Math.sin(this.deltaPhi) * Math.sin(this.deltaTheta);
-    this.camera.position = new Vec3(x, y, z);
+    this.camera.move(this.deltaX, this.deltaY, this.sensitivity);
 
-    // increase rotation camera with deltaPhi and deltaTheta
-    // todo: change rotation to match lookAt implementation?
-    this.camera.rotation.x -= this.deltaTheta * this.sensitivity;
-    this.camera.rotation.y -= this.deltaPhi * this.sensitivity;
-
-    // Render the scene
-    this.camera.computeWorldMatrix();
-    Renderer.renderScene();
-
-    this.prevDeltaPhi = e.clientX;
-    this.prevDeltaTheta = e.clientY;
+    this.prevDeltaX = e.clientX;
+    this.prevDeltaY = e.clientY;
   };
 }
