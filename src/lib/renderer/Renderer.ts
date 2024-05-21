@@ -142,13 +142,9 @@ export class Renderer {
     setAttributes(this.currentProgram, geometry.attributes);
     setAttributes(this.currentProgram, material.attributes);
 
+    // compute object TRS and camera projection
     this.camera.computeProjectionMatrix();
-    let transformationMatrix = this.camera.viewProjectionMatrix;
-    transformationMatrix = M4.translate(transformationMatrix, this._translate);
-    transformationMatrix = M4.xRotate(transformationMatrix, this._rotate.x);
-    transformationMatrix = M4.yRotate(transformationMatrix, this._rotate.y);
-    transformationMatrix = M4.zRotate(transformationMatrix, this._rotate.z);
-    transformationMatrix = M4.scale(transformationMatrix, this._scale);
+    const transformationMatrix = M4.multiply(this.camera.viewProjectionMatrix, object.worldMatrix);
 
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
     // setUniform(this.glProgram, "uShininess", [100.0]);
@@ -165,6 +161,7 @@ export class Renderer {
       0,
       geometry.getAttribute("a_position").length / 3
     );
+    
   }
 
   static renderScene() {

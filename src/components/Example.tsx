@@ -7,6 +7,7 @@ import { CubeGeometry } from "../types/objects/mesh/geometry/CubeGeometry";
 import { PhongMaterial } from "../types/objects/mesh/material/PhongMaterial";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
 import { Scene } from "../types/objects/Scene";
+import { Vec3 } from "../types/math/Vec3";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -251,6 +252,7 @@ cubeMaterial.attributes["a_color"] = new BufferAttribute(
 const planemesh: Mesh = new Mesh(plane, materialplane);
 const fmesh = new Mesh(fobject, fmaterial);
 const cube = new Mesh(cubeObject, cubeMaterial);
+cube.position = new Vec3(200, 0, 200);
 
 const fcubeScene = new Scene();
 fcubeScene.add(fmesh);
