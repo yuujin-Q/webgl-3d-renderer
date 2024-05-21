@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ObjectNode } from "../ObjectNode";
 import { M4 } from "../../math/M4";
 import { Vec3 } from "../../math/Vec3";
@@ -43,5 +44,22 @@ export class Camera extends ObjectNode {
     // Render the scene
     this.computeWorldMatrix();
     Renderer.renderScene();
+  }
+
+  static toJSON(camera: Camera): object {
+    return {
+      ...ObjectNode.toJSON(camera),
+      projectionMatrix: camera._projectionMatrix,
+      invWorldMatrix: camera._invWorldMatrix,
+    };
+  }
+
+  static fromJSON(json: any): Camera {
+    const node = ObjectNode.fromJSON(json);
+    let camera = new Camera();
+    camera._projectionMatrix = json.projectionMatrix;
+    camera._invWorldMatrix = json.invWorldMatrix;
+    camera = Object.assign(camera, node);
+    return camera;
   }
 }

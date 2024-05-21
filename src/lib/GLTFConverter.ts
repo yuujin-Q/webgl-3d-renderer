@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Camera } from "../types/objects/camera/Camera";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { Mesh } from "../types/objects/mesh/Mesh";
+import { Renderer } from "./renderer/Renderer";
 
 export class GLTFConverter {
   static toJSON(node: any): object {
     if (node instanceof Mesh) {
       return Mesh.toJSON(node);
+    } else if (node instanceof Camera) {
+      return Camera.toJSON(node);
     } else if (node instanceof ObjectNode) {
       return ObjectNode.toJSON(node);
     } else {
@@ -16,12 +20,18 @@ export class GLTFConverter {
   static fromJSON(json: any): ObjectNode {
     if (json.geometry) {
       return Mesh.fromJSON(json);
+    } else if (json.projectionMatrix) {
+      const cam = Camera.fromJSON(json);
+      Renderer.setCamera(cam);
+      return cam;
     } else {
       return ObjectNode.fromJSON(json);
     }
   }
 
   static save(rootNode: ObjectNode): string {
+    // add camera to rootNode
+    rootNode.add(Renderer.getCamera());
     const nodes: any[] = [];
     const nodeIndices = new Map<ObjectNode, number>();
 
