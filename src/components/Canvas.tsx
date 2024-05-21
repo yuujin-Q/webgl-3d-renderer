@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
-import { Renderer } from "../lib/Renderer";
+import { Renderer } from "../lib/renderer/Renderer";
 import { Scene } from "../types/objects/Scene";
 import { MouseInput } from "../lib/Mouse";
 import { cube, fmesh, planemesh } from "./Example";

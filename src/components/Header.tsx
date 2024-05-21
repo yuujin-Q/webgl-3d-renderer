@@ -1,5 +1,5 @@
 import { GLTFConverter } from "../lib/GLTFConverter";
-import { Renderer } from "../lib/Renderer";
+import { Renderer } from "../lib/renderer/Renderer";
 import { useRef } from "react";
 
 const Header = () => {

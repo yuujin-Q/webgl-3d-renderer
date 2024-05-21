@@ -1,6 +1,6 @@
 import { Vec3 } from "../types/math/Vec3";
 import { ObjectNode } from "../types/objects/ObjectNode";
-import { Renderer } from "./Renderer";
+import { Renderer } from "./renderer/Renderer";
 
 export class MouseInput {
   private static deltaPhi = 0;
