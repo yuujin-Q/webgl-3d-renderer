@@ -215,25 +215,25 @@ export class M4 {
     near: number,
     far: number
   ): M4 {
-    const lr = 1 / (left - right);
-    const bt = 1 / (bottom - top);
-    const nf = 1 / (near - far);
+    const lr = 1 / (right - left);
+    const bt = 1 / (top - bottom);
+    const nf = 1 / (far - near);
     return new M4([
-      -2 * lr,
+      2 * lr,
       0,
       0,
       0,
       0,
-      -2 * bt,
+      2 * bt,
       0,
       0,
       0,
       0,
-      2 * nf,
+      -2 * nf,
       0,
-      (left + right) * lr,
-      (top + bottom) * bt,
-      (far + near) * nf,
+      -(right + left) * lr,
+      -(top + bottom) * bt,
+      -(far + near) * nf,
       1,
     ]);
   }
@@ -245,24 +245,24 @@ export class M4 {
     near: number,
     far: number
   ): M4 {
-    const f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
-    const rangeInv = 1 / (near - far);
+    const f = Math.tan((fov / 2) * Math.PI / 180);
+    const rangeInv = 1.0 / (far - near);
     return new M4([
-      f / aspect,
+      1 / (aspect * f),
       0,
       0,
       0,
       0,
-      f,
+      1/f,
       0,
       0,
       0,
       0,
-      (near + far) * rangeInv,
+      -(far ) * rangeInv,
       -1,
       0,
       0,
-      near * far * rangeInv * 2,
+      -2 * far  * rangeInv,
       0,
     ]);
   }
