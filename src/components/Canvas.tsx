@@ -36,6 +36,9 @@ const Canvas = () => {
             MouseInput.onMouseMove(e);
           }
         }}
+        onWheel={(e) => {
+          MouseInput.onMouseWheel(e);
+        }}
         ref={canvasRef}
         id="canvas"
         width="600"

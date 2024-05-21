@@ -6,6 +6,9 @@ import { Renderer } from "../../../lib/renderer/Renderer";
 
 export class Camera extends ObjectNode {
   protected _projectionMatrix = M4.identity();
+  protected _zoom = 1;
+  private maxZoom = 6; // zoom out
+  private minZoom = 0.1; // zoom in 
   private _invWorldMatrix = M4.identity();
 
   override computeWorldMatrix() {
@@ -43,6 +46,18 @@ export class Camera extends ObjectNode {
 
     // Render the scene
     this.computeWorldMatrix();
+    Renderer.renderScene();
+  }
+
+  public zoom(delta: number, sensitivity: number) {
+    this._zoom += delta * sensitivity;
+    if (this._zoom <= this.minZoom) {
+      this._zoom = this.minZoom;
+    } else if (this._zoom >= this.maxZoom) {
+      this._zoom = this.maxZoom;
+    }
+    console.log(this._zoom);
+    this.computeProjectionMatrix();
     Renderer.renderScene();
   }
 

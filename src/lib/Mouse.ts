@@ -6,6 +6,7 @@ export class MouseInput {
   private static prevDeltaX = 0;
   private static prevDeltaY = 0;
   static sensitivity = 0.01;
+  static zoomSensitivity = 0.001;
   static camera: Camera;
 
   static initAngles(e: React.MouseEvent<HTMLCanvasElement>) {
@@ -22,5 +23,12 @@ export class MouseInput {
 
     this.prevDeltaX = e.clientX;
     this.prevDeltaY = e.clientY;
+  };
+
+  // wheel event 
+  static onMouseWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
+    // e.preventDefault();
+    const delta = e.deltaY;
+    this.camera.zoom(delta, this.zoomSensitivity);
   };
 }

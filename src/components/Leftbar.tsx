@@ -1,6 +1,7 @@
 import { MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
 import { useAppAction, useAppStore } from "../stores";
 import Header from "./Header";
+import { Renderer } from "../lib/renderer/Renderer";
 
 const Leftbar = () => {
   const selected3D = useAppStore((state) => state.selected3D);
@@ -103,12 +104,14 @@ const Leftbar = () => {
             <button
               id="button-proj-orthographic"
               className="w-1/2 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              onClick={() => Renderer.switchCamera(0)}
             >
               Orthographic
             </button>
             <button
               id="button-proj-perspective"
               className="w-1/2 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              onClick={() => Renderer.switchCamera(1)}
             >
               Perspective
             </button>
@@ -118,6 +121,7 @@ const Leftbar = () => {
             <button
               id="button-proj-oblique"
               className="w-1/2 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              onClick={() => Renderer.switchCamera(2)}
             >
               Oblique
             </button>

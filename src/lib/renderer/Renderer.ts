@@ -3,6 +3,8 @@ import { M4 } from "../../types/math/M4";
 import { Vec3 } from "../../types/math/Vec3";
 import { Camera } from "../../types/objects/camera/Camera";
 import { OrthographicCamera } from "../../types/objects/camera/OrthographicCamera";
+import { ObliqueCamera } from "../../types/objects/camera/ObliqueCamera";
+import { PerspectiveCamera } from "../../types/objects/camera/PerspectiveCamera";
 import { Mesh } from "../../types/objects/mesh/Mesh";
 import { ObjectNode } from "../../types/objects/ObjectNode";
 import { Scene } from "../../types/objects/Scene";
@@ -29,14 +31,13 @@ export class Renderer {
 
   // scene data
   private static scene: Scene;
-  private static camera: Camera = new OrthographicCamera(
-    -400,
-    400,
-    -400,
-    400,
-    -2000,
-    2000
-  );
+  private static zoom = 1.5;
+  private static size = 500;
+  private static cameras: Camera[] = [
+    new OrthographicCamera( -this.size * this.zoom, this.size * this.zoom, -this.size * this.zoom, this.size * this.zoom, -2000, 2000 ),
+    new PerspectiveCamera(180, 1, -2000, 2000),
+    new ObliqueCamera(-this.size * this.zoom, this.size * this.zoom, -this.size * this.zoom, this.size * this.zoom, -2000, 2000, new Vec3(1, -2, 1))]
+  private static camera: Camera = this.cameras[0];
 
   // transformation
   private static _translate: Vec3 = new Vec3(0, 0, 0);
@@ -56,6 +57,10 @@ export class Renderer {
   }
   static getCamera() {
     return this.camera;
+  }
+  static switchCamera(index: number) {
+    this.setCamera(this.cameras[index]);
+    this.renderScene();
   }
 
   static initializeRenderer(gl: WebGLRenderingContext | undefined | null) {
