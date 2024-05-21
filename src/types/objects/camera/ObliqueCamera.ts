@@ -33,10 +33,10 @@ export class ObliqueCamera extends Camera {
 
   override computeProjectionMatrix() {
     this._projectionMatrix = M4.oblique(
-      this.left,
-      this.right,
-      this.bottom,
-      this.top,
+      this.left * this._zoom,
+      this.right * this._zoom,
+      this.bottom * this._zoom,
+      this.top * this._zoom,
       this.near,
       this.far,
       this.skew
