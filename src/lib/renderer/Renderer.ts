@@ -54,6 +54,9 @@ export class Renderer {
   static getScene() {
     return this.scene;
   }
+  static getCamera() {
+    return this.camera;
+  }
 
   static initializeRenderer(gl: WebGLRenderingContext | undefined | null) {
     if (!gl) {
@@ -143,8 +146,17 @@ export class Renderer {
     setAttributes(this.currentProgram, material.attributes);
 
     // compute object TRS and camera projection
-    this.camera.computeProjectionMatrix();
-    const transformationMatrix = M4.multiply(this.camera.viewProjectionMatrix, object.worldMatrix);
+    // this.camera.computeProjectionMatrix();
+    // console.log("viewProjectionMatrix: " + this.camera.viewProjectionMatrix.elements);
+    // console.log("worldMatrix: " + object.worldMatrix.elements);
+    let transformationMatrix = M4.multiply(this.camera.viewProjectionMatrix, object.worldMatrix);
+    
+    // Todo : change this for each object
+    transformationMatrix = M4.translate(transformationMatrix, this._translate);
+    transformationMatrix = M4.xRotate(transformationMatrix, this._rotate.x);
+    transformationMatrix = M4.yRotate(transformationMatrix, this._rotate.y);
+    transformationMatrix = M4.zRotate(transformationMatrix, this._rotate.z);
+    transformationMatrix = M4.scale(transformationMatrix, this._scale);
 
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
     // setUniform(this.glProgram, "uShininess", [100.0]);

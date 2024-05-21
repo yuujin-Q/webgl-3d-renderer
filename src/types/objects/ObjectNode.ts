@@ -68,6 +68,9 @@ export class ObjectNode {
       rotation: Vec3.toJSON(node.rotation),
       scale: Vec3.toJSON(node.scale),
       // children: node.children.map((child) => ObjectNode.toJSON(child)),
+      // local and world matrix 
+      worldMatrix: node.worldMatrix,
+      localMatrix: node.localMatrix,
     };
   }
 
@@ -79,6 +82,8 @@ export class ObjectNode {
     if (json.scale) node.scale = Vec3.fromJSON(json.scale);
     if (json.children)
       node.children = json.children.map((child: any) => ObjectNode.fromJSON(child));
+    if (json.worldMatrix) node._worldMatrix = json.worldMatrix;
+    if (json.localMatrix) node._localMatrix = json.localMatrix;
     return node;
   }
 
