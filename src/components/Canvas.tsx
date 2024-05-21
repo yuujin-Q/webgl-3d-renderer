@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
-import { Renderer } from "../lib/Renderer";
+import { Renderer } from "../lib/renderer/Renderer";
 import { Scene } from "../types/objects/Scene";
 import { MouseInput } from "../lib/Mouse";
-import { cube, fmesh, planemesh } from "./Example";
+import { cube, fcubeScene, fmesh, planemesh } from "./Example";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
@@ -11,8 +11,7 @@ const Canvas = () => {
 
   // INIT WEBGL
   useEffect(() => {
-    const scene = new Scene();
-    scene.add(cube);
+    const scene = fcubeScene;
 
     const gl = canvasRef?.current?.getContext("webgl");
 

@@ -2,8 +2,10 @@ import { BufferAttribute } from "../geometry/BufferAttribute";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class ShaderMaterial {
-  private _vertexShader: string;
-  private _fragmentShader: string;
+  static #idcounter = 0;
+  protected _id: string = "M" + ShaderMaterial.#idcounter++;
+  private readonly _vertexShader: string;
+  private readonly _fragmentShader: string;
   private _uniforms: { [name: string]: any };
   private _attributes: { [name: string]: BufferAttribute };
 
@@ -12,6 +14,14 @@ export class ShaderMaterial {
     this._fragmentShader = fragmentShader;
     this._uniforms = {};
     this._attributes = {};
+  }
+
+  // material id
+  get id() {
+    return this._id;
+  }
+  equals(material: ShaderMaterial) {
+    return this._id === material.id;
   }
 
   get vertexShader() {
@@ -27,12 +37,6 @@ export class ShaderMaterial {
     return this._attributes;
   }
 
-  set vertexShader(vertexShader: string) {
-    this._vertexShader = vertexShader;
-  }
-  set fragmentShader(fragmentShader: string) {
-    this._fragmentShader = fragmentShader;
-  }
   set uniforms(uniforms: { [name: string]: any }) {
     this._uniforms = uniforms;
   }
@@ -42,6 +46,7 @@ export class ShaderMaterial {
 
   static fromJSON(json: any): ShaderMaterial {
     const material = new ShaderMaterial(json.vertexShader, json.fragmentShader);
+    material._id = json.id;
     material.uniforms = json.uniforms;
     // set attributes
     for (const name in json.attributes) {
@@ -56,6 +61,7 @@ export class ShaderMaterial {
 
   static toJSON(material: ShaderMaterial): object {
     const json: any = {
+      id: material.id,
       vertexShader: material.vertexShader,
       fragmentShader: material.fragmentShader,
       uniforms: material.uniforms,

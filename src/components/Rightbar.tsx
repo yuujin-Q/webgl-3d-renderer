@@ -8,7 +8,7 @@ import {
   ArrowsIn,
   ArrowsOut,
 } from "phosphor-react";
-import { Renderer } from "../lib/Renderer";
+import { Renderer } from "../lib/renderer/Renderer";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { useAppStore } from "../stores";
 
@@ -32,15 +32,9 @@ const Rightbar = () => {
     y?: number;
     z?: number;
   }) => {
-    const newX = x
-      ? Renderer.translation().x + x
-      : Renderer.translation().x;
-    const newY = y
-      ? Renderer.translation().y + y
-      : Renderer.translation().y;
-    const newZ = z
-      ? Renderer.translation().z + z
-      : Renderer.translation().z;
+    const newX = x ? Renderer.translation().x + x : Renderer.translation().x;
+    const newY = y ? Renderer.translation().y + y : Renderer.translation().y;
+    const newZ = z ? Renderer.translation().z + z : Renderer.translation().z;
     Renderer.setTranslation({ x: newX, y: newY, z: newZ });
   };
   return (
