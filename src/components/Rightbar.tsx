@@ -11,19 +11,29 @@ import {
 import { Renderer } from "../lib/renderer/Renderer";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { useAppAction, useAppStore } from "../stores";
+import { Vec3 } from "../types/math/Vec3";
+import { radToDeg } from "../types/math/Degree";
 
 const Rightbar = () => {
-  const { scene } = useAppStore(state => state)
-  // const { gl, glProgram } = useAppStore(state => state)
-  const { setActiveObject } = useAppAction()
+  const { scene, globalRotate, globalScale, globalTranslate } = useAppStore(state => state)
+  const { setActiveObject, setGlobalTranslate, setGlobalRotate, setGlobalScale } = useAppAction()
+  const setTransformation = (translate: Vec3, rotate: Vec3, scale: Vec3) => {
+    setGlobalRotate(new Vec3(radToDeg(rotate.x), radToDeg(rotate.y), radToDeg(rotate.z)))
+    setGlobalScale(scale)
+    setGlobalTranslate(translate)
+  }
   const updateXRotate = (val: number) => {
     Renderer.setRotation({ x: val }, true);
+    setGlobalRotate(new Vec3(val, globalRotate.y, globalRotate.z))
   };
   const updateYRotate = (val: number) => {
     Renderer.setRotation({ y: val }, true);
+    setGlobalRotate(new Vec3(globalRotate.x, val, globalRotate.z))
+
   };
   const updateZRotate = (val: number) => {
     Renderer.setRotation({ z: val }, true);
+    setGlobalRotate(new Vec3(globalRotate.x, globalRotate.y, val))
   };
   const updateTranslation = ({
     x,
@@ -38,13 +48,14 @@ const Rightbar = () => {
     const newY = y ? Renderer.translation().y + y : Renderer.translation().y;
     const newZ = z ? Renderer.translation().z + z : Renderer.translation().z;
     Renderer.setTranslation({ x: newX, y: newY, z: newZ });
+    setGlobalTranslate(new Vec3(newX, newY, newZ))
   };
   return (
     <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Active Component :</h1>
         {
-          RenderTree(scene, setActiveObject)
+          RenderTree(scene, setActiveObject, setTransformation)
         }
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
@@ -59,7 +70,7 @@ const Rightbar = () => {
               name="scale"
               min="-180"
               max="180"
-              defaultValue={Renderer.rotation().x}
+              value={globalRotate.x}
               step="0.05"
               onChange={(e) => updateXRotate(Number(e.target.value))}
             />
@@ -73,7 +84,7 @@ const Rightbar = () => {
               name="scale"
               min="-180"
               max="180"
-              defaultValue={Renderer.rotation().y}
+              value={globalRotate.y}
               step="0.05"
               onChange={(e) => updateYRotate(Number(e.target.value))}
             />
@@ -87,7 +98,7 @@ const Rightbar = () => {
               name="scale"
               min="-180"
               max="180"
-              defaultValue={Renderer.rotation().z}
+              value={globalRotate.z}
               step="0.05"
               onChange={(e) => updateZRotate(Number(e.target.value))}
             />
@@ -106,9 +117,12 @@ const Rightbar = () => {
               name="scale"
               min="0.1"
               max="5"
-              defaultValue={Renderer.scaler().x}
+              value={globalScale.x}
               step="0.05"
-              onChange={(e) => Renderer.setScale({ x: Number(e.target.value) })}
+              onChange={(e) => {
+                Renderer.setScale({ x: Number(e.target.value) })
+                setGlobalScale(new Vec3(Number(e.target.value), globalScale.y, globalScale.z))
+              }}
             />
           </div>
           <div className="flex flex-row">
@@ -120,9 +134,12 @@ const Rightbar = () => {
               name="scale"
               min="0.1"
               max="5"
-              defaultValue={Renderer.scaler().y}
+              value={globalScale.y}
               step="0.05"
-              onChange={(e) => Renderer.setScale({ y: Number(e.target.value) })}
+              onChange={(e) => {
+                Renderer.setScale({ y: Number(e.target.value) })
+                setGlobalScale(new Vec3(globalScale.x, Number(e.target.value), globalScale.z))
+              }}
             />
           </div>
           <div className="flex flex-row">
@@ -134,9 +151,12 @@ const Rightbar = () => {
               name="scale"
               min="0.1"
               max="5"
-              defaultValue={Renderer.scaler().z}
+              value={globalScale.z}
               step="0.05"
-              onChange={(e) => Renderer.setScale({ z: Number(e.target.value) })}
+              onChange={(e) => {
+                Renderer.setScale({ z: Number(e.target.value) })
+                setGlobalScale(new Vec3(globalScale.x, globalScale.y, Number(e.target.value)))
+              }}
             />
           </div>
         </div>
@@ -405,7 +425,7 @@ const Rightbar = () => {
   );
 };
 
-const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void) => {
+const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void, setTransformation: (translate: Vec3, rotate: Vec3, scale: Vec3) => void) => {
   // if name is Camera, return null
   if (object.name === "Camera") {
     return null;
@@ -418,11 +438,12 @@ const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void) 
         <span className="my-2 px-2 py-1 bg-slate-500 rounded-md hover:opacity-80 cursor-pointer" onClick={() => {
           Renderer.setActiveObject(object.id)
           setActiveObject(object.id)
+          setTransformation(Renderer.translation(), Renderer.rotation(), Renderer.scaler())
         }}>{object.name}</span>
     }
     {
       object.children.map(child => {
-        return RenderTree(child, setActiveObject)
+        return RenderTree(child, setActiveObject, setTransformation)
       })
     }
   </div>
