@@ -164,18 +164,6 @@ export class Renderer {
     transformationMatrix = M4.zRotate(transformationMatrix, object.rotation.z);
     transformationMatrix = M4.scale(transformationMatrix, object.scale);
 
-    
-    // translate and rotate still not working when saved to json
-    // perspective camera still not good have to-> change x axis and translate to left
-    // object.position = this._translate;
-    // object.rotation = this._rotate;
-    // object.scale = this._scale;
-
-    // fix rotate, translate, scale for each object
-    // fix rotate all -> rotate in the center of object not like camera
-
-    // make articulated object and hollow object
-
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
     // setUniform(this.glProgram, "uShininess", [100.0]);
     // setUniform(this.glProgram, "uLightDirection", [0.0, -1.0, 10.0]);
