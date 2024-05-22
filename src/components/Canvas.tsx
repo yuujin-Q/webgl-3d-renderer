@@ -13,8 +13,11 @@ const Canvas = () => {
   // INIT WEBGL
   useEffect(() => {
     const scene = fcubeScene;
-
     const gl = canvasRef?.current?.getContext("webgl");
+    if (!gl) {
+      console.error("No GL");
+      return;
+    }
 
     Renderer.initializeRenderer(gl);
     

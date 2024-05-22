@@ -1,8 +1,11 @@
 import { GLTFConverter } from "../lib/GLTFConverter";
 import { Renderer } from "../lib/renderer/Renderer";
 import { useRef } from "react";
+import { Scene } from "../types/objects/Scene";
+import { useAppAction } from "../stores";
 
 const Header = () => {
+  const { setScene, setActiveObject } = useAppAction()
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSave = () => {
@@ -26,8 +29,13 @@ const Header = () => {
     reader.onload = (e) => {
       const content = e.target?.result;
       if (typeof content === "string") {
-        Renderer.setScene(GLTFConverter.load(content));
+        const scene: Scene = GLTFConverter.load(content);
+        Renderer.setScene(scene);
+        setScene(scene)
+        Renderer.setActiveObject(scene.name)
+        setActiveObject(scene.name)
         Renderer.renderScene();
+        console.log(scene)
       }
     };
     reader.readAsText(file);

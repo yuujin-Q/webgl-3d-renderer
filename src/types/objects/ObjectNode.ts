@@ -72,10 +72,12 @@ export class ObjectNode {
       position: Vec3.toJSON(node.position),
       rotation: Vec3.toJSON(node.rotation),
       scale: Vec3.toJSON(node.scale),
+      // name: node.name,
+      // children logic is implemented in GLTFConverter
       // children: node.children.map((child) => ObjectNode.toJSON(child)),
-      // local and world matrix 
-      worldMatrix: node.worldMatrix,
-      localMatrix: node.localMatrix,
+      // local and world matrix not saved cause it can be computed
+      // localMatrix: node.localMatrix,
+      // worldMatrix: node.worldMatrix,
     };
   }
 
@@ -85,10 +87,11 @@ export class ObjectNode {
     if (json.position) node.position = Vec3.fromJSON(json.position);
     if (json.rotation) node.rotation = Vec3.fromJSON(json.rotation);
     if (json.scale) node.scale = Vec3.fromJSON(json.scale);
-    if (json.children)
-      node.children = json.children.map((child: any) => ObjectNode.fromJSON(child));
-    if (json.worldMatrix) node._worldMatrix = json.worldMatrix;
-    if (json.localMatrix) node._localMatrix = json.localMatrix;
+    // if (json.name) node._name = json.name;
+    // if (json.children)
+    //   node.children = json.children.map((child: any) => ObjectNode.fromJSON(child));
+    // if (json.worldMatrix) node._worldMatrix = json.worldMatrix;
+    // if (json.localMatrix) node._localMatrix = json.localMatrix;
     return node;
   }
 
