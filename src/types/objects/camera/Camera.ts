@@ -56,7 +56,7 @@ export class Camera extends ObjectNode {
     } else if (this._zoom >= this.maxZoom) {
       this._zoom = this.maxZoom;
     }
-    console.log(this._zoom);
+    // console.log(this._zoom);
     this.computeProjectionMatrix();
     Renderer.renderScene();
   }

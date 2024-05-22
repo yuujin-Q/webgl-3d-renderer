@@ -35,7 +35,7 @@ export class Renderer {
   private static size = 500;
   private static cameras: Camera[] = [
     new OrthographicCamera( -this.size * this.zoom, this.size * this.zoom, -this.size * this.zoom, this.size * this.zoom, -2000, 2000 ),
-    new PerspectiveCamera(180, 1, -2000, 2000),
+    new PerspectiveCamera(90, 1, 1, 2000),
     new ObliqueCamera(-this.size * this.zoom, this.size * this.zoom, -this.size * this.zoom, this.size * this.zoom, -2000, 2000, new Vec3(1, -2, 1))]
   private static camera: Camera = this.cameras[0];
 
@@ -153,18 +153,8 @@ export class Renderer {
     setAttributes(this.currentProgram, material.attributes);
 
     // compute object TRS and camera projection
-    // this.camera.computeProjectionMatrix();
-    // console.log("viewProjectionMatrix: " + this.camera.viewProjectionMatrix.elements);
-    // console.log("worldMatrix: " + object.worldMatrix.elements);
-    let transformationMatrix = M4.multiply(this.camera.viewProjectionMatrix, object.worldMatrix);
+    const transformationMatrix = M4.multiply(this.camera.viewProjectionMatrix, object.worldMatrix);
     
-    // Todo : change this for each object
-    transformationMatrix = M4.translate(transformationMatrix, object.position);
-    transformationMatrix = M4.xRotate(transformationMatrix, object.rotation.x);
-    transformationMatrix = M4.yRotate(transformationMatrix, object.rotation.y);
-    transformationMatrix = M4.zRotate(transformationMatrix, object.rotation.z);
-    transformationMatrix = M4.scale(transformationMatrix, object.scale);
-
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
     // setUniform(this.glProgram, "uShininess", [100.0]);
     // setUniform(this.glProgram, "uLightDirection", [0.0, -1.0, 10.0]);
