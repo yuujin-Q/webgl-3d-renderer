@@ -85,6 +85,7 @@ export class Renderer {
     if (z !== undefined) {
       this._translate.z = z;
     }
+    this.setAttribObjectRecurrent(this.scene, true, false, false)
     this.renderScene();
   }
   static setRotation(
@@ -113,6 +114,7 @@ export class Renderer {
     if (z !== undefined) {
       this._scale.z = z;
     }
+    this.setAttribObjectRecurrent(this.scene, false, false, true)
     this.renderScene();
   }
 
