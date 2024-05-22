@@ -8,6 +8,7 @@ import { PhongMaterial } from "../types/objects/mesh/material/PhongMaterial";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
 import { Scene } from "../types/objects/Scene";
 import { Vec3 } from "../types/math/Vec3";
+import { AnimalModel } from "../types/objects/mesh/articulated/AnimalModel";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -250,12 +251,17 @@ cubeMaterial.attributes["a_color"] = new BufferAttribute(
 );
 
 const planemesh: Mesh = new Mesh(plane, materialplane);
+planemesh.position = new Vec3(0, 200, 0);
 const fmesh = new Mesh(fobject, fmaterial);
 const cube = new Mesh(cubeObject, cubeMaterial);
 cube.position = new Vec3(200, 0, 200);
+const animal = new AnimalModel();
+animal.position = new Vec3(-400, 0, 200);
 
 const fcubeScene = new Scene();
 fcubeScene.add(fmesh);
 fcubeScene.add(cube);
+fcubeScene.add(planemesh);
+fcubeScene.add(animal);
 
 export { fmesh, planemesh, cube, fcubeScene };
