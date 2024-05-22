@@ -12,6 +12,7 @@ export class ObjectNode {
   private _parent?: ObjectNode;
   private _children: ObjectNode[] = [];
   private _name = v4(); 
+  private _id = v4();
   visible = true;
 
   // Public getter, prevent re-instance new object
@@ -38,6 +39,9 @@ export class ObjectNode {
   }
   get name() {
     return this._name;
+  }
+  get id() {
+    return this._id;
   }
 
   set name(name: string) {

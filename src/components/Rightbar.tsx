@@ -409,12 +409,12 @@ const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void) 
 
   return <div className="pl-2">
     {
-      Renderer.getActiveObject() == object.name ?
+      Renderer.getActiveObject() == object.id ?
         <span className="my-2 px-2 py-1 bg-green-500 rounded-md hover:opacity-80 cursor-pointer">{object.name}</span>
       :
         <span className="my-2 px-2 py-1 bg-slate-500 rounded-md hover:opacity-80 cursor-pointer" onClick={() => {
-          Renderer.setActiveObject(object.name)
-          setActiveObject(object.name)
+          Renderer.setActiveObject(object.id)
+          setActiveObject(object.id)
         }}>{object.name}</span>
     }
     {
