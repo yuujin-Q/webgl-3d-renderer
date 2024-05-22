@@ -81,6 +81,8 @@ export class GLTFConverter {
 
     for (let i = 0; i < nodesData.length; i++) {
       const node = GLTFConverter.fromJSON(nodesData[i]);
+      // if camera, skip adding to nodes
+      if (node instanceof Camera) continue;
       nodes.push(node);
       if (nodesData[i].parent !== null) {
         nodes[i].parent = nodes[nodesData[i].parent];

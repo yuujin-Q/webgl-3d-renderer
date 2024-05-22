@@ -406,7 +406,10 @@ const Rightbar = () => {
 };
 
 const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void) => {
-
+  // if name is Camera, return null
+  if (object.name === "Camera") {
+    return null;
+  }
   return <div className="pl-2">
     {
       Renderer.getActiveObject() == object.id ?

@@ -11,6 +11,11 @@ export class Camera extends ObjectNode {
   private minZoom = 0.1; // zoom in 
   private _invWorldMatrix = M4.identity();
 
+  constructor() {
+    super();
+    this.name = "Camera";
+  }
+
   override computeWorldMatrix() {
     super.computeWorldMatrix();
     this._invWorldMatrix = M4.inv(this.worldMatrix);
