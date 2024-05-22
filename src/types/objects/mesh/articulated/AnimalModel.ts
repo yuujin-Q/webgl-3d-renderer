@@ -32,12 +32,13 @@ export class AnimalModel extends ObjectNode {
 
     constructor() {
         super();
-
+        this.name = 'Animal Model';
         // Create body
         const bodyGeometry = new CubeGeometry(200, 100, 100);
         const bodyMaterial = new PhongMaterial();
         bodyMaterial.attributes['a_color'] = new BufferAttribute(AnimalModel.defaultColor, 3, {dtype: AnimalModel.colorType, normalize: AnimalModel.normalizeColor, stride: AnimalModel.stride, offset: AnimalModel.offset});
         const body = new Mesh(bodyGeometry, bodyMaterial);
+        body.name = 'body';
         body.position = new Vec3(0, 0, 0);
         this.add(body);
 
@@ -46,6 +47,7 @@ export class AnimalModel extends ObjectNode {
         const headMaterial = new PhongMaterial();
         headMaterial.attributes['a_color'] = new BufferAttribute(AnimalModel.defaultColor, 3, {dtype: AnimalModel.colorType, normalize: AnimalModel.normalizeColor, stride: AnimalModel.stride, offset: AnimalModel.offset});
         const head = new Mesh(headGeometry, headMaterial);
+        head.name = 'head';
         head.position = new Vec3(55, 40, 0);
         head.rotation = new Vec3(0, 0, 25);
         body.add(head);
@@ -55,6 +57,7 @@ export class AnimalModel extends ObjectNode {
         const leftFrontLegMaterial = new PhongMaterial();
         leftFrontLegGeometry.setAttribute('color', new BufferAttribute(AnimalModel.defaultColor, 3, {dtype: AnimalModel.colorType, normalize: AnimalModel.normalizeColor, stride: AnimalModel.stride, offset: AnimalModel.offset}));
         const leftFrontLeg = new Mesh(leftFrontLegGeometry, leftFrontLegMaterial);
+        leftFrontLeg.name = 'leftFrontLeg';
         leftFrontLeg.position = new Vec3(30, -25, 30);
         body.add(leftFrontLeg);
 
@@ -63,6 +66,7 @@ export class AnimalModel extends ObjectNode {
         const rightFrontLegMaterial = new PhongMaterial();
         rightFrontLegGeometry.setAttribute('color', new BufferAttribute(AnimalModel.defaultColor, 3, {dtype: AnimalModel.colorType, normalize: AnimalModel.normalizeColor, stride: AnimalModel.stride, offset: AnimalModel.offset}));
         const rightFrontLeg = new Mesh(rightFrontLegGeometry, rightFrontLegMaterial);
+        rightFrontLeg.name = 'rightFrontLeg';
         rightFrontLeg.position = new Vec3(30, -25, -30);
         body.add(rightFrontLeg);
 
@@ -71,6 +75,7 @@ export class AnimalModel extends ObjectNode {
         const leftBackLegMaterial = new PhongMaterial();
         leftBackLegGeometry.setAttribute('color', new BufferAttribute(AnimalModel.defaultColor, 3, {dtype: AnimalModel.colorType, normalize: AnimalModel.normalizeColor, stride: AnimalModel.stride, offset: AnimalModel.offset}));
         const leftBackLeg = new Mesh(leftBackLegGeometry, leftBackLegMaterial);
+        leftBackLeg.name = 'leftBackLeg';
         leftBackLeg.position = new Vec3(-30, -25, 30);
         body.add(leftBackLeg);
 
@@ -79,6 +84,7 @@ export class AnimalModel extends ObjectNode {
         const rightBackLegMaterial = new PhongMaterial();
         rightBackLegGeometry.setAttribute('color', new BufferAttribute(AnimalModel.defaultColor, 3, {dtype: AnimalModel.colorType, normalize: AnimalModel.normalizeColor, stride: AnimalModel.stride, offset: AnimalModel.offset}));
         const rightBackLeg = new Mesh(rightBackLegGeometry, rightBackLegMaterial);
+        rightBackLeg.name = 'rightBackLeg';
         rightBackLeg.position = new Vec3(-30, -25, -30);
         body.add(rightBackLeg);
 
@@ -87,6 +93,7 @@ export class AnimalModel extends ObjectNode {
         const tailMaterial = new PhongMaterial();
         tailMaterial.attributes['a_color'] = new BufferAttribute(AnimalModel.defaultColor, 3, {dtype: AnimalModel.colorType, normalize: AnimalModel.normalizeColor, stride: AnimalModel.stride, offset: AnimalModel.offset});
         const tail = new Mesh(tailGeometry, tailMaterial);
+        tail.name = 'tail';
         tail.position = new Vec3(-60, 15, 0);
         tail.rotation = new Vec3(0, 0, 25);
         body.add(tail);

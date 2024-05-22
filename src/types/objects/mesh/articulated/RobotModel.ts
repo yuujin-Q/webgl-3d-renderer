@@ -38,12 +38,13 @@ export class RobotModel extends ObjectNode {
 
     constructor() {
         super();
-
+        this.name = 'Robot Model';
         // Create body
         const bodyGeometry = new CubeGeometry(100, 150, 50);
         const bodyMaterial = new PhongMaterial();
         bodyMaterial.attributes['a_color'] = new BufferAttribute(RobotModel.defaultColor, 3, {dtype: RobotModel.colorType, normalize: RobotModel.normalizeColor, stride: RobotModel.stride, offset: RobotModel.offset});
         const body = new Mesh(bodyGeometry, bodyMaterial);
+        body.name = 'body';
         body.position = new Vec3(0, 0, 0);
         this.add(body);
 
@@ -52,6 +53,7 @@ export class RobotModel extends ObjectNode {
         const headMaterial = new PhongMaterial();
         headMaterial.attributes['a_color'] = new BufferAttribute(RobotModel.defaultColor, 3, {dtype: RobotModel.colorType, normalize: RobotModel.normalizeColor, stride: RobotModel.stride, offset: RobotModel.offset});
         const head = new Mesh(headGeometry, headMaterial);
+        head.name = 'head';
         head.position = new Vec3(0, 50, 0);
         body.add(head);
 
@@ -60,6 +62,7 @@ export class RobotModel extends ObjectNode {
         const leftArmMaterial = new PhongMaterial();
         leftArmMaterial.attributes['a_color'] = new BufferAttribute(RobotModel.defaultColor, 3, {dtype: RobotModel.colorType, normalize: RobotModel.normalizeColor, stride: RobotModel.stride, offset: RobotModel.offset});
         const leftArm = new Mesh(leftArmGeometry, leftArmMaterial);
+        leftArm.name = 'leftArm';
         leftArm.position = new Vec3(-this.armPos.x, this.armPos.y, this.armPos.z);
         leftArm.rotation = new Vec3(this.armRotation.x, this.armRotation.y, -this.armRotation.z);
         body.add(leftArm);
@@ -69,6 +72,7 @@ export class RobotModel extends ObjectNode {
         const rightArmMaterial = new PhongMaterial();
         rightArmMaterial.attributes['a_color'] = new BufferAttribute(RobotModel.defaultColor, 3, {dtype: RobotModel.colorType, normalize: RobotModel.normalizeColor, stride: RobotModel.stride, offset: RobotModel.offset});
         const rightArm = new Mesh(rightArmGeometry, rightArmMaterial);
+        rightArm.name = 'rightArm';
         rightArm.position = this.armPos;
         rightArm.rotation = this.armRotation;
         body.add(rightArm);
@@ -78,6 +82,7 @@ export class RobotModel extends ObjectNode {
         const leftLegMaterial = new PhongMaterial();
         leftLegMaterial.attributes['a_color'] = new BufferAttribute(RobotModel.defaultColor, 3, {dtype: RobotModel.colorType, normalize: RobotModel.normalizeColor, stride: RobotModel.stride, offset: RobotModel.offset});
         const leftLeg = new Mesh(leftLegGeometry, leftLegMaterial);
+        leftLeg.name = 'leftLeg';
         leftLeg.position = new Vec3(-this.legPos.x, this.legPos.y, this.legPos.z);
         body.add(leftLeg);
 
@@ -86,6 +91,7 @@ export class RobotModel extends ObjectNode {
         const rightLegMaterial = new PhongMaterial();
         rightLegMaterial.attributes['a_color'] = new BufferAttribute(RobotModel.defaultColor, 3, {dtype: RobotModel.colorType, normalize: RobotModel.normalizeColor, stride: RobotModel.stride, offset: RobotModel.offset});
         const rightLeg = new Mesh(rightLegGeometry, rightLegMaterial);
+        rightLeg.name = 'rightLeg';
         rightLeg.position = this.legPos;
         body.add(rightLeg);
 

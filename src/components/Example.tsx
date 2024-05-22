@@ -252,9 +252,12 @@ cubeMaterial.attributes["a_color"] = new BufferAttribute(
 );
 
 const planemesh: Mesh = new Mesh(plane, materialplane);
+planemesh.name = "plane";
 planemesh.position = new Vec3(0, 200, 0);
 const fmesh = new Mesh(fobject, fmaterial);
+fmesh.name = "fmesh";
 const cube = new Mesh(cubeObject, cubeMaterial);
+cube.name = "cube";
 cube.position = new Vec3(200, 0, 200);
 const animal = new AnimalModel();
 animal.position = new Vec3(-400, 0, 200);
@@ -262,6 +265,7 @@ const robot = new RobotModel();
 robot.position = new Vec3(-200, 100, -200);
 
 const fcubeScene = new Scene();
+fcubeScene.name = "F Cube Scene";
 fcubeScene.add(fmesh);
 fcubeScene.add(cube);
 fcubeScene.add(planemesh);
