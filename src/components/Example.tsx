@@ -9,6 +9,7 @@ import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
 import { Scene } from "../types/objects/Scene";
 import { Vec3 } from "../types/math/Vec3";
 import { AnimalModel } from "../types/objects/mesh/articulated/AnimalModel";
+import { RobotModel } from "../types/objects/mesh/articulated/RobotModel";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -257,11 +258,15 @@ const cube = new Mesh(cubeObject, cubeMaterial);
 cube.position = new Vec3(200, 0, 200);
 const animal = new AnimalModel();
 animal.position = new Vec3(-400, 0, 200);
+const robot = new RobotModel();
+robot.position = new Vec3(-200, 100, -200);
 
 const fcubeScene = new Scene();
 fcubeScene.add(fmesh);
 fcubeScene.add(cube);
 fcubeScene.add(planemesh);
 fcubeScene.add(animal);
+fcubeScene.add(robot);
+
 
 export { fmesh, planemesh, cube, fcubeScene };
