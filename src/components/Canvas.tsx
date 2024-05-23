@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/renderer/Renderer";
 import { MouseInput } from "../lib/Mouse";
-import { fcubeScene, } from "./Example";
+import { fcubeScene, } from "../examples/Example";
 import { useAppAction } from "../stores";
 
 const Canvas = () => {

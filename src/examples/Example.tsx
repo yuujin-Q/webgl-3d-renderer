@@ -8,8 +8,8 @@ import { PhongMaterial } from "../types/objects/mesh/material/PhongMaterial";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
 import { Scene } from "../types/objects/Scene";
 import { Vec3 } from "../types/math/Vec3";
-import { AnimalModel } from "../types/objects/mesh/articulated/AnimalModel";
-import { RobotModel } from "../types/objects/mesh/articulated/RobotModel";
+import { AnimalModel } from "./articulated/AnimalModel";
+import { RobotModel } from "./articulated/RobotModel";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -271,6 +271,5 @@ fcubeScene.add(cube);
 fcubeScene.add(planemesh);
 fcubeScene.add(animal);
 fcubeScene.add(robot);
-
 
 export { fmesh, planemesh, cube, fcubeScene };
