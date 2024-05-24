@@ -1,7 +1,7 @@
-import { MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
+import { CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
 import Header from "./Header";
 import { Renderer } from "../lib/renderer/Renderer";
-import * as RadixSlider from '@radix-ui/react-slider';
+import { MouseInput } from "../lib/Mouse";
 
 
 const Leftbar = () => {
@@ -20,7 +20,7 @@ const Leftbar = () => {
           <select
             id="model"
             className="border text-sm font-semibold rounded-lg w-7/12 p-3 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-            
+
           >
             <option value="3D1">3D Satu</option>
             <option value="3D2">3D Dua</option>
@@ -29,78 +29,49 @@ const Leftbar = () => {
           </select>
         </div>
       </div>
-      <div className="flex flex-col pl-4 pr-6 py-4 border-b border-gray-500 text-white w-full">
-        <h1 className="text-md font-bold">Component Tree</h1>
-        <div id="component-tree"></div>
-      </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
-        <h1 className="text-md font-bold">Camera Angle</h1>
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-row">
+        <h1 className="text-md font-bold mb-2">Camera Angle</h1>
+        <div className="flex flex-col gap-6">
+          <div className="flex justify-evenly items-center">
+            <button
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              onClick={() => MouseInput.camera.move(-20, 0, 0.01)}
+            ><CaretLeft size={24} weight="bold" /></button>
             <label className="text-sm font-semibold w-2/12">Angle X</label>
-            <input
-              className="w-10/12"
-              type="range"
-              id="cameraX"
-              name="camera"
-              min="-3.3"
-              max="3.3"
-              step="0.05"
-            />
-            {/* <RadixSlider.Root
-                className="w-10/12 relative flex items-center h-5"
-                id="translateZ"
-                name="translate"
-                min={-4000}
-                max={4000}
-                value={[globalTranslate.z]}
-                step={1}
-                onValueChange={(val) => updateTranslation({ z: val[0] })}
-              >
-                <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
-                  <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
-                </RadixSlider.Track>
-                <RadixSlider.Thumb
-                  className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
-                  aria-label="Volume"
-                />
-              </RadixSlider.Root> */}
+            <button
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              onClick={() => MouseInput.camera.move(20, 0, 0.01)}
+            ><CaretRight size={24} weight="bold" /></button>
           </div>
-          <div className="flex flex-row">
+          <div className="flex justify-evenly items-center">
+            <button
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              onClick={() => MouseInput.camera.move(0, -20, 0.01)}
+            ><CaretLeft size={24} weight="bold" /></button>
             <label className="text-sm font-semibold w-2/12">Angle Y</label>
-            <input
-              className="w-10/12"
-              type="range"
-              id="cameraY"
-              name="camera"
-              min="-3.3"
-              max="3.3"
-              step="0.05"
-            />
+            <button
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              onClick={() => MouseInput.camera.move(0, 20, 0.01)}
+            ><CaretRight size={24} weight="bold" /></button>
           </div>
         </div>
       </div>
-      <div className="flex flex-row pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
-        <div className="flex flex-col gap-2 text-white w-1/2">
-          <h1 className="text-md font-bold">Change Cam Radius</h1>
-          <div>
-            <div className="flex flex-row gap-3">
-              <button
-                id="button-zoom-in"
-                className="w-1/3 flex flex-col items-center py-1 bg-orange-500 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-              >
-                <MagnifyingGlassPlus />
-              </button>
-              <button
-                id="button-zoom-out"
-                className="w-1/3 flex flex-col items-center py-1 bg-orange-500 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-              >
-                <MagnifyingGlassMinus />
-              </button>
-            </div>
+      <div className="pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
+        <h1 className="text-md font-bold mb-2">Camera Zoom</h1>
+        <div>
+          <div className="flex items-center justify-evenly">
+            <button
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              onClick={() => MouseInput.camera.zoom(5, 0.01)}
+            ><MagnifyingGlassMinus size={24} weight="bold" /></button>
+            <label className="text-sm font-semibold w-2/12">Angle Y</label>
+            <button
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              onClick={() => MouseInput.camera.zoom(-5, 0.01)}
+            ><MagnifyingGlassPlus size={24} weight="bold" /></button>
           </div>
         </div>
-        <div className="flex flex-col gap-2 text-white w-1/2">
+        {/* <div className="flex flex-col gap-2 text-white w-1/2">
           <div className="flex flex-row items-center">
             <label className="text-md font-semibold mr-5">Shading</label>
             <input id="shader" type="checkbox" />
@@ -111,7 +82,7 @@ const Leftbar = () => {
           >
             Reset
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Projection</h1>
