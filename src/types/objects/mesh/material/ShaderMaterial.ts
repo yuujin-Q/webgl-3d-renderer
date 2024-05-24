@@ -48,15 +48,14 @@ export class ShaderMaterial {
   static fromJSON(json: any): ShaderMaterial {
     const material = new ShaderMaterial(json.vertexShader, json.fragmentShader);
     material._id = json.id;
-    material.uniforms = json.uniforms;
+    // set uniforms
+    for (const name in json.uniforms) {
+      material.uniforms[name] = json.uniforms[name];
+    }
     // set attributes
     for (const name in json.attributes) {
-      material.attributes[name] = BufferAttribute.fromJSON(
-        json.attributes[name],
-        name === "a_color"
-      );
+      material.attributes[name] = BufferAttribute.fromJSON(json.attributes[name]);
     }
-    // material.attributes = json.attributes;
     return material;
   }
 
@@ -65,9 +64,12 @@ export class ShaderMaterial {
       id: material.id,
       vertexShader: material.vertexShader,
       fragmentShader: material.fragmentShader,
-      uniforms: material.uniforms,
+      uniforms: {},
       attributes: {},
     };
+    for (const name in material.uniforms) {
+      json.uniforms[name] = material.uniforms[name];
+    }
     for (const name in material.attributes) {
       json.attributes[name] = BufferAttribute.toJSON(material.attributes[name]);
     }
