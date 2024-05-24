@@ -24,7 +24,7 @@ export class BasicMaterial extends ShaderMaterial {
     return this.uniforms["u_ambient"];
   }
   set ambient(c: Color) {
-    this.uniforms["u_ambient"] = c;
+    this.uniforms["u_ambient"] = c.toArray(false);
   }
 
   useTexture(val: boolean) {

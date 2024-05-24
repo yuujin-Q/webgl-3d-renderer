@@ -5,7 +5,6 @@ const basicVertexShader = `
     attribute vec2 a_texcoord;
 
     uniform mat4 u_matrix;
-    uniform vec3 u_ambient;
 
     varying vec4 v_color;
     varying vec2 v_texcoord;
@@ -15,7 +14,7 @@ const basicVertexShader = `
       gl_Position = u_matrix * a_position;
 
       // Pass the color to the fragment shader.
-      v_color = a_color * vec4(u_ambient, 1.0);
+      v_color = a_color;
 
       // Pass the texcoord to the fragment shader.
       v_texcoord = a_texcoord;
@@ -31,11 +30,14 @@ const basicFragmentShader = `
     // The texture.
     uniform sampler2D u_texture;
     uniform bool u_useTexture;
+
+    uniform vec3 u_ambient;
+
     void main() {
       if (u_useTexture) {
-        gl_FragColor = texture2D(u_texture, v_texcoord);
+        gl_FragColor = texture2D(u_texture, v_texcoord) * vec4(u_ambient, 1.0);
       } else {
-        gl_FragColor = v_color;
+        gl_FragColor = v_color * vec4(u_ambient, 1.0);
       }
     }
     `;

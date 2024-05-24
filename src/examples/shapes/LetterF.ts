@@ -2,6 +2,7 @@ import { WebGLType } from "../../lib/webglutils/WebGLType";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 import { FreeformGeometry } from "../../types/objects/mesh/geometry/FreeformGeometry";
 import { BasicMaterial } from "../../types/objects/mesh/material/BasicMaterial";
+import { Color } from "../../types/objects/mesh/material/Color";
 import { Texture } from "../../types/objects/mesh/material/Texture";
 import { Mesh } from "../../types/objects/mesh/Mesh";
 
@@ -213,6 +214,7 @@ export class LetterF extends Mesh {
         {}
       )
     );
+    fmaterial.ambient = new Color(0.5, 0.5, 0.5);
 
     super(fobject, fmaterial);
     this.name = "F";

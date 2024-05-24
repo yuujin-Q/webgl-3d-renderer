@@ -21,19 +21,19 @@ export class Color {
   /**
    * Create new instance of color.
    */
-  constructor(r: number, g: number, b: number, a: number) {
+  constructor(r: number, g: number, b: number, a?: number) {
     this.r = r;
     this.g = g;
     this.b = b;
-    this.a = a;
+    this.a = a ? a : 1;
   }
 
   toString() {
     return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
   }
 
-  toArray() {
-    return [this.r, this.g, this.b, this.a];
+  toArray(includeAlpha: boolean) {
+    return includeAlpha ? [this.r, this.g, this.b, this.a] : [this.r, this.g, this.b];
   }
 
   /**
