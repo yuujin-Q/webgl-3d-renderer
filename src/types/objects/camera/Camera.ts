@@ -80,7 +80,7 @@ export class Camera extends ObjectNode {
     let camera = new Camera();
     camera._projectionMatrix = json.projectionMatrix;
     camera._invWorldMatrix = json.invWorldMatrix;
-    camera._zoom = json.zoom;
+    camera._zoom = json.zoom ?? 1;
     camera = Object.assign(camera, node);
     return camera;
   }
