@@ -1,7 +1,8 @@
 import { Texture } from "../../types/objects/mesh/material/Texture";
 import { UniformSetterWebGLType } from "./WebGLType";
 
-export type UniformDataType = Iterable<number> | Texture | Texture[];
+export type UniformTextureType = Texture | Texture[];
+export type UniformDataType = Iterable<number> | UniformTextureType;
 export type UniformSetters = (v: UniformDataType) => void;
 export type UniformMapSetters = { [key: string]: UniformSetters };
 // reference implementation: https://github.com/Fi1osof/webgl-utils.git
@@ -98,19 +99,18 @@ export function createUniformSetters(
           renderTexture(v);
         };
 
-        return (v: Texture[]) => {
-          // == Render Time
-          if (isArray) {
-            v.forEach(render);
-            gl.uniform1iv(
-              loc,
-              v.map((_, i) => unit + i)
-            );
-          } else {
-            render(v[0]);
-            gl.uniform1i(loc, unit);
-          }
-        };
+        // == Render Time
+        if (isArray && Array.isArray(values)) {
+          // texture array
+          values.forEach(render);
+          gl.uniform1iv(
+            loc,
+            values.map((_, i) => unit + i)
+          );
+        } else if (values instanceof Texture) {
+          render(values);
+          gl.uniform1i(loc, unit);
+        }
       } else {
         if (
           !(
