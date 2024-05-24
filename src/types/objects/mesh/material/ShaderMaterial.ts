@@ -38,7 +38,7 @@ export class ShaderMaterial {
     return this._attributes;
   }
 
-  set uniforms(uniforms: { [name: string]: any }) {
+  set uniforms(uniforms: { [name: string]: UniformDataType }) {
     this._uniforms = uniforms;
   }
   set attributes(attributes: { [name: string]: BufferAttribute }) {

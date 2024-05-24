@@ -1,8 +1,8 @@
 import { WebGLType } from "../../lib/webglutils/WebGLType";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
-import { BufferGeometry } from "../../types/objects/mesh/geometry/BufferGeometry";
+import { FreeformGeometry } from "../../types/objects/mesh/geometry/FreeformGeometry";
+import { BasicMaterial } from "../../types/objects/mesh/material/BasicMaterial";
 import { Texture } from "../../types/objects/mesh/material/Texture";
-import { TexturedBasicMaterial } from "../../types/objects/mesh/material/TexturedBasicMaterial";
 import { Mesh } from "../../types/objects/mesh/Mesh";
 
 export class LetterF extends Mesh {
@@ -11,9 +11,7 @@ export class LetterF extends Mesh {
     const normalizeColor = true;
     const stride = 0;
     const offset = 0;
-    const fobject = new BufferGeometry();
-    fobject.setAttribute(
-      "a_position",
+    const fobject = new FreeformGeometry(
       new BufferAttribute(
         new Float32Array([
           // left column front
@@ -80,8 +78,8 @@ export class LetterF extends Mesh {
       )
     );
 
-    const fmaterial = new TexturedBasicMaterial();
-    fmaterial.attributes["a_color"] = new BufferAttribute(
+    const fmaterial = new BasicMaterial();
+    fmaterial.vertexColor = new BufferAttribute(
       new Uint8Array([
         // 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
         // left column front
@@ -157,65 +155,64 @@ export class LetterF extends Mesh {
       }
     );
 
-    fmaterial.attributes["a_texcoord"] = new BufferAttribute(
-      new Float32Array([
-        // left column front
-        0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
-
-        // top rung front
-        0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
-
-        // middle rung front
-        0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
-
-        // left column back
-        0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
-
-        // top rung back
-        0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
-
-        // middle rung back
-        0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
-
-        // top
-        0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
-
-        // top rung right
-        0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
-
-        // under top rung
-        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-
-        // between top rung and middle
-        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-        // top of middle rung
-        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-        // right of middle rung
-        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-        // bottom of middle rung.
-        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-
-        // right of bottom
-        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-        // bottom
-        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-
-        // left side
-        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-      ]),
-      2,
-      {}
-    );
-
     const fTexture = new Texture();
-    fTexture.setData(
-      "/f-texture.png"
+    fTexture.setData("/f-texture.png");
+    fmaterial.setTexture(
+      fTexture,
+      new BufferAttribute(
+        new Float32Array([
+          // left column front
+          0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+
+          // top rung front
+          0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+
+          // middle rung front
+          0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+
+          // left column back
+          0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+
+          // top rung back
+          0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+
+          // middle rung back
+          0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+
+          // top
+          0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+
+          // top rung right
+          0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+
+          // under top rung
+          0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+
+          // between top rung and middle
+          0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+
+          // top of middle rung
+          0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+
+          // right of middle rung
+          0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+
+          // bottom of middle rung.
+          0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+
+          // right of bottom
+          0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+
+          // bottom
+          0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+
+          // left side
+          0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        ]),
+        2,
+        {}
+      )
     );
-    fmaterial.uniforms["u_texture"] = fTexture;
 
     super(fobject, fmaterial);
     this.name = "F";
