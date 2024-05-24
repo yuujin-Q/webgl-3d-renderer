@@ -3,13 +3,27 @@ import { Camera } from "../types/objects/camera/Camera";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { Mesh } from "../types/objects/mesh/Mesh";
 import { Renderer } from "./renderer/Renderer";
+import { ObliqueCamera } from "../types/objects/camera/ObliqueCamera";
+import { PerspectiveCamera } from "../types/objects/camera/PerspectiveCamera";
+import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
 
 export class GLTFConverter {
+
+  static cameraFromJSON(json: any): Camera {
+    if (json.skew) {
+      return ObliqueCamera.fromJSON(json);
+    } else if (json.fov) {
+      return PerspectiveCamera.fromJSON(json);
+    } else {
+      return OrthographicCamera.fromJSON(json);
+    }
+  }
+
   static toJSON(node: any): object {
     if (node instanceof Mesh) {
       return Mesh.toJSON(node);
     } else if (node instanceof Camera) {
-      return Camera.toJSON(node);
+      return node.toJSON();
     } else if (node instanceof ObjectNode) {
       return ObjectNode.toJSON(node);
     } else {
@@ -21,7 +35,7 @@ export class GLTFConverter {
     if (json.geometry) {
       return Mesh.fromJSON(json);
     } else if (json.projectionMatrix) {
-      const cam = Camera.fromJSON(json);
+      const cam = GLTFConverter.cameraFromJSON(json);
       Renderer.setCamera(cam);
       return cam;
     } else {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Camera } from "./Camera";
 import { M4 } from "../../math/M4";
 
@@ -23,5 +24,25 @@ export class PerspectiveCamera extends Camera {
       this.near,
       this.far
     );
+  }
+
+  override toJSON() {
+    return {
+      ...super.toJSON(),
+      fov: this.fov,
+      aspect: this.aspect,
+      near: this.near,
+      far: this.far,
+    };
+  }
+
+  static fromJSON(json: any): PerspectiveCamera {
+    const camera = new PerspectiveCamera(
+      json.fov,
+      json.aspect,
+      json.near,
+      json.far
+    );
+    return camera;
   }
 }

@@ -66,11 +66,12 @@ export class Camera extends ObjectNode {
     Renderer.renderScene();
   }
 
-  static toJSON(camera: Camera): object {
+  public toJSON(): object {
     return {
-      ...ObjectNode.toJSON(camera),
-      projectionMatrix: camera._projectionMatrix,
-      invWorldMatrix: camera._invWorldMatrix,
+      ...ObjectNode.toJSON(this),
+      projectionMatrix: this._projectionMatrix,
+      invWorldMatrix: this._invWorldMatrix,
+      zoom: this._zoom,
     };
   }
 
@@ -79,6 +80,7 @@ export class Camera extends ObjectNode {
     let camera = new Camera();
     camera._projectionMatrix = json.projectionMatrix;
     camera._invWorldMatrix = json.invWorldMatrix;
+    camera._zoom = json.zoom;
     camera = Object.assign(camera, node);
     return camera;
   }
