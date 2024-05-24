@@ -20,11 +20,11 @@ export function createUniformSetters(
     const loc = gl.getUniformLocation(program, info.name);
     const uniformType = info.type;
     const isArray = info.size > 1 && info.name.slice(-3) === "[0]";
-    let textureUnit = 0;
     return (values) => {
       // Render Time (saat memanggil setUniforms() pada render loop)
       if (uniformType === gl.SAMPLER_2D || uniformType === gl.SAMPLER_CUBE) {
         // Kasus tekstur
+        let textureUnit = 0;
         const unit = textureUnit; // Claim texture unit
         textureUnit += info.size; // info.size > 1 kalau sampler array
         const setupTexture = (v: Texture) => {
