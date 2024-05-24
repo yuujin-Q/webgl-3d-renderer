@@ -70,6 +70,14 @@ export class Vec3 {
     );
   }
 
+  static lerp(a: Vec3, b: Vec3, t: number): Vec3 {
+    return new Vec3(
+      a.x * (1 - t) + b.x * t,
+      a.y * (1 - t) + b.y * t,
+      a.z * (1 - t) + b.z * t
+    );
+  }
+
   static fromJSON(json: any): Vec3 {
     return new Vec3(json.x, json.y, json.z);
   }
