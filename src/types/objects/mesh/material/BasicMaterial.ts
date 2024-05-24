@@ -1,6 +1,6 @@
 import { UniformDataType } from "../../../../lib/webglutils/UniformSetter";
 import { BufferAttribute } from "../geometry/BufferAttribute";
-import { Color } from "./Color";
+import { Color } from "../../Color";
 import { basicFragmentShader, basicVertexShader } from "./DefaultShaders";
 import { ShaderMaterial } from "./ShaderMaterial";
 import { Texture } from "./Texture";

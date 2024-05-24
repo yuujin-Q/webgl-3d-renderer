@@ -108,6 +108,28 @@ export class M4 {
     }
   }
 
+  // get transformation vectors
+  // reference: https://github.com/marfgold1/IF3260_Tugas3_K02_G12/blob/main/src/lib/TRI/math/Matrix4.js
+  translation(v?: Vec3): Vec3 {
+    if (!v) {
+      v = new Vec3();
+    }
+    return v.set(this.elements[12], this.elements[13], this.elements[14]);
+  }
+  rotation(v?: Vec3): Vec3 {
+    if (!v) {
+      v = new Vec3();
+    }
+    const [m11, m12, m13, , , m22, m23, , , m32, m33, , , , ,] = this.elements;
+    const y = -Math.asin(Math.max(-1, Math.min(1, m13)));
+    if (Math.abs(m13) < 0.999999) {
+      return v.set(Math.atan2(m23, m33), y, Math.atan2(m12, m11));
+    } else {
+      return v.set(Math.atan2(-m32, m22), y, 0);
+    }
+  }
+
+  // get matrix transformation
   static translation(t: Vec3): M4 {
     return new M4([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, t.x, t.y, t.z, 1]);
   }
@@ -152,6 +174,7 @@ export class M4 {
     return new M4([s.x, 0, 0, 0, 0, s.y, 0, 0, 0, 0, s.z, 0, 0, 0, 0, 1]);
   }
 
+  // transform
   static translate(m: M4, t: Vec3): M4 {
     return M4.multiply(m, M4.translation(t));
   }
@@ -245,7 +268,7 @@ export class M4 {
     near: number,
     far: number
   ): M4 {
-    const f = Math.tan((fov / 2) * Math.PI / 180);
+    const f = Math.tan(((fov / 2) * Math.PI) / 180);
     const rangeInv = 1.0 / (far - near);
     return new M4([
       1 / (aspect * f),
@@ -253,16 +276,16 @@ export class M4 {
       0,
       0,
       0,
-      1/f,
+      1 / f,
       0,
       0,
       0,
       0,
-      -(far ) * rangeInv,
+      -far * rangeInv,
       -1,
       0,
       0,
-      -2 * far  * rangeInv,
+      -2 * far * rangeInv,
       0,
     ]);
   }
