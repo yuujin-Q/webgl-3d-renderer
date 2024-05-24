@@ -9,7 +9,7 @@ document.addEventListener("keydown", keyboardInput);
 function App() {
   return (
     <CanvasProvider>
-      <div className="h-screen flex">
+      <div className="h-screen flex overflow-hidden">
         <Leftbar />
         <Canvas />
         <Rightbar />

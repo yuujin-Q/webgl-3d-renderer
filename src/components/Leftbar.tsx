@@ -1,11 +1,13 @@
 import { MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
 import Header from "./Header";
 import { Renderer } from "../lib/renderer/Renderer";
+import * as RadixSlider from '@radix-ui/react-slider';
+
 
 const Leftbar = () => {
 
   return (
-    <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
+    <div className="border-r border-gray-600 bg-black w-3/12 overflow-auto">
       <Header />
       <div className="flex flex-col pl-4 pr-6 py-4 border-b border-gray-500 text-white w-full">
         <div className="flex items-center">
@@ -45,6 +47,24 @@ const Leftbar = () => {
               max="3.3"
               step="0.05"
             />
+            {/* <RadixSlider.Root
+                className="w-10/12 relative flex items-center h-5"
+                id="translateZ"
+                name="translate"
+                min={-4000}
+                max={4000}
+                value={[globalTranslate.z]}
+                step={1}
+                onValueChange={(val) => updateTranslation({ z: val[0] })}
+              >
+                <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                  <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+                </RadixSlider.Track>
+                <RadixSlider.Thumb
+                  className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                  aria-label="Volume"
+                />
+              </RadixSlider.Root> */}
           </div>
           <div className="flex flex-row">
             <label className="text-sm font-semibold w-2/12">Angle Y</label>

@@ -1,18 +1,10 @@
-import {
-  ArrowDown,
-  ArrowDownLeft,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  ArrowUpRight,
-  ArrowsIn,
-  ArrowsOut,
-} from "phosphor-react";
 import { Renderer } from "../lib/renderer/Renderer";
 import { ObjectNode } from "../types/objects/ObjectNode";
 import { useAppAction, useAppStore } from "../stores";
 import { Vec3 } from "../types/math/Vec3";
 import { radToDeg } from "../types/math/Degree";
+import * as RadixSlider from '@radix-ui/react-slider';
+
 
 const Rightbar = () => {
   const { scene, globalRotate, globalScale, globalTranslate } = useAppStore(state => state)
@@ -44,15 +36,15 @@ const Rightbar = () => {
     y?: number;
     z?: number;
   }) => {
-    const newX = x ? Renderer.translation().x + x : Renderer.translation().x;
-    const newY = y ? Renderer.translation().y + y : Renderer.translation().y;
-    const newZ = z ? Renderer.translation().z + z : Renderer.translation().z;
+    const newX = x ? x : Renderer.translation().x;
+    const newY = y ? y : Renderer.translation().y;
+    const newZ = z ? z : Renderer.translation().z;
     Renderer.setTranslation({ x: newX, y: newY, z: newZ });
     setGlobalTranslate(new Vec3(newX, newY, newZ))
   };
   return (
-    <div className="border-r border-gray-600 bg-gray-700 w-3/12 overflow-auto">
-      <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
+    <div className="border-r border-gray-600 bg-black w-3/12 overflow-auto">
+      <div className="h-[400px] flex flex-col pl-4 pr-6 py-2 overflow-auto text-white no-scrollbar">
         <h1 className="text-md font-bold">Active Component :</h1>
         {
           RenderTree(scene, setActiveObject, setTransformation)
@@ -63,45 +55,66 @@ const Rightbar = () => {
         <div className="flex flex-col gap-2">
           <div className="flex flex-row">
             <label className="text-sm font-semibold w-2/12">X - axis</label>
-            <input
-              className="w-10/12"
-              type="range"
+            <RadixSlider.Root
+              className="w-10/12 relative flex items-center h-5"
               id="rotateX"
               name="scale"
-              min="-180"
-              max="180"
-              value={globalRotate.x}
-              step="0.05"
-              onChange={(e) => updateXRotate(Number(e.target.value))}
-            />
+              min={-180}
+              max={180}
+              value={[globalRotate.x]}
+              step={0.05}
+              onValueChange={(val) => updateXRotate(val[0])}
+            >
+              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+              </RadixSlider.Track>
+              <RadixSlider.Thumb
+                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                aria-label="Volume"
+              />
+            </RadixSlider.Root>
           </div>
           <div className="flex flex-row">
             <label className="text-sm font-semibold w-2/12">Y - axis</label>
-            <input
-              className="w-10/12"
-              type="range"
+            <RadixSlider.Root
+              className="w-10/12 relative flex items-center h-5"
               id="rotateY"
               name="scale"
-              min="-180"
-              max="180"
-              value={globalRotate.y}
-              step="0.05"
-              onChange={(e) => updateYRotate(Number(e.target.value))}
-            />
+              min={-180}
+              max={180}
+              value={[globalRotate.y]}
+              step={0.05}
+              onValueChange={(val) => updateYRotate(val[0])}
+            >
+              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+              </RadixSlider.Track>
+              <RadixSlider.Thumb
+                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                aria-label="Volume"
+              />
+            </RadixSlider.Root>
           </div>
           <div className="flex flex-row">
             <label className="text-sm font-semibold w-2/12">Z - axis</label>
-            <input
-              className="w-10/12"
-              type="range"
+            <RadixSlider.Root
+              className="w-10/12 relative flex items-center h-5"
               id="rotateZ"
               name="scale"
-              min="-180"
-              max="180"
-              value={globalRotate.z}
-              step="0.05"
-              onChange={(e) => updateZRotate(Number(e.target.value))}
-            />
+              min={-180}
+              max={180}
+              value={[globalRotate.z]}
+              step={0.05}
+              onValueChange={(val) => updateZRotate(val[0])}
+            >
+              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+              </RadixSlider.Track>
+              <RadixSlider.Thumb
+                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                aria-label="Volume"
+              />
+            </RadixSlider.Root>
           </div>
         </div>
       </div>
@@ -110,151 +123,148 @@ const Rightbar = () => {
         <div className="flex flex-col gap-2">
           <div className="flex flex-row">
             <label className="text-sm font-semibold w-2/12">X - axis</label>
-            <input
-              className="w-10/12"
-              type="range"
+            <RadixSlider.Root
+              className="w-10/12 relative flex items-center h-5"
               id="scaleX"
               name="scale"
-              min="0.1"
-              max="5"
-              value={globalScale.x}
-              step="0.05"
-              onChange={(e) => {
-                Renderer.setScale({ x: Number(e.target.value) })
-                setGlobalScale(new Vec3(Number(e.target.value), globalScale.y, globalScale.z))
+              min={0.1}
+              max={5}
+              value={[globalScale.x]}
+              step={0.05}
+              onValueChange={(val) => {
+                Renderer.setScale({ x: val[0] })
+                setGlobalScale(new Vec3(val[0], globalScale.y, globalScale.z))
               }}
-            />
+            >
+              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+              </RadixSlider.Track>
+              <RadixSlider.Thumb
+                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                aria-label="Volume"
+              />
+            </RadixSlider.Root>
           </div>
           <div className="flex flex-row">
             <label className="text-sm font-semibold w-2/12">Y - axis</label>
-            <input
-              className="w-10/12"
-              type="range"
+            <RadixSlider.Root
+              className="w-10/12 relative flex items-center h-5"
               id="scaleY"
               name="scale"
-              min="0.1"
-              max="5"
-              value={globalScale.y}
-              step="0.05"
-              onChange={(e) => {
-                Renderer.setScale({ y: Number(e.target.value) })
-                setGlobalScale(new Vec3(globalScale.x, Number(e.target.value), globalScale.z))
+              min={0.1}
+              max={5}
+              value={[globalScale.y]}
+              step={0.05}
+              onValueChange={(val) => {
+                Renderer.setScale({ y: val[0] })
+                setGlobalScale(new Vec3(globalScale.x, val[0], globalScale.z))
               }}
-            />
+            >
+              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+              </RadixSlider.Track>
+              <RadixSlider.Thumb
+                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                aria-label="Volume"
+              />
+            </RadixSlider.Root>
           </div>
           <div className="flex flex-row">
             <label className="text-sm font-semibold w-2/12">Z - axis</label>
-            <input
-              className="w-10/12"
-              type="range"
+            <RadixSlider.Root
+              className="w-10/12 relative flex items-center h-5"
               id="scaleZ"
               name="scale"
-              min="0.1"
-              max="5"
-              value={globalScale.z}
-              step="0.05"
-              onChange={(e) => {
-                Renderer.setScale({ z: Number(e.target.value) })
-                setGlobalScale(new Vec3(globalScale.x, globalScale.y, Number(e.target.value)))
+              min={0.1}
+              max={5}
+              value={[globalScale.z]}
+              step={0.05}
+              onValueChange={(val) => {
+                Renderer.setScale({ z: val[0] })
+                setGlobalScale(new Vec3(globalScale.x, globalScale.y, val[0]))
               }}
-            />
+            >
+              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+              </RadixSlider.Track>
+              <RadixSlider.Thumb
+                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                aria-label="Volume"
+              />
+            </RadixSlider.Root>
           </div>
         </div>
       </div>
-      <div className="flex flex-row pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
-        <div className="flex flex-col gap-2 text-white w-1/2">
-          <h1 className="text-md font-bold">Translate</h1>
-          <div className="flex flex-col gap-3">
-            <div>
-              <div className="flex flex-row gap-3">
-                <button
-                  id="button-translate-left"
-                  className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-                  onClick={() => updateTranslation({ x: -1 })}
-                >
-                  <ArrowLeft />
-                </button>
-                <button
-                  id="button-translate-right"
-                  className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-                  onClick={() => updateTranslation({ x: 1 })}
-                >
-                  <ArrowRight />
-                </button>
-              </div>
-            </div>
-            <div>
-              <div className="flex flex-row gap-3">
-                <button
-                  id="button-translate-up"
-                  className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-                  onClick={() => updateTranslation({ y: 1 })}
-                >
-                  <ArrowUp />
-                </button>
-                <button
-                  id="button-translate-down"
-                  className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-                  onClick={() => updateTranslation({ y: -1 })}
-                >
-                  <ArrowDown />
-                </button>
-              </div>
-            </div>
-            <div>
-              <div className="flex flex-row gap-3">
-                <button
-                  id="button-translate-out"
-                  className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-                  onClick={() => updateTranslation({ z: -1 })}
-                >
-                  <ArrowDownLeft />
-                </button>
-                <button
-                  id="button-translate-in"
-                  className="w-1/3 flex flex-col items-center py-1 bg-sky-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
-                  onClick={() => updateTranslation({ z: 1 })}
-                >
-                  <ArrowUpRight />
-                </button>
-              </div>
+      <div className="pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
+        <h1 className="text-md font-bold">Translate</h1>
+        <div className="flex flex-col gap-3">
+          <div>
+            <div className="flex flex-row gap-3">
+              <label className="text-sm font-semibold w-2/12">X - axis</label>
+              <RadixSlider.Root
+                className="w-10/12 relative flex items-center h-5"
+                id="translateX"
+                name="translate"
+                min={-2000}
+                max={2000}
+                value={[globalTranslate.x]}
+                step={1}
+                onValueChange={(val) => updateTranslation({ x: val[0] })}
+              >
+                <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                  <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+                </RadixSlider.Track>
+                <RadixSlider.Thumb
+                  className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                  aria-label="Volume"
+                />
+              </RadixSlider.Root>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-2 text-white w-1/2">
-          <h1 className="text-md font-bold">Resize</h1>
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-row items-center">
-              <label className="text-sm font-semibold mr-3">Scale</label>
-              <input
-                type="number"
-                value={Renderer.scaler().x}
-                id="scale"
-                name="scale"
-                min="0.1"
-                step="0.1"
-                className="w-1/2 text-sm text-white font-semibold rounded-lg px-5 py-1.5 bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 opacity-80"
-              />
-            </div>
-            <button
-              id="button-scale"
-              className="w-9/12 flex flex-col items-center py-1.5 bg-green-700 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            >
-              Resize
-            </button>
+          <div>
             <div className="flex flex-row gap-3">
-              <button
-                id="button-shrink"
-                className="w-1/3 flex flex-col items-center py-1 bg-green-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+              <label className="text-sm font-semibold w-2/12">Y - axis</label>
+              <RadixSlider.Root
+                className="w-10/12 relative flex items-center h-5"
+                id="translateY"
+                name="translate"
+                min={-2000}
+                max={2000}
+                value={[globalTranslate.y]}
+                step={1}
+                onValueChange={(val) => updateTranslation({ y: val[0] })}
               >
-                <ArrowsIn />
-              </button>
-              <button
-                id="button-enlarge"
-                className="w-1/3 flex flex-col items-center py-1 bg-green-600 border border-slate-900/10 text-xs font-bold rounded-lg active:bg-violet-500"
+                <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                  <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+                </RadixSlider.Track>
+                <RadixSlider.Thumb
+                  className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                  aria-label="Volume"
+                />
+              </RadixSlider.Root>
+            </div>
+          </div>
+          <div>
+            <div className="flex flex-row gap-3">
+              <label className="text-sm font-semibold w-2/12">Z - axis</label>
+              <RadixSlider.Root
+                className="w-10/12 relative flex items-center h-5"
+                id="translateZ"
+                name="translate"
+                min={-4000}
+                max={4000}
+                value={[globalTranslate.z]}
+                step={1}
+                onValueChange={(val) => updateTranslation({ z: val[0] })}
               >
-                <ArrowsOut />
-              </button>
+                <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                  <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+                </RadixSlider.Track>
+                <RadixSlider.Thumb
+                  className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                  aria-label="Volume"
+                />
+              </RadixSlider.Root>
             </div>
           </div>
         </div>
@@ -430,12 +440,12 @@ const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void, 
   if (object.name === "Camera") {
     return null;
   }
-  return <div className="pl-2">
+  return <div className="pl-4">
     {
       Renderer.getActiveObject() == object.id ?
-        <span className="my-2 px-2 py-1 bg-green-500 rounded-md hover:opacity-80 cursor-pointer">{object.name}</span>
-      :
-        <span className="my-2 px-2 py-1 bg-slate-500 rounded-md hover:opacity-80 cursor-pointer" onClick={() => {
+        <span className="block max-w-max my-3 px-2 py-1 text-green-400 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 bg-green-400 text-black cursor-pointer">{object.name}</span>
+        :
+        <span className="block max-w-max my-3 px-2 py-1 text-green-400 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 hover:bg-green-400 hover:text-black cursor-pointer" onClick={() => {
           Renderer.setActiveObject(object.id)
           setActiveObject(object.id)
           setTransformation(Renderer.translation(), Renderer.rotation(), Renderer.scaler())

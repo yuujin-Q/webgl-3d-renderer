@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full px-10 py-2 border-b border-slate-900/10 bg-gradient-to-r from-green-800 to-purple-800 text-white">
+    <header className="w-full px-10 py-2 border-b border-slate-900/10 bg-black text-white">
       <div className="grid grid-cols-3">
         <div className="items-center justify-center col-span-3">
           <h1 className="text-2xl font-bold text-center py-2">
