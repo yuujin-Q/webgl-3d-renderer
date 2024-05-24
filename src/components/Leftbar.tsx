@@ -1,8 +1,6 @@
 import { MagnifyingGlassMinus, MagnifyingGlassPlus } from "phosphor-react";
 import Header from "./Header";
 import { Renderer } from "../lib/renderer/Renderer";
-import * as RadixSlider from '@radix-ui/react-slider';
-
 
 const Leftbar = () => {
 
