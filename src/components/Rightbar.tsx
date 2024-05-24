@@ -298,75 +298,77 @@ const Rightbar = () => {
           <div className="flex flex-row gap-2">
             <button
               id="button-animation-play"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
             >
               Play
             </button>
             <button
               id="button-animation-pause"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
             >
               Pause
             </button>
             <button
               id="button-animation-stop"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
             >
               Stop
             </button>
           </div>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-3">
             <button
               id="button-animation-prev"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
             >
               Prev
             </button>
             <button
               id="button-animation-next"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
             >
               Next
             </button>
-            <label
-              id="set-animation-label"
-              htmlFor="set-animation"
-              className="flex w-1/3 flex-col items-center gap-2 px-4 py-2.5 mr-2 bg-slate-900/30 border border-slate-900/10 text-xs font-bold bg-blue-500 rounded-lg active:bg-violet-700 cursor-pointer"
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-animation-first"
+              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
             >
-              <p>Set Animation</p>
-            </label>
+              First
+            </button>
+            <button
+              id="button-animation-last"
+              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+            >
+              Last
+            </button>
+          </div>
+          <div className="flex flex-row justify-center text-center items-center">
+            <label className="text-md font-semibold mr-3">Reverse</label>
+            <input id="toggle-reverse" type="checkbox"/>
+            <label className="text-md font-semibold ml-5 mr-3">Auto Replay</label>
+            <input id="toggle-auto-replay" type="checkbox"/>
+            <label className="text-md font-semibold ml-5 mr-3">FPS</label>
             <input
-              className="hidden"
-              type="file"
-              accept=".json"
-              id="set-animation"
-              name="filename"
+              type="number"
+              id="fps"
+              name="fps"
+              min="1"
+              step="1"
+              className="w-full text-sm text-white font-semibold rounded-lg px-5 py-1.5 bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 opacity-80"
             />
           </div>
-          <div className="flex flex-row gap-2">
-            <div className="w-1/3 flex flex-row items-center">
-              <input
-                type="number"
-                // value="1000"
-                id="duration"
-                name="duration"
-                min="1"
-                step="10"
-                className="w-2/3 text-sm text-white font-semibold rounded-lg px-5 py-1.5 bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 opacity-80"
-              />
-            </div>
-            <button
-              id="set-duration"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-700 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            >
-              Set Duration
-            </button>
-            <button
-              id="reverse-animation"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-700 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            >
-              Reverse
-            </button>
+          <div className="flex flex-row gap-3">
+            <label className="text-sm font-semibold w-fit">Frame</label>
+            <input
+              className="w-full justify-end"
+              type="range"
+              id="frame"
+              name="frame"
+              min="0"
+              max="100"
+              step="1"
+            />
           </div>
         </div>
       </div>
