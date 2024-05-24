@@ -9,6 +9,7 @@ import { RobotModel } from "./articulated/RobotModel";
 import { LetterF } from "./shapes/LetterF";
 import { Cube } from "./shapes/Cube";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
+import { Animation } from "../lib/animation/Animation";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -52,5 +53,8 @@ fcubeScene.add(cube);
 fcubeScene.add(planemesh);
 fcubeScene.add(animal);
 fcubeScene.add(robot);
+
+const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
+animalAnimation.play();
 
 export { fmesh, planemesh, cube, fcubeScene };
