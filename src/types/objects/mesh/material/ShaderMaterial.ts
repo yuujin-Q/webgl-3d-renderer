@@ -1,3 +1,4 @@
+import { UniformDataType } from "../../../../lib/webglutils/UniformSetter";
 import { BufferAttribute } from "../geometry/BufferAttribute";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -6,7 +7,7 @@ export class ShaderMaterial {
   protected _id: string = "M" + ShaderMaterial.#idcounter++;
   private readonly _vertexShader: string;
   private readonly _fragmentShader: string;
-  private _uniforms: { [name: string]: any };
+  private _uniforms: { [name: string]: UniformDataType };
   private _attributes: { [name: string]: BufferAttribute };
 
   constructor(vertexShader: string, fragmentShader: string) {
@@ -37,7 +38,7 @@ export class ShaderMaterial {
     return this._attributes;
   }
 
-  set uniforms(uniforms: { [name: string]: any }) {
+  set uniforms(uniforms: { [name: string]: UniformDataType }) {
     this._uniforms = uniforms;
   }
   set attributes(attributes: { [name: string]: BufferAttribute }) {

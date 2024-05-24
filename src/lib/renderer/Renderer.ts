@@ -13,6 +13,7 @@ import {
   ProgramInfo,
   setAttributes,
   setUniform,
+  setUniforms,
 } from "../webglutils/ProgramInfo";
 import { fetchShaderProgram } from "./ShaderManager";
 
@@ -167,8 +168,13 @@ export class Renderer {
 
     this.setProgramInfo(fetchShaderProgram(this.gl, material));
 
+    // if (object.name === "F") {
+    //   console.log("material attr", material.attributes);
+    //   console.log("material unif", material.uniforms);
+    // }
     setAttributes(this.currentProgram, geometry.attributes);
     setAttributes(this.currentProgram, material.attributes);
+    setUniforms(this.currentProgram, material.uniforms);
 
     // compute object TRS and camera projection
     const transformationMatrix = M4.multiply(
@@ -185,7 +191,7 @@ export class Renderer {
 
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
 
-    setUniform(this.currentProgram, "u_ambient", [1, 1, 1]);
+    // setUniform(this.currentProgram, "u_ambient", [1, 1, 1]);
     // setUniform(this.glProgram, "uShininess", [100.0]);
     // setUniform(this.glProgram, "uLightDirection", [0.0, -1.0, 10.0]);
     // setUniform(this.glProgram, "uLightAmbient", [0.4, 0.4, 0.4, 1.0]);

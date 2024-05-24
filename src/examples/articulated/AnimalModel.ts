@@ -69,7 +69,7 @@ export class AnimalModel extends ObjectNode {
     );
     const head = new Mesh(headGeometry, headMaterial);
     head.name = "head";
-    head.position = new Vec3(55, 40, 0);
+    head.position = new Vec3(100, 60, 0);
     head.rotation = new Vec3(0, 0, 25);
     body.add(head);
 
@@ -87,7 +87,7 @@ export class AnimalModel extends ObjectNode {
     );
     const leftFrontLeg = new Mesh(leftFrontLegGeometry, leftFrontLegMaterial);
     leftFrontLeg.name = "leftFrontLeg";
-    leftFrontLeg.position = new Vec3(30, -25, 30);
+    leftFrontLeg.position = new Vec3(50, -50, 50);
     body.add(leftFrontLeg);
 
     // Create right front leg
@@ -107,7 +107,7 @@ export class AnimalModel extends ObjectNode {
       rightFrontLegMaterial
     );
     rightFrontLeg.name = "rightFrontLeg";
-    rightFrontLeg.position = new Vec3(30, -25, -30);
+    rightFrontLeg.position = new Vec3(50, -50, -50);
     body.add(rightFrontLeg);
 
     // Create left back leg
@@ -124,7 +124,7 @@ export class AnimalModel extends ObjectNode {
     );
     const leftBackLeg = new Mesh(leftBackLegGeometry, leftBackLegMaterial);
     leftBackLeg.name = "leftBackLeg";
-    leftBackLeg.position = new Vec3(-30, -25, 30);
+    leftBackLeg.position = new Vec3(-50, -50, 50);
     body.add(leftBackLeg);
 
     // Create right back leg
@@ -141,7 +141,7 @@ export class AnimalModel extends ObjectNode {
     );
     const rightBackLeg = new Mesh(rightBackLegGeometry, rightBackLegMaterial);
     rightBackLeg.name = "rightBackLeg";
-    rightBackLeg.position = new Vec3(-30, -25, -30);
+    rightBackLeg.position = new Vec3(-50, -50, -50);
     body.add(rightBackLeg);
 
     // Create tail
@@ -159,7 +159,7 @@ export class AnimalModel extends ObjectNode {
     );
     const tail = new Mesh(tailGeometry, tailMaterial);
     tail.name = "tail";
-    tail.position = new Vec3(-60, 15, 0);
+    tail.position = new Vec3(-125, 25, 0);
     tail.rotation = new Vec3(0, 0, 25);
     body.add(tail);
 

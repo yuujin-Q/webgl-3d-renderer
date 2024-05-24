@@ -1,3 +1,7 @@
+import {
+  basicFragmentShader,
+  basicVertexShader,
+} from "../../types/objects/mesh/material/DefaultShaders";
 import { ShaderMaterial } from "../../types/objects/mesh/material/ShaderMaterial";
 import { createAttributeSetters } from "../webglutils/AttributeSetter";
 import { ProgramInfo } from "../webglutils/ProgramInfo";
@@ -47,24 +51,32 @@ export function fetchShaderProgram(
   // cache shader program if not available
   if (!_shaderCache.has(progId)) {
     // create program
-    const vertexShader = createShader(
+    let vertexShader = createShader(
       gl,
       gl.VERTEX_SHADER,
       material.vertexShader
     );
     if (vertexShader === undefined) {
-      console.error("Failed to create vertex shader");
-      return _shaderCache.entries().next().value;
+      console.error(
+        "Failed to create vertex shader, fallback to default shaders"
+      );
+      vertexShader = createShader(gl, gl.VERTEX_SHADER, basicVertexShader)!;
     }
 
-    const fragmentShader = createShader(
+    let fragmentShader = createShader(
       gl,
       gl.FRAGMENT_SHADER,
       material.fragmentShader
     );
     if (fragmentShader === undefined) {
-      console.error("Failed to create fragment shader");
-      return _shaderCache.entries().next().value;
+      console.error(
+        "Failed to create fragment shader, fallback to default shaders"
+      );
+      fragmentShader = createShader(
+        gl,
+        gl.FRAGMENT_SHADER,
+        basicFragmentShader
+      )!;
     }
 
     const program = createProgram(gl, vertexShader, fragmentShader);
