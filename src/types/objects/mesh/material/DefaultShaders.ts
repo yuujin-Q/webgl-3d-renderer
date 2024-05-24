@@ -4,6 +4,7 @@ const basicVertexShader = `
     attribute vec4 a_color;
 
     uniform mat4 u_matrix;
+    uniform vec3 u_ambient;
 
     varying vec4 v_color;
 
@@ -12,7 +13,7 @@ const basicVertexShader = `
       gl_Position = u_matrix * a_position;
 
       // Pass the color to the fragment shader.
-      v_color = a_color;
+      v_color = a_color * vec4(u_ambient, 1.0);
     }
     `;
 const basicFragmentShader = `
@@ -49,15 +50,16 @@ const phongVertexShader = `
       gl_Position = vertex;
     }
     `;
+
+// todo: diffuse, specular, etc as varying parameters
 const phongFragmentShader = `
     precision mediump float;
 
     varying vec4 v_color;
     varying vec4 v_normal;
+    uniform vec3 u_ambient;
     
     void main() {
-      vec3 ambient = vec3(0.4, 0.4, 0.4);
-
       vec3 normal = normalize(v_normal.xyz);
       vec3 lightColor = vec3(1.0, 1.0, 1.0);
       vec3 lightSource = vec3(1.0, 0.0, 0.0);
@@ -72,9 +74,9 @@ const phongFragmentShader = `
       vec3 specular = specularStrength*lightColor;
 
       vec3 lighting = vec3(0.0, 0.0, 0.0);
-      lighting = ambient;
-      lighting = ambient*0.0+diffuse;
-      lighting = ambient*0.0+diffuse*0.5+specular*0.5;
+      lighting = u_ambient;
+      lighting = u_ambient*0.0+diffuse;
+      lighting = u_ambient*0.0+diffuse*0.5+specular*0.5;
 
       vec4 colorr = vec4(0.75, 0.75, 0.75, 0.75);
       vec3 color = v_color.xyz * lighting;

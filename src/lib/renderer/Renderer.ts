@@ -34,16 +34,32 @@ export class Renderer {
   private static zoom = 1.5;
   private static size = 500;
   private static cameras: Camera[] = [
-    new OrthographicCamera( -this.size * this.zoom, this.size * this.zoom, -this.size * this.zoom, this.size * this.zoom, -2000, 2000 ),
+    new OrthographicCamera(
+      -this.size * this.zoom,
+      this.size * this.zoom,
+      -this.size * this.zoom,
+      this.size * this.zoom,
+      -2000,
+      2000
+    ),
     new PerspectiveCamera(90, 1, -2000, 2000),
-    new ObliqueCamera(-this.size * this.zoom, this.size * this.zoom, -this.size * this.zoom, this.size * this.zoom, -2000, 2000, new Vec3(1, -2, 1))]
+    new ObliqueCamera(
+      -this.size * this.zoom,
+      this.size * this.zoom,
+      -this.size * this.zoom,
+      this.size * this.zoom,
+      -2000,
+      2000,
+      new Vec3(1, -2, 1)
+    ),
+  ];
   private static camera: Camera = this.cameras[0];
 
   // transformation
   private static _translate: Vec3 = new Vec3(0, 0, 0);
   private static _rotate: Vec3 = new Vec3(0, 0, 0);
   private static _scale: Vec3 = new Vec3(1, 1, 1);
-  private static activeObject: string ;
+  private static activeObject: string;
   static translation() {
     return this._translate;
   }
@@ -85,7 +101,7 @@ export class Renderer {
     if (z !== undefined) {
       this._translate.z = z;
     }
-    this.setAttribObjectRecurrent(this.scene, true, false, false)
+    this.setAttribObjectRecurrent(this.scene, true, false, false);
     this.renderScene();
   }
   static setRotation(
@@ -101,7 +117,7 @@ export class Renderer {
     if (z !== undefined) {
       this._rotate.z = isDegree ? degToRad(z) : z;
     }
-    this.setAttribObjectRecurrent(this.scene, false, true, false)
+    this.setAttribObjectRecurrent(this.scene, false, true, false);
     this.renderScene();
   }
   static setScale({ x, y, z }: { x?: number; y?: number; z?: number }) {
@@ -114,7 +130,7 @@ export class Renderer {
     if (z !== undefined) {
       this._scale.z = z;
     }
-    this.setAttribObjectRecurrent(this.scene, false, false, true)
+    this.setAttribObjectRecurrent(this.scene, false, false, true);
     this.renderScene();
   }
 
@@ -155,16 +171,21 @@ export class Renderer {
     setAttributes(this.currentProgram, material.attributes);
 
     // compute object TRS and camera projection
-    let transformationMatrix = M4.multiply(this.camera.viewProjectionMatrix, object.worldMatrix);
-    
+    const transformationMatrix = M4.multiply(
+      this.camera.viewProjectionMatrix,
+      object.worldMatrix
+    );
+
     // Todo : test save and load object for transformation
-    transformationMatrix = M4.translate(transformationMatrix, object.position);
-    transformationMatrix = M4.xRotate(transformationMatrix, object.rotation.x);
-    transformationMatrix = M4.yRotate(transformationMatrix, object.rotation.y);
-    transformationMatrix = M4.zRotate(transformationMatrix, object.rotation.z);
-    transformationMatrix = M4.scale(transformationMatrix, object.scale);
+    // transformationMatrix = M4.translate(transformationMatrix, object.position);
+    // transformationMatrix = M4.xRotate(transformationMatrix, object.rotation.x);
+    // transformationMatrix = M4.yRotate(transformationMatrix, object.rotation.y);
+    // transformationMatrix = M4.zRotate(transformationMatrix, object.rotation.z);
+    // transformationMatrix = M4.scale(transformationMatrix, object.scale);
 
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
+
+    setUniform(this.currentProgram, "u_ambient", [1, 1, 1]);
     // setUniform(this.glProgram, "uShininess", [100.0]);
     // setUniform(this.glProgram, "uLightDirection", [0.0, -1.0, 10.0]);
     // setUniform(this.glProgram, "uLightAmbient", [0.4, 0.4, 0.4, 1.0]);
@@ -179,7 +200,6 @@ export class Renderer {
       0,
       geometry.getAttribute("a_position").length / 3
     );
-    
   }
 
   static renderScene() {
@@ -192,45 +212,59 @@ export class Renderer {
     gl.enable(gl.DEPTH_TEST);
     this.processNodes(this.scene);
   }
-  static getActiveObject(){
-    return this.activeObject
+  static getActiveObject() {
+    return this.activeObject;
   }
 
-  static setActiveObject(id: string){
+  static setActiveObject(id: string) {
     this.activeObject = id;
-    this.getAttribObjectRecurrent(this.scene, true, true, true)
+    this.getAttribObjectRecurrent(this.scene, true, true, true);
   }
 
-  static setAttribObjectRecurrent(object: ObjectNode, translate: boolean = false, rotation: boolean = false, scale: boolean = false){
-    if(object.id == this.activeObject){
-      if(translate){
-        object.position = this._translate
+  static setAttribObjectRecurrent(
+    object: ObjectNode,
+    translate: boolean = false,
+    rotation: boolean = false,
+    scale: boolean = false
+  ) {
+    if (object.id == this.activeObject) {
+      if (translate) {
+        object.position = this._translate;
       }
-      if(rotation){
-        object.rotation = this._rotate
+      if (rotation) {
+        object.rotation = this._rotate;
       }
-      if(scale){
-        object.scale = this._scale
+      if (scale) {
+        object.scale = this._scale;
       }
-      object.computeWorldMatrix(false, true)
-    }else{
-      object.children.forEach(child => this.setAttribObjectRecurrent(child, translate, rotation, scale))
+      object.computeWorldMatrix(false, true);
+    } else {
+      object.children.forEach((child) =>
+        this.setAttribObjectRecurrent(child, translate, rotation, scale)
+      );
     }
   }
 
-  static getAttribObjectRecurrent(object: ObjectNode, translate: boolean = false, rotation: boolean = false, scale: boolean = false){
-    if(object.id == this.activeObject){
-      if(translate){
-        this._translate = object.position
+  static getAttribObjectRecurrent(
+    object: ObjectNode,
+    translate: boolean = false,
+    rotation: boolean = false,
+    scale: boolean = false
+  ) {
+    if (object.id == this.activeObject) {
+      if (translate) {
+        this._translate = object.position;
       }
-      if(rotation){
-        this._rotate = object.rotation 
+      if (rotation) {
+        this._rotate = object.rotation;
       }
-      if(scale){
-        this._scale = object.scale
+      if (scale) {
+        this._scale = object.scale;
       }
-    }else{
-      object.children.forEach(child => this.getAttribObjectRecurrent(child, translate, rotation, scale))
+    } else {
+      object.children.forEach((child) =>
+        this.getAttribObjectRecurrent(child, translate, rotation, scale)
+      );
     }
   }
 }
