@@ -5,6 +5,7 @@ import { Mesh } from "../../types/objects/mesh/Mesh";
 import { ObjectNode } from "../../types/objects/ObjectNode";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 import { WebGLType } from "../../lib/webglutils/WebGLType";
+import { Animation } from "../../lib/animation/Animation";
 
 export class AnimalModel extends ObjectNode {
   static defaultColor = new Uint8Array([
@@ -70,7 +71,7 @@ export class AnimalModel extends ObjectNode {
     const head = new Mesh(headGeometry, headMaterial);
     head.name = "head";
     head.position = new Vec3(100, 60, 0);
-    head.rotation = new Vec3(0, 0, 25);
+    head.rotation = new Vec3(0, 0, -0.25);
     body.add(head);
 
     // Create left front leg
@@ -87,7 +88,7 @@ export class AnimalModel extends ObjectNode {
     );
     const leftFrontLeg = new Mesh(leftFrontLegGeometry, leftFrontLegMaterial);
     leftFrontLeg.name = "leftFrontLeg";
-    leftFrontLeg.position = new Vec3(50, -50, 50);
+    leftFrontLeg.position = new Vec3(50, -50, -50);
     body.add(leftFrontLeg);
 
     // Create right front leg
@@ -107,7 +108,7 @@ export class AnimalModel extends ObjectNode {
       rightFrontLegMaterial
     );
     rightFrontLeg.name = "rightFrontLeg";
-    rightFrontLeg.position = new Vec3(50, -50, -50);
+    rightFrontLeg.position = new Vec3(50, -50, 50);
     body.add(rightFrontLeg);
 
     // Create left back leg
@@ -124,7 +125,7 @@ export class AnimalModel extends ObjectNode {
     );
     const leftBackLeg = new Mesh(leftBackLegGeometry, leftBackLegMaterial);
     leftBackLeg.name = "leftBackLeg";
-    leftBackLeg.position = new Vec3(-50, -50, 50);
+    leftBackLeg.position = new Vec3(-50, -50, -50);
     body.add(leftBackLeg);
 
     // Create right back leg
@@ -141,7 +142,7 @@ export class AnimalModel extends ObjectNode {
     );
     const rightBackLeg = new Mesh(rightBackLegGeometry, rightBackLegMaterial);
     rightBackLeg.name = "rightBackLeg";
-    rightBackLeg.position = new Vec3(-50, -50, -50);
+    rightBackLeg.position = new Vec3(-50, -50, 50);
     body.add(rightBackLeg);
 
     // Create tail
@@ -160,10 +161,44 @@ export class AnimalModel extends ObjectNode {
     const tail = new Mesh(tailGeometry, tailMaterial);
     tail.name = "tail";
     tail.position = new Vec3(-125, 25, 0);
-    tail.rotation = new Vec3(0, 0, 25);
+    tail.rotation = new Vec3(0, 0, -0.25);
     body.add(tail);
 
     // Initialize world matrices
     this.computeWorldMatrix(true, true);
   }
+
+  // Generate frames for walking animation
+  static frames = Animation.generateFrames(
+    ["body", "head", "leftFrontLeg", "rightFrontLeg", "leftBackLeg", "rightBackLeg", "tail"],
+    [
+      [new Vec3(0, 0, 0), new Vec3(200, 0, 0)],
+      [new Vec3(100, 60, 0), new Vec3(100, 60, 0)],
+      [new Vec3(50, -50, -50), new Vec3(50, -50, -50)],
+      [new Vec3(50, -50, 50), new Vec3(50, -50, 50)],
+      [new Vec3(-50, -50, -50), new Vec3(-50, -50, -50)],
+      [new Vec3(-50, -50, 50), new Vec3(-50, -50, 50)],
+      [new Vec3(-125, 25, 0), new Vec3(-125, 25, 0)],
+    ],
+    [
+      [new Vec3(0, 0, 0), new Vec3(0, 0, 0)],
+      [new Vec3(0, 0, -0.25), new Vec3(0, 0, 0.25)],
+      [new Vec3(0, 0, -0.4), new Vec3(0, 0, 0.4)],
+      [new Vec3(0, 0, 0.4), new Vec3(0, 0, -0.4)],
+      [new Vec3(0, 0, 0.4), new Vec3(0, 0, -0.4)],
+      [new Vec3(0, 0, -0.4), new Vec3(0, 0, 0.4)],
+      [new Vec3(0, 0.25, -0.25), new Vec3(0, -0.25, -0.25)],
+    ],
+    [
+      [new Vec3(1, 1, 1), new Vec3(1.25, 1.25, 1.25)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+    ],
+    100,
+    true
+  );
 }

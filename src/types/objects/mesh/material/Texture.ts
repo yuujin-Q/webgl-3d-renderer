@@ -1,4 +1,5 @@
-import { Color } from "./Color";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Color } from "../../Color";
 
 type TextureData = HTMLImageElement | Uint8Array;
 type TextureDataInput = string | TextureData;
@@ -104,5 +105,39 @@ export class Texture {
 
   onLoad(callbackFn: () => void) {
     this._callbackFn = callbackFn;
+  }
+
+  static toJSON(texture: Texture) {
+    return {
+      src: texture._img.src,
+      wrapS: texture.wrapS,
+      wrapT: texture.wrapT,
+      minFilter: texture.minFilter,
+      magFilter: texture.magFilter,
+      format: texture.format,
+      type: texture.type,
+      width: texture._width,
+      height: texture._height,
+      defaultColor: texture._defaultColor.toArray(true),
+    };
+  }
+
+  static fromJSON(json: any) {
+    const texture = new Texture();
+    texture.wrapS = json.wrapS;
+    texture.wrapT = json.wrapT;
+    texture.minFilter = json.minFilter;
+    texture.magFilter = json.magFilter;
+    texture.format = json.format;
+    texture.type = json.type;
+    texture._width = json.width;
+    texture._height = json.height;
+    texture._defaultColor = new Color(json.defaultColor[0], json.defaultColor[1], json.defaultColor[2], json.defaultColor[3]);
+
+    if (json.src) {
+      texture.setData(json.src);
+    }
+
+    return texture;
   }
 }

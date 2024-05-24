@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Camera } from "./Camera";
 import { M4 } from "../../math/M4";
 
@@ -40,5 +41,32 @@ export class OrthographicCamera extends Camera {
       this.near,
       this.far
     );
+  }
+
+  override toJSON() {
+    return {
+      ...super.toJSON(),
+      left: this.left,
+      right: this.right,
+      bottom: this.bottom,
+      top: this.top,
+      near: this.near,
+      far: this.far,
+    };
+  }
+
+  static fromJSON(json: any): OrthographicCamera {
+    const camera = new OrthographicCamera(
+      json.left,
+      json.right,
+      json.bottom,
+      json.top,
+      json.near,
+      json.far
+    );
+    const c = Camera.fromJSON(json);
+    // assign all properties from c to camera
+    Object.assign(camera, c);
+    return camera;
   }
 }

@@ -1,5 +1,6 @@
 import { UniformDataType } from "../../../../lib/webglutils/UniformSetter";
 import { BufferAttribute } from "../geometry/BufferAttribute";
+import { Texture } from "./Texture";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class ShaderMaterial {
@@ -48,15 +49,18 @@ export class ShaderMaterial {
   static fromJSON(json: any): ShaderMaterial {
     const material = new ShaderMaterial(json.vertexShader, json.fragmentShader);
     material._id = json.id;
-    material.uniforms = json.uniforms;
+    // set uniforms
+    for (const name in json.uniforms) {
+      if (name === "u_texture" && json.uniforms[name]) {
+        material.uniforms[name] = Texture.fromJSON(json.uniforms[name]);
+      } else {
+        material.uniforms[name] = json.uniforms[name];
+      }
+    }
     // set attributes
     for (const name in json.attributes) {
-      material.attributes[name] = BufferAttribute.fromJSON(
-        json.attributes[name],
-        name === "a_color"
-      );
+      material.attributes[name] = BufferAttribute.fromJSON(json.attributes[name]);
     }
-    // material.attributes = json.attributes;
     return material;
   }
 
@@ -65,9 +69,16 @@ export class ShaderMaterial {
       id: material.id,
       vertexShader: material.vertexShader,
       fragmentShader: material.fragmentShader,
-      uniforms: material.uniforms,
+      uniforms: {},
       attributes: {},
     };
+    for (const name in material.uniforms) {
+      if (name === "u_texture" && material.uniforms[name]) {
+        json.uniforms[name] = Texture.toJSON(material.uniforms[name] as Texture);
+      } else {
+        json.uniforms[name] = material.uniforms[name];
+      }
+    }
     for (const name in material.attributes) {
       json.attributes[name] = BufferAttribute.toJSON(material.attributes[name]);
     }

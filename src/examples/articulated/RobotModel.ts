@@ -32,10 +32,14 @@ export class RobotModel extends ObjectNode {
   static normalizeColor = true;
   static stride = 0;
   static offset = 0;
-  public arm = new CubeGeometry(25, 100, 25);
-  public leg = new CubeGeometry(25, 150, 25);
-  public legPos = new Vec3(18, -65, 0);
-  public armPos = new Vec3(50, 10, 0);
+  public body = new CubeGeometry(100, 150, 50);
+  public head = new CubeGeometry(50, 50, 50);
+  public bodyPos = new Vec3(0, 0, 0);
+  public headPos = new Vec3(0, 100, 0);
+  public arm = new CubeGeometry(30, 100, 25);
+  public leg = new CubeGeometry(30, 100, 25);
+  public legPos = new Vec3(25, -125, 0);
+  public armPos = new Vec3(65, 10, 0);
   public armRotation = new Vec3(0, 0, Math.PI / 6);
   public legRotation = new Vec3(0, 0, 0);
 
@@ -43,7 +47,7 @@ export class RobotModel extends ObjectNode {
     super();
     this.name = "Robot Model";
     // Create body
-    const bodyGeometry = new CubeGeometry(100, 150, 50);
+    const bodyGeometry = this.body;
     const bodyMaterial = new PhongMaterial();
     bodyMaterial.attributes["a_color"] = new BufferAttribute(
       RobotModel.defaultColor,
@@ -57,11 +61,11 @@ export class RobotModel extends ObjectNode {
     );
     const body = new Mesh(bodyGeometry, bodyMaterial);
     body.name = "body";
-    body.position = new Vec3(0, 0, 0);
+    body.position = this.bodyPos;
     this.add(body);
 
     // Create head
-    const headGeometry = new CubeGeometry(50, 50, 50);
+    const headGeometry = this.head;
     const headMaterial = new PhongMaterial();
     headMaterial.attributes["a_color"] = new BufferAttribute(
       RobotModel.defaultColor,
@@ -75,7 +79,7 @@ export class RobotModel extends ObjectNode {
     );
     const head = new Mesh(headGeometry, headMaterial);
     head.name = "head";
-    head.position = new Vec3(0, 50, 0);
+    head.position = this.headPos;
     body.add(head);
 
     // Create left arm

@@ -151,6 +151,7 @@ export class BufferAttribute {
 
   static toJSON(attr: BufferAttribute): object {
     return {
+      isUint8: attr.data instanceof Uint8Array,
       data: Array.from(attr.data),
       size: attr.size,
       dtype: attr.dtype,
@@ -160,9 +161,10 @@ export class BufferAttribute {
     };
   }
 
-  static fromJSON(json: any, isColor = false): BufferAttribute {
+  static fromJSON(json: any): BufferAttribute {
+    // alert("isUint8: " + json.isUint8 + " bool: " + (json.isUint8 ? true : false));
     return new BufferAttribute(
-      isColor ? new Uint8Array(json.data) : new Float32Array(json.data),
+      json.isUint8 ? new Uint8Array(json.data) : new Float32Array(json.data),
       json.size,
       {
         dtype: json.dtype,

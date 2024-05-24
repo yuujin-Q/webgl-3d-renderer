@@ -4,7 +4,7 @@
  * r: red, g: green, b: blue, a: alpha
  */
 
-import { BufferAttribute } from "../geometry/BufferAttribute";
+import { BufferAttribute } from "./mesh/geometry/BufferAttribute";
 
 // reference: https://github.com/marfgold1/IF3260_Tugas3_K02_G12/blob/main/src/lib/TRI/core/Color.js
 
@@ -33,7 +33,9 @@ export class Color {
   }
 
   toArray(includeAlpha: boolean) {
-    return includeAlpha ? [this.r, this.g, this.b, this.a] : [this.r, this.g, this.b];
+    return includeAlpha
+      ? [this.r, this.g, this.b, this.a]
+      : [this.r, this.g, this.b];
   }
 
   /**

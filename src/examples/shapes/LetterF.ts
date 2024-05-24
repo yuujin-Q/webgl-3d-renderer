@@ -2,7 +2,7 @@ import { WebGLType } from "../../lib/webglutils/WebGLType";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 import { FreeformGeometry } from "../../types/objects/mesh/geometry/FreeformGeometry";
 import { BasicMaterial } from "../../types/objects/mesh/material/BasicMaterial";
-import { Color } from "../../types/objects/mesh/material/Color";
+import { Color } from "../../types/objects/Color";
 import { Texture } from "../../types/objects/mesh/material/Texture";
 import { Mesh } from "../../types/objects/mesh/Mesh";
 

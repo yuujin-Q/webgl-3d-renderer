@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Camera } from "./Camera";
 import { M4 } from "../../math/M4";
 import { Vec3 } from "../../math/Vec3";
@@ -41,5 +42,33 @@ export class ObliqueCamera extends Camera {
       this.far,
       this.skew
     );
+  }
+
+  override toJSON() {
+    return {
+      ...super.toJSON(),
+      left: this.left,
+      right: this.right,
+      bottom: this.bottom,
+      top: this.top,
+      near: this.near,
+      far: this.far,
+      skew: this.skew,
+    };
+  }
+
+  static fromJSON(json: any): ObliqueCamera {
+    const camera = new ObliqueCamera(
+      json.left,
+      json.right,
+      json.bottom,
+      json.top,
+      json.near,
+      json.far,
+      json.skew
+    );
+    const c = Camera.fromJSON(json);
+    Object.assign(camera, c);
+    return camera;
   }
 }
