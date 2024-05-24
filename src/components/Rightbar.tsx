@@ -7,7 +7,7 @@ import * as RadixSlider from '@radix-ui/react-slider';
 
 
 const Rightbar = () => {
-  const { scene, globalRotate, globalScale } = useAppStore(state => state)
+  const { scene, globalRotate, globalScale, globalTranslate } = useAppStore(state => state)
   const { setActiveObject, setGlobalTranslate, setGlobalRotate, setGlobalScale } = useAppAction()
   const setTransformation = (translate: Vec3, rotate: Vec3, scale: Vec3) => {
     setGlobalRotate(new Vec3(radToDeg(rotate.x), radToDeg(rotate.y), radToDeg(rotate.z)))
