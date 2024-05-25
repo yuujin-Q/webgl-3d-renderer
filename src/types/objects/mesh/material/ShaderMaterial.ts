@@ -109,7 +109,7 @@ export class ShaderMaterial {
     for (const name in material.attributes) {
       if (material.attributes[name] instanceof BufferAttribute) {
         json.attributes[name] = BufferAttribute.toJSON(
-          material.attributes[name]
+          material.attributes[name] as BufferAttribute
         );
       } else {
         json.attributes[name] = material.attributes[name];
