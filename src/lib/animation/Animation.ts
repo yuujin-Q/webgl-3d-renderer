@@ -180,10 +180,25 @@ export class Animation {
     return keyFrames;
   }
 
+  static combineFrames(listOfFrames: AnimationFrame[][]): AnimationFrame[] {
+    const combinedFrames: AnimationFrame[] = [];
+
+    // Iterate through each array of frames
+    listOfFrames.forEach((frames) => {
+      // Iterate through each frame in the array
+      frames.forEach((frame) => {
+        // Push the frame to the combinedFrames array
+        combinedFrames.push(frame);
+      });
+    });
+
+    return combinedFrames;
+  }
+
   // Apply the properties of the current frame to the articulated model
   private applyFrame(): void {
     const currentFrame = this.frames[this.currentFrameIndex];
-    
+
     const applyPropertiesRecursively = (node: ObjectNode): void => {
       const nodeName = node.name;
       const nodeKey = Object.keys(currentFrame).find((key) => key === nodeName);
