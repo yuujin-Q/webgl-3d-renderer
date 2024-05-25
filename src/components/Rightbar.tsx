@@ -5,6 +5,10 @@ import { Vec3 } from "../types/math/Vec3";
 import { radToDeg } from "../types/math/Degree";
 import * as RadixSlider from "@radix-ui/react-slider";
 import { useEffect, useState } from "react";
+import { Download, Plus, Trash, Upload } from "phosphor-react";
+import { Cube } from "../examples/shapes/Cube";
+import { GLTFConverter } from "../lib/GLTFConverter";
+import { Scene } from "../types/objects/Scene";
 
 const Rightbar = () => {
   const {
@@ -267,9 +271,77 @@ const Rightbar = () => {
 
   return (
     <div className="border-r border-gray-600 bg-black w-3/12 overflow-auto">
-      <div className="h-[400px] flex flex-col pl-4 pr-6 py-2 overflow-auto text-white no-scrollbar">
+      <div className="h-[400px] flex flex-col pl-4 pr-6 py-2 overflow-y-scroll text-white no-scrollbar">
         <h1 className="text-md font-bold">Active Component :</h1>
         {RenderTree(scene, setActiveObject, setTransformation)}
+      </div>
+      <div className="p-2">
+        <h1 className="text-md text-white font-bold">Component Editor:</h1>
+        <div className="flex w-full justify-evenly mt-2">
+          <span className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" 
+            onClick={() => {
+              const newChild = new Cube()
+              console.log(newChild)
+              Renderer.addChildOnCurrentObject(newChild)
+              Renderer.setActiveObject(newChild.id)
+              setActiveObject(newChild.id)
+            }}
+          ><Plus weight="bold"/></span>
+          <span className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" 
+            onClick={() => {
+              console.log(Renderer.getActiveObject(), Renderer.getScene())
+              const rootNode = Renderer.getObjectById(Renderer.getActiveObject());
+              console.log(rootNode)
+              if(rootNode){
+                const gltf = GLTFConverter.save(rootNode);
+                // alert("gltf: " + gltf);
+                const blob = new Blob([gltf], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "model.json";
+                a.click();
+                URL.revokeObjectURL(url);
+              }
+            }}
+          ><Download weight="bold"/></span>
+          <input
+            className="hidden"
+            type="file"
+            accept=".json"
+            id="importChild"
+            name="filename"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              if (!file) return;
+
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const content = e.target?.result;
+                if (typeof content === "string") {
+                  const object: ObjectNode = GLTFConverter.load(content);
+                  console.log(object)
+                  Renderer.addChildOnCurrentObject(object)
+                  Renderer.setActiveObject(object.id)
+                  setActiveObject(object.id)
+                }
+              };
+              reader.readAsText(file);
+            }}
+          />
+          <label htmlFor="importChild" className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" ><Upload weight="bold"/></label>
+          <span className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" 
+            onClick={() => {
+              const object = Renderer.getObjectById(Renderer.getActiveObject())
+              if(object){
+                Renderer.removeObject(object)
+                Renderer.setActiveObject(Renderer.getScene().id)
+                setActiveObject(Renderer.getScene().id)
+                Renderer.renderScene()
+              }
+            }}
+          ><Trash weight="bold"/></span>
+        </div>
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Rotate</h1>

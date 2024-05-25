@@ -159,6 +159,54 @@ export class Renderer {
     this.scene = sc;
   }
 
+  static addChildOnCurrentObject(newChild: ObjectNode){
+    this.addChildOnCurrentObjectRecurrent(this.scene, newChild)
+    this.renderScene()
+  }
+
+  static addChildOnCurrentObjectRecurrent(object: ObjectNode, newChild: ObjectNode){
+    if(object.id != this.activeObject){
+      object.children.forEach((obj) => {
+        this.addChildOnCurrentObjectRecurrent(obj, newChild)
+      })
+    }else{
+      object.add(newChild)
+    }
+  }
+
+  static getObjectById(id: string){
+    return this.getObjectByIdRecurrent(this.scene, id)
+  }
+
+  static getObjectByIdRecurrent(object: ObjectNode, id: string){
+    if(object.id !== id){
+      let res;
+      object.children.forEach((obj) => {
+        const tmp = this.getObjectByIdRecurrent(obj, id)
+        if(tmp != undefined){
+          res = tmp
+        }
+      })
+      return res
+    }else{
+      return object
+    }
+  }
+
+  static removeObject(obj: ObjectNode){
+    this.removeObjectRecurrent(this.scene, obj)
+  }
+
+  static removeObjectRecurrent(parent: ObjectNode, obj: ObjectNode){
+    if(parent.children.indexOf(obj) >= 0){
+      parent.remove(obj)
+    }else{
+      parent.children.forEach((child) => {
+        this.removeObjectRecurrent(child, obj)
+      })
+    }
+  }
+
   private static processNodes(object: ObjectNode) {
     // Proses mesh, kamera, dan lainnya yang
     // terkait pada node

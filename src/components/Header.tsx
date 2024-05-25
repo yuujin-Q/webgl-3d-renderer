@@ -32,8 +32,8 @@ const Header = () => {
         const scene: Scene = GLTFConverter.load(content);
         Renderer.setScene(scene);
         setScene(scene)
-        Renderer.setActiveObject(scene.name)
-        setActiveObject(scene.name)
+        Renderer.setActiveObject(scene.id)
+        setActiveObject(scene.id)
         Renderer.renderScene();
         console.log(scene)
       }
