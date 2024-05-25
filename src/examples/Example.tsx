@@ -54,7 +54,7 @@ fcubeScene.add(planemesh);
 fcubeScene.add(animal);
 fcubeScene.add(robot);
 
-const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
-animalAnimation.play();
+// const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
+// animalAnimation.play();
 
 export { fmesh, planemesh, cube, fcubeScene };

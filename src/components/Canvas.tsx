@@ -4,6 +4,8 @@ import { Renderer } from "../lib/renderer/Renderer";
 import { MouseInput } from "../lib/Mouse";
 import { fcubeScene, } from "../examples/Example";
 import { useAppAction } from "../stores";
+import { DirectionalLight } from "../types/objects/light/DirectionalLight";
+import { Vec3 } from "../types/math/Vec3";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
@@ -19,12 +21,16 @@ const Canvas = () => {
       return;
     }
 
+    const light = new DirectionalLight()
+    light.setDirection(new Vec3(1,1,1))
+    console.log(light)
     Renderer.initializeRenderer(gl);
     
     Renderer.setScene(scene);
     setScene(scene)
     Renderer.setActiveObject(scene.name)
     setActiveObject(scene.name)
+    Renderer.setLight(light)
     Renderer.renderScene();
     console.log(scene)
   }, [canvasRef]);

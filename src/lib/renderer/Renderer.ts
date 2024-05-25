@@ -16,6 +16,9 @@ import {
   setUniforms,
 } from "../webglutils/ProgramInfo";
 import { fetchShaderProgram } from "./ShaderManager";
+import { Light } from "../../types/objects/light/Light";
+import { PhongMaterial } from "../../types/objects/mesh/material/PhongMaterial";
+import { DirectionalLight } from "../../types/objects/light/DirectionalLight";
 
 export class Renderer {
   // gl classes
@@ -32,6 +35,7 @@ export class Renderer {
 
   // scene data
   private static scene: Scene;
+  private static light: Light;
   private static zoom = 1.5;
   private static size = 500;
   private static cameras: Camera[] = [
@@ -75,6 +79,9 @@ export class Renderer {
   }
   static getCamera() {
     return this.camera;
+  }
+  static getLight(){
+    return this.light;
   }
   static switchCamera(index: number) {
     this.setCamera(this.cameras[index]);
@@ -139,6 +146,11 @@ export class Renderer {
     this.camera = cam;
     MouseInput.camera = cam;
   }
+
+  static setLight(light: Light){
+    this.light = light
+  }
+
   static setTexture() {
     // todo: implement
   }
@@ -190,6 +202,10 @@ export class Renderer {
     // transformationMatrix = M4.scale(transformationMatrix, object.scale);
 
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
+    if(material instanceof PhongMaterial){
+      console.log(setUniform(this.currentProgram, "u_lightColor", [this.light.color.r, this.light.color.g, this.light.color.b]))
+      console.log(setUniform(this.currentProgram, "u_lightSource", [(this.light as DirectionalLight).getDirection.x, (this.light as DirectionalLight).getDirection.y, (this.light as DirectionalLight).getDirection.z]))
+    }
 
     // setUniform(this.currentProgram, "u_ambient", [1, 1, 1]);
     // setUniform(this.glProgram, "uShininess", [100.0]);
@@ -210,6 +226,7 @@ export class Renderer {
 
   static renderScene() {
     const gl = this.gl;
+    console.log(this.scene)
 
     // todo: viewport and resize canvas?
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);

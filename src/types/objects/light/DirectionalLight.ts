@@ -10,6 +10,14 @@ export class DirectionalLight extends Light {
     super();
   }
 
+
+  get getDirection(){
+    return this._direction;
+  }
+  setDirection(direction: Vec3){
+    this._direction = direction;
+  }
+
   get direction() {
     // direction = target.pos -  this.pos (in world space)
     if (this.target) {

@@ -18,6 +18,10 @@ export class Light extends ObjectNode {
     this._uniforms["lightColor"] = color || this._color; // La
   }
 
+  setColor(color: Color){
+    this._color = color
+  }
+  
   get color() {
     return this._color;
   }

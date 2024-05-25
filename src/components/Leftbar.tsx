@@ -2,6 +2,10 @@ import { CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus } from
 import Header from "./Header";
 import { Renderer } from "../lib/renderer/Renderer";
 import { MouseInput } from "../lib/Mouse";
+import * as RadixSlider from '@radix-ui/react-slider';
+import { DirectionalLight } from "../types/objects/light/DirectionalLight";
+import { Vec3 } from "../types/math/Vec3";
+import { Color } from "../types/objects/Color";
 
 
 const Leftbar = () => {
@@ -133,6 +137,107 @@ const Leftbar = () => {
           <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
             Edit SubTree
           </span>
+        </div>
+      </div>
+      <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
+        <h1 className="text-md font-bold">Lighting</h1>
+        <div className="flex">
+          <label className="text-sm font-semibold w-min mr-2">X - axis</label>
+          <RadixSlider.Root
+            className="w-full relative flex items-center h-5"
+            id="cameraTranslateX"
+            name="camareTranslate"
+            min={-1}
+            max={1}
+            defaultValue={[0]}
+            // value={[globalTranslate.z]}
+            step={0.01}
+            onValueChange={(val) => {
+              const light = Renderer.getLight()
+              if(light instanceof DirectionalLight){
+                light.setDirection(new Vec3(val[0], light.getDirection.y, light.getDirection.z))
+              }
+              Renderer.setLight(light)
+              Renderer.renderScene()
+            }}
+          >
+            <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+              <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+            </RadixSlider.Track>
+            <RadixSlider.Thumb
+              className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+              aria-label="Volume"
+            />
+          </RadixSlider.Root>
+        </div>
+        <div className="flex">
+          <label className="text-sm font-semibold w-min mr-2">Y - axis</label>
+          <RadixSlider.Root
+            className="w-full relative flex items-center h-5"
+            id="cameraTranslateX"
+            name="camareTranslate"
+            min={-1}
+            max={1}
+            defaultValue={[0]}
+            // value={[globalTranslate.z]}
+            step={0.01}
+            onValueChange={(val) => {
+              const light = Renderer.getLight()
+              if(light instanceof DirectionalLight){
+                light.setDirection(new Vec3(light.getDirection.x, val[0], light.getDirection.z))
+              }
+              Renderer.setLight(light)
+              Renderer.renderScene()
+            }}
+          >
+            <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+              <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+            </RadixSlider.Track>
+            <RadixSlider.Thumb
+              className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+              aria-label="Volume"
+            />
+          </RadixSlider.Root>
+        </div>
+        <div className="flex">
+          <label className="text-sm font-semibold w-min mr-2">Z - axis</label>
+          <RadixSlider.Root
+            className="w-full relative flex items-center h-5"
+            id="cameraTranslateX"
+            name="camareTranslate"
+            min={-1}
+            max={1}
+            defaultValue={[0]}
+            // value={[globalTranslate.z]}
+            step={0.01}
+            onValueChange={(val) => {
+              const light = Renderer.getLight()
+              if(light instanceof DirectionalLight){
+                light.setDirection(new Vec3(light.getDirection.x, light.getDirection.y, val[0]))
+              }
+              Renderer.setLight(light)
+              Renderer.renderScene()
+            }}
+          >
+            <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+              <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+            </RadixSlider.Track>
+            <RadixSlider.Thumb
+              className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+              aria-label="Volume"
+            />
+          </RadixSlider.Root>
+        </div>
+        <div className="flex">
+          <label className="text-sm font-semibold w-min mr-2">Color</label>
+          <input type="color" defaultValue="#ffffff" onChange={(e) => {
+            const light = Renderer.getLight()
+            const color = new Color(1,1,1)
+            color.setHex(e.target.value)
+            light.setColor(color)
+            Renderer.setLight(light)
+            Renderer.renderScene()
+          }}/>
         </div>
       </div>
     </div>

@@ -73,20 +73,22 @@ const phongFragmentShader = `
     varying vec4 v_color;
     varying vec4 v_normal;
     uniform vec3 u_ambient;
+    uniform vec3 u_lightSource;
+    uniform vec3 u_lightColor;
     
     void main() {
       vec3 normal = normalize(v_normal.xyz);
       vec3 lightColor = vec3(1.0, 1.0, 1.0);
       vec3 lightSource = vec3(1.0, 0.0, 0.0);
-      float diffuseStrength = max(0.0, dot(lightSource, normal));
-      vec3 diffuse = diffuseStrength*lightColor;
+      float diffuseStrength = max(0.0, dot(u_lightSource, normal));
+      vec3 diffuse = diffuseStrength*u_lightColor;
 
       vec3 cameraSource = vec3(0.0, 0.0, 1.0);
       vec3 viewSource = normalize(cameraSource);
-      vec3 reflectSource = normalize(reflect(-lightSource, normal));
+      vec3 reflectSource = normalize(reflect(-u_lightSource, normal));
       float specularStrength = max(0.0, dot(viewSource, reflectSource));
       specularStrength = pow(specularStrength, 2.0);
-      vec3 specular = specularStrength*lightColor;
+      vec3 specular = specularStrength*u_lightColor;
 
       vec3 lighting = vec3(0.0, 0.0, 0.0);
       lighting = u_ambient;
