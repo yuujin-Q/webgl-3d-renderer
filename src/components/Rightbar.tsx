@@ -61,7 +61,7 @@ const Rightbar = () => {
   const [fps, setFps] = useState(60);
   const [frame, setFrame] = useState(0);
   const [maxFrame, setMaxFrame] = useState(100);
-  
+
   // Update frame value
   useEffect(() => {
     const interval = setInterval(() => {
@@ -234,8 +234,8 @@ const Rightbar = () => {
       }
     }
   };
-  const setAnimationFrame = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value);
+  const setAnimationFrame = (newFrameValue: Number) => {
+    const val = parseInt(newFrameValue.toString());
     setFrame(val);
     if (activeObject === scene.id) {
       animations.forEach((animation) => {
@@ -589,19 +589,26 @@ const Rightbar = () => {
               className="w-full text-sm text-white font-semibold rounded-lg px-5 py-1.5 bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 opacity-80"
             />
           </div>
-          <div className="flex flex-row gap-3">
+          <div className="flex flex-row gap-3 my-3">
             <label className="text-sm font-semibold w-fit">Frame</label>
-            <input
-              className="w-full justify-end"
-              type="range"
+            <RadixSlider.Root
+              className="w-10/12 relative flex items-center h-5"
               id="frame"
               name="frame"
               min={0}
               max={maxFrame}
               step={1}
-              value={frame}
-              onChange={(e) => setAnimationFrame(e)}
-            />
+              value={[frame]}
+              onValueChange={(e) => setAnimationFrame(e[0])}
+            >
+              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+              </RadixSlider.Track>
+              <RadixSlider.Thumb
+                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                aria-label="Volume"
+              />
+            </RadixSlider.Root>
           </div>
         </div>
       </div>
