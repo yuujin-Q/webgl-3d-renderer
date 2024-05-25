@@ -38,23 +38,23 @@ const Leftbar = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-evenly items-center">
             <button
-              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400  shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
               onClick={() => MouseInput.camera.move(-20, 0, 0.01)}
             ><CaretLeft size={24} weight="bold" /></button>
             <label className="text-sm font-semibold w-2/12">Angle X</label>
             <button
-              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400  shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
               onClick={() => MouseInput.camera.move(20, 0, 0.01)}
             ><CaretRight size={24} weight="bold" /></button>
           </div>
           <div className="flex justify-evenly items-center">
             <button
-              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400  shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
               onClick={() => MouseInput.camera.move(0, -20, 0.01)}
             ><CaretLeft size={24} weight="bold" /></button>
             <label className="text-sm font-semibold w-2/12">Angle Y</label>
             <button
-              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400  shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
               onClick={() => MouseInput.camera.move(0, 20, 0.01)}
             ><CaretRight size={24} weight="bold" /></button>
           </div>
@@ -65,12 +65,12 @@ const Leftbar = () => {
         <div>
           <div className="flex items-center justify-evenly">
             <button
-              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400  shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
               onClick={() => MouseInput.camera.zoom(5, 0.01)}
             ><MagnifyingGlassMinus size={24} weight="bold" /></button>
             <label className="text-sm font-semibold w-2/12">Angle Y</label>
             <button
-              className="px-4 py-2 text-lg rounded-md border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
+              className="px-4 py-2 text-lg rounded-md border-2 border-green-400  shadow-[0_0_15px_0px] shadow-green-400 text-green-400 hover:bg-green-400 hover:text-black active:scale-95"
               onClick={() => MouseInput.camera.zoom(-5, 0.01)}
             ><MagnifyingGlassPlus size={24} weight="bold" /></button>
           </div>
