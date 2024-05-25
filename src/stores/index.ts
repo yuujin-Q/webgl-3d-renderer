@@ -4,6 +4,7 @@ import { Scene } from "../types/objects/Scene";
 import { Camera } from "../types/objects/camera/Camera";
 import { Vec3 } from "../types/math/Vec3";
 import { OrthographicCamera } from "../types/objects/camera/OrthographicCamera";
+import { Animation } from "../lib/animation/Animation";
 
 type AppState = {
     canvasRef: React.LegacyRef<HTMLCanvasElement>;
@@ -24,6 +25,9 @@ type AppState = {
     globalRotate: Vec3;
     globalScale: Vec3;
 
+    // animation
+    animations: Animation[];
+
     actions: {
         setCanvasRef: (canvasRef: React.LegacyRef<HTMLCanvasElement>) => void,
         setGl: (gl: WebGLRenderingContext) => void,
@@ -34,6 +38,7 @@ type AppState = {
         setGlobalTranslate: (glGlobalTranslate: Vec3) => void,
         setGlobalRotate: (glGlobalRotate: Vec3) => void,
         setGlobalScale: (glGlobalTranslate: Vec3) => void,
+        setAnimations: (glAnimations: Animation[]) => void,
     };
 };
 
@@ -99,7 +104,7 @@ export const useAppStore = create<AppState>((set) => ({
     globalTranslate: new Vec3(0, 0, 0),
     globalRotate: new Vec3(0, 0, 0),
     globalScale: new Vec3(1, 1, 1),
-
+    animations: [],
 
     actions: {
         setCanvasRef(canvasRef){
@@ -128,6 +133,9 @@ export const useAppStore = create<AppState>((set) => ({
         },
         setGlobalScale(globalScale) {
             set({ globalScale });
+        },
+        setAnimations(animations) {
+            set({ animations });
         },
     }
 }));
