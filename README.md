@@ -1,30 +1,29 @@
-# React + TypeScript + Vite
+# Tugas Besar IF3260 - Grafika Komputer
+> WebGL Part 2: 3D Engine
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Deskripsi Singkat
+Repositori ini memuat program *viewer*/*editor* benda 3D sederhana. Implementasi menggunakan *library* grafis WebGL dan kakas *front-end* React.js.
 
-Currently, two official plugins are available:
+## Cara Menjalankan Program
+Lakukan *clone* repositori ini. Setelah melakukan *clone*, lakukan instalasi *dependency* dengan perintah berikut.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+$ npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Setelah itu, jalankan perintah berikut untuk menghidupkan kakas *front-end*.
+
+```
+$ npm run dev
+```
+
+## Petunjuk Penggunaan
+Petunjuk penggunaan dapat diakses tautan [ini](./manual.md).
+
+## Kontributor
+| NIM      | Nama                | Kontribusi Fitur                                                    | Kontribusi Model |
+|----------|---------------------|---------------------------------------------------------------------|------------------|
+| 13521043 | Nigel Sahl          | Save/Load, Geometry, Mesh, Camera, Orbit Control                    | Robot,           |
+| 13521058 | Ghazi Akmal Fauzan  | Animation, Animation Editor                                         | Animal,          |
+| 13521065 | Mutawally Nawwar    | UI React.js, Material (Phong), Light, Component Editor              | TODO             |
+| 13521074 | Eugene Yap Jin Quan | Renderer & lib, Scene Node, Material (Basic), Texture, Vertex Color | MechanicalArm,   |
