@@ -3,29 +3,42 @@ import { ObjectNode } from "../types/objects/ObjectNode";
 import { useAppAction, useAppStore } from "../stores";
 import { Vec3 } from "../types/math/Vec3";
 import { radToDeg } from "../types/math/Degree";
-import * as RadixSlider from '@radix-ui/react-slider';
-
+import * as RadixSlider from "@radix-ui/react-slider";
+import { useEffect, useState } from "react";
 
 const Rightbar = () => {
-  const { scene, globalRotate, globalScale, globalTranslate } = useAppStore(state => state)
-  const { setActiveObject, setGlobalTranslate, setGlobalRotate, setGlobalScale } = useAppAction()
+  const {
+    scene,
+    globalRotate,
+    globalScale,
+    globalTranslate,
+    animations,
+    activeObject,
+  } = useAppStore((state) => state);
+  const {
+    setActiveObject,
+    setGlobalTranslate,
+    setGlobalRotate,
+    setGlobalScale,
+  } = useAppAction();
   const setTransformation = (translate: Vec3, rotate: Vec3, scale: Vec3) => {
-    setGlobalRotate(new Vec3(radToDeg(rotate.x), radToDeg(rotate.y), radToDeg(rotate.z)))
-    setGlobalScale(scale)
-    setGlobalTranslate(translate)
-  }
+    setGlobalRotate(
+      new Vec3(radToDeg(rotate.x), radToDeg(rotate.y), radToDeg(rotate.z))
+    );
+    setGlobalScale(scale);
+    setGlobalTranslate(translate);
+  };
   const updateXRotate = (val: number) => {
     Renderer.setRotation({ x: val }, true);
-    setGlobalRotate(new Vec3(val, globalRotate.y, globalRotate.z))
+    setGlobalRotate(new Vec3(val, globalRotate.y, globalRotate.z));
   };
   const updateYRotate = (val: number) => {
     Renderer.setRotation({ y: val }, true);
-    setGlobalRotate(new Vec3(globalRotate.x, val, globalRotate.z))
-
+    setGlobalRotate(new Vec3(globalRotate.x, val, globalRotate.z));
   };
   const updateZRotate = (val: number) => {
     Renderer.setRotation({ z: val }, true);
-    setGlobalRotate(new Vec3(globalRotate.x, globalRotate.y, val))
+    setGlobalRotate(new Vec3(globalRotate.x, globalRotate.y, val));
   };
   const updateTranslation = ({
     x,
@@ -40,15 +53,209 @@ const Rightbar = () => {
     const newY = y ? y : Renderer.translation().y;
     const newZ = z ? z : Renderer.translation().z;
     Renderer.setTranslation({ x: newX, y: newY, z: newZ });
-    setGlobalTranslate(new Vec3(newX, newY, newZ))
+    setGlobalTranslate(new Vec3(newX, newY, newZ));
   };
+
+  const [toggleReverse, setToggleReverse] = useState(false);
+  const [toggleAutoReplay, setToggleAutoReplay] = useState(false);
+  const [fps, setFps] = useState(60);
+  const [frame, setFrame] = useState(0);
+  const [maxFrame, setMaxFrame] = useState(100);
+  
+  // Update frame value
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (activeObject !== scene.id) {
+        const animation = animations.find(
+          (animation) => animation.getObject().id === activeObject
+        );
+        if (animation) {
+          setFrame(animation.getCurrentFrameIndex());
+        }
+      }
+    }, 1000 / fps);
+    return () => clearInterval(interval);
+  }, [fps, activeObject]);
+
+  useEffect(() => {
+    if (activeObject === scene.id) {
+      setToggleReverse(false);
+      setToggleAutoReplay(false);
+      setFps(0);
+      setFrame(0);
+      // set frame based on highest frame of all animations
+      const highestMaxFrame = animations.reduce(
+        (max, animation) => Math.max(max, animation.getMaxFrameIndex()),
+        0
+      );
+      setMaxFrame(highestMaxFrame);
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        setToggleReverse(animation.getReverse());
+        setToggleAutoReplay(animation.getAutoReplay());
+        setFps(animation.getFPS());
+        setMaxFrame(animation.getMaxFrameIndex());
+      }
+    }
+  }, [activeObject]);
+
+  const playAnimation = () => {
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.play();
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.play();
+      }
+    }
+  };
+  const pauseAnimation = () => {
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.pause();
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.pause();
+      }
+    }
+  };
+  const prevAnimationFrame = () => {
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.previousFrame();
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.previousFrame();
+      }
+    }
+  };
+  const nextAnimationFrame = () => {
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.nextFrame();
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.nextFrame();
+      }
+    }
+  };
+  const firstAnimationFrame = () => {
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.gotoFirstFrame();
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.gotoFirstFrame();
+      }
+    }
+  };
+  const lastAnimationFrame = () => {
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.gotoLastFrame();
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.gotoLastFrame();
+      }
+    }
+  };
+  const setAnimationReverse = () => {
+    const newToggleReverse = !toggleReverse;
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.setReverse(newToggleReverse);
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.setReverse(newToggleReverse);
+      }
+    }
+    setToggleReverse(newToggleReverse);
+  };
+  const setAnimationAutoReplay = () => {
+    const newToggleAutoReplay = !toggleAutoReplay;
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.setAutoReplay(newToggleAutoReplay);
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.setAutoReplay(newToggleAutoReplay);
+      }
+    }
+    setToggleAutoReplay(newToggleAutoReplay);
+  };
+  const setAnimationFPS = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value);
+    setFps(val);
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.setFPS(val);
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.setFPS(val);
+      }
+    }
+  };
+  const setAnimationFrame = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value);
+    setFrame(val);
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.gotoFrame(val);
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.gotoFrame(val);
+      }
+    }
+  };
+
   return (
     <div className="border-r border-gray-600 bg-black w-3/12 overflow-auto">
       <div className="h-[400px] flex flex-col pl-4 pr-6 py-2 overflow-auto text-white no-scrollbar">
         <h1 className="text-md font-bold">Active Component :</h1>
-        {
-          RenderTree(scene, setActiveObject, setTransformation)
-        }
+        {RenderTree(scene, setActiveObject, setTransformation)}
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Rotate</h1>
@@ -132,8 +339,8 @@ const Rightbar = () => {
               value={[globalScale.x]}
               step={0.05}
               onValueChange={(val) => {
-                Renderer.setScale({ x: val[0] })
-                setGlobalScale(new Vec3(val[0], globalScale.y, globalScale.z))
+                Renderer.setScale({ x: val[0] });
+                setGlobalScale(new Vec3(val[0], globalScale.y, globalScale.z));
               }}
             >
               <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
@@ -156,8 +363,8 @@ const Rightbar = () => {
               value={[globalScale.y]}
               step={0.05}
               onValueChange={(val) => {
-                Renderer.setScale({ y: val[0] })
-                setGlobalScale(new Vec3(globalScale.x, val[0], globalScale.z))
+                Renderer.setScale({ y: val[0] });
+                setGlobalScale(new Vec3(globalScale.x, val[0], globalScale.z));
               }}
             >
               <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
@@ -180,8 +387,8 @@ const Rightbar = () => {
               value={[globalScale.z]}
               step={0.05}
               onValueChange={(val) => {
-                Renderer.setScale({ z: val[0] })
-                setGlobalScale(new Vec3(globalScale.x, globalScale.y, val[0]))
+                Renderer.setScale({ z: val[0] });
+                setGlobalScale(new Vec3(globalScale.x, globalScale.y, val[0]));
               }}
             >
               <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
@@ -305,36 +512,34 @@ const Rightbar = () => {
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
         <h1 className="text-md font-bold">Animation</h1>
         <div className="flex flex-col gap-2">
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-3">
             <button
               id="button-animation-play"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              className="w-1/2 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => playAnimation()}
             >
               Play
             </button>
             <button
               id="button-animation-pause"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              className="w-1/2 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => pauseAnimation()}
             >
               Pause
-            </button>
-            <button
-              id="button-animation-stop"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-            >
-              Stop
             </button>
           </div>
           <div className="flex flex-row gap-3">
             <button
               id="button-animation-prev"
               className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => prevAnimationFrame()}
             >
               Prev
             </button>
             <button
               id="button-animation-next"
               className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => nextAnimationFrame()}
             >
               Next
             </button>
@@ -343,28 +548,44 @@ const Rightbar = () => {
             <button
               id="button-animation-first"
               className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => firstAnimationFrame()}
             >
               First
             </button>
             <button
               id="button-animation-last"
               className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => lastAnimationFrame()}
             >
               Last
             </button>
           </div>
           <div className="flex flex-row justify-center text-center items-center">
             <label className="text-md font-semibold mr-3">Reverse</label>
-            <input id="toggle-reverse" type="checkbox"/>
-            <label className="text-md font-semibold ml-5 mr-3">Auto Replay</label>
-            <input id="toggle-auto-replay" type="checkbox"/>
+            <input
+              id="toggle-reverse"
+              type="checkbox"
+              checked={toggleReverse}
+              onChange={setAnimationReverse}
+            />
+            <label className="text-md font-semibold ml-5 mr-3">
+              Auto Replay
+            </label>
+            <input
+              id="toggle-auto-replay"
+              type="checkbox"
+              checked={toggleAutoReplay}
+              onChange={setAnimationAutoReplay}
+            />
             <label className="text-md font-semibold ml-5 mr-3">FPS</label>
             <input
               type="number"
               id="fps"
               name="fps"
-              min="1"
-              step="1"
+              min={1}
+              step={1}
+              value={fps}
+              onChange={(e) => setAnimationFPS(e)}
               className="w-full text-sm text-white font-semibold rounded-lg px-5 py-1.5 bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 opacity-80"
             />
           </div>
@@ -375,9 +596,11 @@ const Rightbar = () => {
               type="range"
               id="frame"
               name="frame"
-              min="0"
-              max="100"
-              step="1"
+              min={0}
+              max={maxFrame}
+              step={1}
+              value={frame}
+              onChange={(e) => setAnimationFrame(e)}
             />
           </div>
         </div>
@@ -437,28 +660,42 @@ const Rightbar = () => {
   );
 };
 
-const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void, setTransformation: (translate: Vec3, rotate: Vec3, scale: Vec3) => void) => {
+const RenderTree = (
+  object: ObjectNode,
+  setActiveObject: (val: string) => void,
+  setTransformation: (translate: Vec3, rotate: Vec3, scale: Vec3) => void
+) => {
   // if name is Camera, return null
   if (object.name === "Camera") {
     return null;
   }
-  return <div className="pl-4">
-    {
-      Renderer.getActiveObject() == object.id ?
-        <span className="block max-w-max my-3 px-2 py-1 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 bg-green-400 text-black cursor-pointer">{object.name}</span>
-        :
-        <span className="block max-w-max my-3 px-2 py-1 text-green-400 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 hover:bg-green-400 hover:text-black cursor-pointer" onClick={() => {
-          Renderer.setActiveObject(object.id)
-          setActiveObject(object.id)
-          setTransformation(Renderer.translation(), Renderer.rotation(), Renderer.scaler())
-        }}>{object.name}</span>
-    }
-    {
-      object.children.map(child => {
-        return RenderTree(child, setActiveObject, setTransformation)
-      })
-    }
-  </div>
-}
+  return (
+    <div className="pl-4">
+      {Renderer.getActiveObject() == object.id ? (
+        <span className="block max-w-max my-3 px-2 py-1 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 bg-green-400 text-black cursor-pointer">
+          {object.name}
+        </span>
+      ) : (
+        <span
+          className="block max-w-max my-3 px-2 py-1 text-green-400 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 hover:bg-green-400 hover:text-black cursor-pointer"
+          onClick={() => {
+            Renderer.setActiveObject(object.id);
+            setActiveObject(object.id);
+            setTransformation(
+              Renderer.translation(),
+              Renderer.rotation(),
+              Renderer.scaler()
+            );
+          }}
+        >
+          {object.name}
+        </span>
+      )}
+      {object.children.map((child) => {
+        return RenderTree(child, setActiveObject, setTransformation);
+      })}
+    </div>
+  );
+};
 
 export default Rightbar;

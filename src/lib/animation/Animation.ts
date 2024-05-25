@@ -57,12 +57,23 @@ export class Animation {
     }
   }
 
-  toggleReverse(): void {
-    this.reverse = !this.reverse;
+  setReverse(reverseStatus: boolean): void {
+    this.reverse = reverseStatus;
   }
 
-  toggleAutoReplay(): void {
-    this.autoReplay = !this.autoReplay;
+  setAutoReplay(autoReplayStatus: boolean): void {
+    this.autoReplay = autoReplayStatus;
+    if (this.isEndOfAnimation()) {
+      this.play();
+    }
+  }
+
+  setFPS(fps: number): void {
+    this.fps = fps;
+    if (this.playing) {
+      this.pause();
+      this.play();
+    }
   }
 
   nextFrame(): void {
@@ -87,6 +98,39 @@ export class Animation {
     this.currentFrameIndex = this.frames.length - 1;
     // Apply current frame to the articulated model
     this.applyFrame();
+  }
+
+  gotoFrame(index: number): void {
+    this.currentFrameIndex = Math.max(
+      0,
+      Math.min(index, this.frames.length - 1)
+    );
+    // Apply current frame to the articulated model
+    this.applyFrame();
+  }
+
+  getObject(): ObjectNode {
+    return this.object;
+  }
+
+  getReverse(): boolean {
+    return this.reverse;
+  }
+
+  getAutoReplay(): boolean {
+    return this.autoReplay;
+  }
+
+  getFPS(): number {
+    return this.fps;
+  }
+
+  getCurrentFrameIndex(): number {
+    return this.currentFrameIndex;
+  }
+
+  getMaxFrameIndex(): number {
+    return this.frames.length - 1;
   }
 
   // Generate keyframes for the articulated model
@@ -164,7 +208,7 @@ export class Animation {
   // Check if the animation has reached the end
   private isEndOfAnimation(): boolean {
     return this.reverse
-      ? this.currentFrameIndex === 0
-      : this.currentFrameIndex === this.frames.length - 1;
+      ? this.currentFrameIndex <= 0
+      : this.currentFrameIndex >= this.frames.length - 1;
   }
 }
