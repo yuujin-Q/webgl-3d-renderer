@@ -445,7 +445,7 @@ const RenderTree = (object: ObjectNode, setActiveObject: (val: string) => void, 
   return <div className="pl-4">
     {
       Renderer.getActiveObject() == object.id ?
-        <span className="block max-w-max my-3 px-2 py-1 text-green-400 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 bg-green-400 text-black cursor-pointer">{object.name}</span>
+        <span className="block max-w-max my-3 px-2 py-1 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 bg-green-400 text-black cursor-pointer">{object.name}</span>
         :
         <span className="block max-w-max my-3 px-2 py-1 text-green-400 font-medium border-2 border-green-400 rounded-md shadow-[0_0_15px_0px] shadow-green-400 hover:bg-green-400 hover:text-black cursor-pointer" onClick={() => {
           Renderer.setActiveObject(object.id)
