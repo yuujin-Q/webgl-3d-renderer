@@ -68,15 +68,14 @@ fcubeScene.add(animal2);
 fcubeScene.add(robot);
 fcubeScene.add(claw);
 fcubeScene.add(pyramid);
+fcubeScene.add(block);
 
 const fcubeAnimations: Animation[] = [];
 const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
-// animalAnimation.play();
+animalAnimation.play();
 const animal2Animation = new Animation(animal2, AnimalModel.frames, 60);
-// animal2Animation.play();
-
-fcubeScene.add(block);
-
+animal2Animation.convertFrames(Vec3.easeInOutBack);
+animal2Animation.play();
 
 fcubeAnimations.push(animalAnimation, animal2Animation);
 

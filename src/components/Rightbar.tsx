@@ -250,6 +250,20 @@ const Rightbar = () => {
       }
     }
   };
+  const applyTweening = (easingFunction: (t: number) => number) => {
+    if (activeObject === scene.id) {
+      animations.forEach((animation) => {
+        animation.convertFrames(easingFunction);
+      });
+    } else {
+      const animation = animations.find(
+        (animation) => animation.getObject().id === activeObject
+      );
+      if (animation) {
+        animation.convertFrames(easingFunction);
+      }
+    }
+  };
 
   return (
     <div className="border-r border-gray-600 bg-black w-3/12 overflow-auto">
@@ -558,6 +572,236 @@ const Rightbar = () => {
               onClick={() => lastAnimationFrame()}
             >
               Last
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-sine"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInSine)}
+            >
+              In Sine
+            </button>
+            <button
+              id="button-ease-out-sine"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutSine)}
+            >
+              Out Sine
+            </button>
+            <button
+              id="button-ease-in-out-sine"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutSine)}
+            >
+              In Out Sine
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-quad"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInQuad)}
+            >
+              In Quad
+            </button>
+            <button
+              id="button-ease-out-quad"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutQuad)}
+            >
+              Out Quad
+            </button>
+            <button
+              id="button-ease-in-out-quad"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutQuad)}
+            >
+              In Out Quad
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-cubic"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInCubic)}
+            >
+              In Cubic
+            </button>
+            <button
+              id="button-ease-out-cubic"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutCubic)}
+            >
+              Out Cubic
+            </button>
+            <button
+              id="button-ease-in-out-cubic"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutCubic)}
+            >
+              In Out Cubic
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-quart"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInQuart)}
+            >
+              In Quart
+            </button>
+            <button
+              id="button-ease-out-quart"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutQuart)}
+            >
+              Out Quart
+            </button>
+            <button
+              id="button-ease-in-out-quart"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutQuart)}
+            >
+              In Out Quart
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-quint"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInQuint)}
+            >
+              In Quint
+            </button>
+            <button
+              id="button-ease-out-quint"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutQuint)}
+            >
+              Out Quint
+            </button>
+            <button
+              id="button-ease-in-out-quint"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutQuint)}
+            >
+              In Out Quint
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-expo"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInExpo)}
+            >
+              In Expo
+            </button>
+            <button
+              id="button-ease-out-expo"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutExpo)}
+            >
+              Out Expo
+            </button>
+            <button
+              id="button-ease-in-out-expo"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutExpo)}
+            >
+              In Out Expo
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-circ"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInCirc)}
+            >
+              In Circ
+            </button>
+            <button
+              id="button-ease-out-circ"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutCirc)}
+            >
+              Out Circ
+            </button>
+            <button
+              id="button-ease-in-out-circ"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutCirc)}
+            >
+              In Out Circ
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-back"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInBack)}
+            >
+              In Back
+            </button>
+            <button
+              id="button-ease-out-back"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutBack)}
+            >
+              Out Back
+            </button>
+            <button
+              id="button-ease-in-out-back"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutBack)}
+            >
+              In Out Back
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-elastic"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInElastic)}
+            >
+              In Elastic
+            </button>
+            <button
+              id="button-ease-out-elastic"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutElastic)}
+            >
+              Out Elastic
+            </button>
+            <button
+              id="button-ease-in-out-elastic"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutElastic)}
+            >
+              In Out Elastic
+            </button>
+          </div>
+          <div className="flex flex-row gap-3">
+            <button
+              id="button-ease-in-bounce"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInBounce)}
+            >
+              In Bounce
+            </button>
+            <button
+              id="button-ease-out-bounce"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeOutBounce)}
+            >
+              Out Bounce
+            </button>
+            <button
+              id="button-ease-in-out-bounce"
+              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+              onClick={() => applyTweening(Vec3.easeInOutBounce)}
+            >
+              InOut Bounce
             </button>
           </div>
           <div className="flex flex-row justify-center text-center items-center">
