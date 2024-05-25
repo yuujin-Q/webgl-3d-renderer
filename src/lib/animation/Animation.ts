@@ -183,9 +183,9 @@ export class Animation {
   // Apply the properties of the current frame to the articulated model
   private applyFrame(): void {
     const currentFrame = this.frames[this.currentFrameIndex];
-    const body = this.object.children[0];
-
-    function applyProperties(node: ObjectNode, nodeName: string): void {
+    
+    const applyPropertiesRecursively = (node: ObjectNode): void => {
+      const nodeName = node.name;
       const nodeKey = Object.keys(currentFrame).find((key) => key === nodeName);
       if (nodeKey) {
         const frame = currentFrame[nodeKey];
@@ -193,13 +193,14 @@ export class Animation {
         node.rotation = frame.rotation;
         node.scale = frame.scale;
       }
-    }
+      // Recursively apply properties to children
+      node.children.forEach((child) => {
+        applyPropertiesRecursively(child);
+      });
+    };
 
-    applyProperties(body, body.name);
-
-    body.children.forEach((child) => {
-      applyProperties(child, child.name);
-    });
+    // Start applying properties from the root object
+    applyPropertiesRecursively(this.object);
 
     this.object.computeWorldMatrix(true, true);
     Renderer.renderScene();
