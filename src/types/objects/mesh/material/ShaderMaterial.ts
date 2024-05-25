@@ -37,9 +37,19 @@ export class ShaderMaterial {
   }
   set defaultColor(c: Color) {
     this._defaultColor = c;
+    if (this._useDefaultColor) {
+      this._attributes["a_color"] = new Float32Array(
+        this._defaultColor.toArray(false)
+      );
+    }
   }
   enableDefaultColor(val: boolean) {
     this._useDefaultColor = val;
+    if (this._useDefaultColor) {
+      this._attributes["a_color"] = new Float32Array(
+        this._defaultColor.toArray(false)
+      );
+    }
   }
 
   get vertexShader() {
@@ -52,18 +62,7 @@ export class ShaderMaterial {
     return this._uniforms;
   }
   get attributes() {
-    if (this._useDefaultColor) {
-      const attr = { ...this._attributes };
-      attr["a_color"] = new Uint8Array([
-        this._defaultColor.rInt,
-        this._defaultColor.gInt,
-        this._defaultColor.bInt,
-      ]);
-      console.log("attr", attr);
-      return attr;
-    } else {
-      return this._attributes;
-    }
+    return this._attributes;
   }
 
   set uniforms(uniforms: { [name: string]: UniformDataType }) {
@@ -84,9 +83,23 @@ export class ShaderMaterial {
         material.uniforms[name] = json.uniforms[name];
       }
     }
+    material._useDefaultColor = json.useDefaultColor;
     // set attributes
     for (const name in json.attributes) {
-      material.attributes[name] = BufferAttribute.fromJSON(json.attributes[name]);
+      // vertex color
+      if (name === "a_color" && material._useDefaultColor) {
+        material.defaultColor = new Color(
+          json.attributes[name][0],
+          json.attributes[name][1],
+          json.attributes[name][2]
+        );
+        material.enableDefaultColor(material._useDefaultColor);
+        continue;
+      }
+
+      material.attributes[name] = BufferAttribute.fromJSON(
+        json.attributes[name]
+      );
     }
     return material;
   }
@@ -96,12 +109,15 @@ export class ShaderMaterial {
       id: material.id,
       vertexShader: material.vertexShader,
       fragmentShader: material.fragmentShader,
+      useDefaultColor: material._useDefaultColor,
       uniforms: {},
       attributes: {},
     };
     for (const name in material.uniforms) {
       if (name === "u_texture" && material.uniforms[name]) {
-        json.uniforms[name] = Texture.toJSON(material.uniforms[name] as Texture);
+        json.uniforms[name] = Texture.toJSON(
+          material.uniforms[name] as Texture
+        );
       } else {
         json.uniforms[name] = material.uniforms[name];
       }

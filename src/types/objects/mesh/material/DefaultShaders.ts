@@ -21,7 +21,7 @@ const basicVertexShader = `
     }
     `;
 const basicFragmentShader = `
-    precision mediump float;
+    precision highp float;
 
     // Passed in from the vertex shader.
     varying vec4 v_color;
@@ -68,7 +68,7 @@ const phongVertexShader = `
 
 // todo: diffuse, specular, etc as varying parameters
 const phongFragmentShader = `
-    precision mediump float;
+    precision highp float;
 
     varying vec4 v_color;
     varying vec4 v_normal;
