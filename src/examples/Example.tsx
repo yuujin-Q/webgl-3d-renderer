@@ -11,6 +11,7 @@ import { Cube } from "./shapes/Cube";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
 import { Animation } from "../lib/animation/Animation";
 import { MechanicalHand } from "./articulated/MechanicalHand";
+import { PyramidModel } from "./hollow/PyramidModel";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -51,6 +52,8 @@ const robot = new RobotModel();
 robot.position = new Vec3(-200, 100, -200);
 const claw = new MechanicalHand();
 claw.position.x = 500;
+const pyramid = new PyramidModel();
+pyramid.position = new Vec3(0, 400, 0);
 
 const fcubeScene = new Scene();
 fcubeScene.name = "F Cube Scene";
@@ -61,6 +64,7 @@ fcubeScene.add(animal);
 fcubeScene.add(animal2);
 fcubeScene.add(robot);
 fcubeScene.add(claw);
+fcubeScene.add(pyramid);
 
 const fcubeAnimations: Animation[] = [];
 const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
