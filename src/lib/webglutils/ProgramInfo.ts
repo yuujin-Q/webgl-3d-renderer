@@ -1,7 +1,7 @@
 import {
-  AttributeDataType,
+  AttributeBatchDataType,
   AttributeMapSetters,
-  AttributeSingleDataType,
+  AttributeDataType,
 } from "./AttributeSetter";
 import { UniformMapSetters, UniformDataType } from "./UniformSetter";
 
@@ -15,7 +15,7 @@ export type ProgramInfo = {
 export function setAttribute(
   programInfo: ProgramInfo,
   attributeName: string,
-  ...data: AttributeDataType
+  ...data: AttributeBatchDataType
 ) {
   const setters = programInfo.attributeSetters;
   if (attributeName in setters) {
@@ -25,7 +25,7 @@ export function setAttribute(
 }
 export function setAttributes(
   programInfo: ProgramInfo,
-  attributes: { [attributeName: string]: AttributeSingleDataType }
+  attributes: { [attributeName: string]: AttributeDataType }
 ) {
   for (const attributeName in attributes) {
     setAttribute(programInfo, attributeName, attributes[attributeName]);

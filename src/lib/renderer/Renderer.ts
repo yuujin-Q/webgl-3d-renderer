@@ -168,10 +168,6 @@ export class Renderer {
 
     this.setProgramInfo(fetchShaderProgram(this.gl, material));
 
-    // if (object.name === "F") {
-    //   console.log("material attr", material.attributes);
-    //   console.log("material unif", material.uniforms);
-    // }
     setAttributes(this.currentProgram, geometry.attributes);
     setAttributes(this.currentProgram, material.attributes);
     setUniforms(this.currentProgram, material.uniforms);

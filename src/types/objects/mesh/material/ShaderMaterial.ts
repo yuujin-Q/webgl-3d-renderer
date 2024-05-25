@@ -1,4 +1,6 @@
+import { AttributeDataType } from "../../../../lib/webglutils/AttributeSetter";
 import { UniformDataType } from "../../../../lib/webglutils/UniformSetter";
+import { Color } from "../../Color";
 import { BufferAttribute } from "../geometry/BufferAttribute";
 import { Texture } from "./Texture";
 
@@ -9,7 +11,11 @@ export class ShaderMaterial {
   private readonly _vertexShader: string;
   private readonly _fragmentShader: string;
   private _uniforms: { [name: string]: UniformDataType };
-  private _attributes: { [name: string]: BufferAttribute };
+  private _attributes: { [name: string]: AttributeDataType };
+
+  // vertex color
+  private _defaultColor: Color = new Color(1, 0, 0);
+  private _useDefaultColor: boolean = false;
 
   constructor(vertexShader: string, fragmentShader: string) {
     this._vertexShader = vertexShader;
@@ -26,6 +32,16 @@ export class ShaderMaterial {
     return this._id === material.id;
   }
 
+  get defaultColor() {
+    return this._defaultColor;
+  }
+  set defaultColor(c: Color) {
+    this._defaultColor = c;
+  }
+  enableDefaultColor(val: boolean) {
+    this._useDefaultColor = val;
+  }
+
   get vertexShader() {
     return this._vertexShader;
   }
@@ -36,13 +52,19 @@ export class ShaderMaterial {
     return this._uniforms;
   }
   get attributes() {
-    return this._attributes;
+    if (this._useDefaultColor) {
+      const attr = { ...this._attributes };
+      attr["a_color"] = new Uint8Array(this._defaultColor.toArray(false));
+      return attr;
+    } else {
+      return this._attributes;
+    }
   }
 
   set uniforms(uniforms: { [name: string]: UniformDataType }) {
     this._uniforms = uniforms;
   }
-  set attributes(attributes: { [name: string]: BufferAttribute }) {
+  set attributes(attributes: { [name: string]: AttributeDataType }) {
     this._attributes = attributes;
   }
 
@@ -80,7 +102,13 @@ export class ShaderMaterial {
       }
     }
     for (const name in material.attributes) {
-      json.attributes[name] = BufferAttribute.toJSON(material.attributes[name]);
+      if (material.attributes[name] instanceof BufferAttribute) {
+        json.attributes[name] = BufferAttribute.toJSON(
+          material.attributes[name]
+        );
+      } else {
+        json.attributes[name] = material.attributes[name];
+      }
     }
     return json;
   }
