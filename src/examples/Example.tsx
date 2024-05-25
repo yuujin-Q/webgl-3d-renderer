@@ -10,6 +10,7 @@ import { LetterF } from "./shapes/LetterF";
 import { Cube } from "./shapes/Cube";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
 import { Animation } from "../lib/animation/Animation";
+import { MechanicalHand } from "./articulated/MechanicalHand";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -45,6 +46,8 @@ const animal = new AnimalModel();
 animal.position = new Vec3(-400, 0, 200);
 const robot = new RobotModel();
 robot.position = new Vec3(-200, 100, -200);
+const claw = new MechanicalHand();
+claw.position.x = 500;
 
 const fcubeScene = new Scene();
 fcubeScene.name = "F Cube Scene";
@@ -53,8 +56,9 @@ fcubeScene.add(cube);
 fcubeScene.add(planemesh);
 fcubeScene.add(animal);
 fcubeScene.add(robot);
+fcubeScene.add(claw);
 
 // const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
 // animalAnimation.play();
 
-export { fmesh, planemesh, cube, fcubeScene };
+export { fcubeScene };
