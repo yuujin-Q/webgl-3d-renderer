@@ -133,6 +133,27 @@ export class Animation {
     return this.frames.length - 1;
   }
 
+  // Convert the frames using the specified easing function
+  convertFrames(easingFunction: (t: number) => number): void {
+    const totalFrames = this.frames.length;
+    
+    const startFinishPairs = Object.entries(this.frames[0]).map(([key, value]) => {
+      const start = value;
+      const end = this.frames[totalFrames - 1][key];
+      return [start, end];
+    });
+
+    this.frames = Animation.generateFrames(
+      Object.keys(this.frames[0]),
+      startFinishPairs.map(([start, end]) => [start.position, end.position]),
+      startFinishPairs.map(([start, end]) => [start.rotation, end.rotation]),
+      startFinishPairs.map(([start, end]) => [start.scale, end.scale]),
+      totalFrames,
+      false,
+      easingFunction
+    );
+  }
+
   // Generate keyframes for the articulated model
   static generateFrames(
     keys: string[],
@@ -140,7 +161,8 @@ export class Animation {
     rotations: [Vec3, Vec3][],
     scales: [Vec3, Vec3][],
     totalFrames: number,
-    looped: boolean = false
+    looped: boolean = false,
+    easingFunction: (t: number) => number = Vec3.easeInSine // Default easing function
   ): AnimationFrame[] {
     const keyFrames = [];
     let loopedFrames = totalFrames;
@@ -156,6 +178,8 @@ export class Animation {
         // Reverse the animation for the second half
         t = 2 - t;
       }
+
+      t = easingFunction(t);
 
       const position = positions.map(([start, end]) =>
         Vec3.lerp(start, end, t)
