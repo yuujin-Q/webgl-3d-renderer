@@ -136,12 +136,14 @@ export class Animation {
   // Convert the frames using the specified easing function
   convertFrames(easingFunction: (t: number) => number): void {
     const totalFrames = this.frames.length;
-    
-    const startFinishPairs = Object.entries(this.frames[0]).map(([key, value]) => {
-      const start = value;
-      const end = this.frames[totalFrames - 1][key];
-      return [start, end];
-    });
+
+    const startFinishPairs = Object.entries(this.frames[0]).map(
+      ([key, value]) => {
+        const start = value;
+        const end = this.frames[totalFrames - 1][key];
+        return [start, end];
+      }
+    );
 
     this.frames = Animation.generateFrames(
       Object.keys(this.frames[0]),
@@ -152,6 +154,10 @@ export class Animation {
       false,
       easingFunction
     );
+
+    if (this.playing) {
+      this.gotoFirstFrame();
+    }
   }
 
   // Generate keyframes for the articulated model
