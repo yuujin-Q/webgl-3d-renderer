@@ -2,9 +2,16 @@ import { Vec3 } from "../../types/math/Vec3";
 import { ObjectNode } from "../../types/objects/ObjectNode";
 import { Renderer } from "../renderer/Renderer";
 
+export type AnimationTRS = {
+  position: Vec3;
+  rotation: Vec3;
+  scale: Vec3;
+};
+export type AnimationFrame<T = AnimationTRS> = { [key: string]: T };
+
 export class Animation {
   private object: ObjectNode;
-  private frames: any[] = [];
+  private frames: AnimationFrame[] = [];
   private currentFrameIndex: number = 0;
   private playing: boolean = false;
   private reverse: boolean = false;
@@ -12,7 +19,7 @@ export class Animation {
   private fps: number = 30;
   private intervalId: number | null = null;
 
-  constructor(object: ObjectNode, frames: any[], fps: number = 30) {
+  constructor(object: ObjectNode, frames: AnimationFrame[], fps: number = 30) {
     this.object = object;
     this.frames = frames;
     this.fps = fps;
@@ -90,7 +97,7 @@ export class Animation {
     scales: [Vec3, Vec3][],
     totalFrames: number,
     looped: boolean = false
-  ): any[] {
+  ): AnimationFrame[] {
     const keyFrames = [];
     let loopedFrames = totalFrames;
 
@@ -114,7 +121,7 @@ export class Animation {
       );
       const scale = scales.map(([start, end]) => Vec3.lerp(start, end, t));
 
-      const keyFrame: any = {};
+      const keyFrame: AnimationFrame = {};
       keys.forEach((key, index) => {
         keyFrame[key] = {
           position: position[index],
@@ -134,19 +141,13 @@ export class Animation {
     const currentFrame = this.frames[this.currentFrameIndex];
     const body = this.object.children[0];
 
-    function applyProperties(node: any, nodeName: string): void {
+    function applyProperties(node: ObjectNode, nodeName: string): void {
       const nodeKey = Object.keys(currentFrame).find((key) => key === nodeName);
       if (nodeKey) {
         const frame = currentFrame[nodeKey];
-        if (frame.hasOwnProperty("position")) {
-          node.position = frame.position;
-        }
-        if (frame.hasOwnProperty("rotation")) {
-          node.rotation = frame.rotation;
-        }
-        if (frame.hasOwnProperty("scale")) {
-          node.scale = frame.scale;
-        }
+        node.position = frame.position;
+        node.rotation = frame.rotation;
+        node.scale = frame.scale;
       }
     }
 

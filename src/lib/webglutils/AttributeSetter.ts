@@ -1,12 +1,12 @@
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 
-export type AttributeSingleDataType =
+export type AttributeDataType =
   | BufferAttribute
   | Float32Array
   | Uint8Array
   | number[];
-export type AttributeDataType = [AttributeSingleDataType] | number[];
-export type AttributeSetters = (...v: AttributeDataType) => void;
+export type AttributeBatchDataType = [AttributeDataType] | number[];
+export type AttributeSetters = (...v: AttributeBatchDataType) => void;
 export type AttributeMapSetters = { [key: string]: AttributeSetters };
 export function createAttributeSetters(
   gl: WebGLRenderingContext,
