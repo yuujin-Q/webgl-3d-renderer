@@ -54,7 +54,12 @@ export class ShaderMaterial {
   get attributes() {
     if (this._useDefaultColor) {
       const attr = { ...this._attributes };
-      attr["a_color"] = new Uint8Array(this._defaultColor.toArray(false));
+      attr["a_color"] = new Uint8Array([
+        this._defaultColor.rInt,
+        this._defaultColor.gInt,
+        this._defaultColor.bInt,
+      ]);
+      console.log("attr", attr);
       return attr;
     } else {
       return this._attributes;
