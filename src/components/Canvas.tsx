@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/renderer/Renderer";
 import { MouseInput } from "../lib/Mouse";
-import { fcubeScene, } from "../examples/Example";
+import { fcubeScene, fcubeAnimations } from "../examples/Example";
 import { useAppAction } from "../stores";
 import { DirectionalLight } from "../types/objects/light/DirectionalLight";
 import { Vec3 } from "../types/math/Vec3";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
-  const { setScene, setActiveObject } = useAppAction()
+  const { setScene, setActiveObject, setAnimations } = useAppAction()
   const [drag, setDrag] = useState(false);
 
   // INIT WEBGL
@@ -28,8 +28,9 @@ const Canvas = () => {
     
     Renderer.setScene(scene);
     setScene(scene)
-    Renderer.setActiveObject(scene.name)
-    setActiveObject(scene.name)
+    Renderer.setActiveObject(scene.id)
+    setActiveObject(scene.id)
+    setAnimations(fcubeAnimations)
     Renderer.setLight(light)
     Renderer.renderScene();
     console.log(scene)
