@@ -44,6 +44,9 @@ const cube = new Cube();
 cube.position = new Vec3(200, 0, 200);
 const animal = new AnimalModel();
 animal.position = new Vec3(-400, 0, 200);
+const animal2 = new AnimalModel();
+animal2.position = new Vec3(400, 0, 400);
+animal2.rotation = new Vec3(0, -90, 0);
 const robot = new RobotModel();
 robot.position = new Vec3(-200, 100, -200);
 const claw = new MechanicalHand();
@@ -55,10 +58,16 @@ fcubeScene.add(fmesh);
 fcubeScene.add(cube);
 fcubeScene.add(planemesh);
 fcubeScene.add(animal);
+fcubeScene.add(animal2);
 fcubeScene.add(robot);
 fcubeScene.add(claw);
 
-// const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
-// animalAnimation.play();
+const fcubeAnimations: Animation[] = [];
+const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
+animalAnimation.play();
+const animal2Animation = new Animation(animal2, AnimalModel.frames, 60);
+animal2Animation.play();
 
-export { fcubeScene };
+fcubeAnimations.push(animalAnimation, animal2Animation);
+
+export { fcubeScene, fcubeAnimations };
