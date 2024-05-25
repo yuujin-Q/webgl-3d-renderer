@@ -169,36 +169,36 @@ export class AnimalModel extends ObjectNode {
   }
 
   // Generate frames for walking animation
-  // static frames = Animation.generateFrames(
-  //   ["body", "head", "leftFrontLeg", "rightFrontLeg", "leftBackLeg", "rightBackLeg", "tail"],
-  //   [
-  //     [new Vec3(0, 0, 0), new Vec3(200, 0, 0)],
-  //     [new Vec3(100, 60, 0), new Vec3(100, 60, 0)],
-  //     [new Vec3(50, -50, -50), new Vec3(50, -50, -50)],
-  //     [new Vec3(50, -50, 50), new Vec3(50, -50, 50)],
-  //     [new Vec3(-50, -50, -50), new Vec3(-50, -50, -50)],
-  //     [new Vec3(-50, -50, 50), new Vec3(-50, -50, 50)],
-  //     [new Vec3(-125, 25, 0), new Vec3(-125, 25, 0)],
-  //   ],
-  //   [
-  //     [new Vec3(0, 0, 0), new Vec3(0, 0, 0)],
-  //     [new Vec3(0, 0, -0.25), new Vec3(0, 0, 0.25)],
-  //     [new Vec3(0, 0, -0.4), new Vec3(0, 0, 0.4)],
-  //     [new Vec3(0, 0, 0.4), new Vec3(0, 0, -0.4)],
-  //     [new Vec3(0, 0, 0.4), new Vec3(0, 0, -0.4)],
-  //     [new Vec3(0, 0, -0.4), new Vec3(0, 0, 0.4)],
-  //     [new Vec3(0, 0.25, -0.25), new Vec3(0, -0.25, -0.25)],
-  //   ],
-  //   [
-  //     [new Vec3(1, 1, 1), new Vec3(1.25, 1.25, 1.25)],
-  //     [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
-  //     [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
-  //     [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
-  //     [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
-  //     [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
-  //     [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
-  //   ],
-  //   100,
-  //   true
-  // );
+  static frames = Animation.generateFrames(
+    ["body", "head", "leftFrontLeg", "rightFrontLeg", "leftBackLeg", "rightBackLeg", "tail"],
+    [
+      [new Vec3(0, 0, 0), new Vec3(200, 0, 0)],
+      [new Vec3(100, 60, 0), new Vec3(100, 60, 0)],
+      [new Vec3(50, -50, -50), new Vec3(50, -50, -50)],
+      [new Vec3(50, -50, 50), new Vec3(50, -50, 50)],
+      [new Vec3(-50, -50, -50), new Vec3(-50, -50, -50)],
+      [new Vec3(-50, -50, 50), new Vec3(-50, -50, 50)],
+      [new Vec3(-125, 25, 0), new Vec3(-125, 25, 0)],
+    ],
+    [
+      [new Vec3(0, 0, 0), new Vec3(0, 0, 0)],
+      [new Vec3(0, 0, -0.25), new Vec3(0, 0, 0.25)],
+      [new Vec3(0, 0, -0.4), new Vec3(0, 0, 0.4)],
+      [new Vec3(0, 0, 0.4), new Vec3(0, 0, -0.4)],
+      [new Vec3(0, 0, 0.4), new Vec3(0, 0, -0.4)],
+      [new Vec3(0, 0, -0.4), new Vec3(0, 0, 0.4)],
+      [new Vec3(0, 0.25, -0.25), new Vec3(0, -0.25, -0.25)],
+    ],
+    [
+      [new Vec3(1, 1, 1), new Vec3(1.25, 1.25, 1.25)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+    ],
+    100,
+    false
+  );
 }
