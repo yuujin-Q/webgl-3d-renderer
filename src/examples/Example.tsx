@@ -9,7 +9,6 @@ import { RobotModel } from "./articulated/RobotModel";
 import { LetterF } from "./shapes/LetterF";
 import { Cube } from "./shapes/Cube";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
-import { Animation } from "../lib/animation/Animation";
 import { MechanicalHand } from "./articulated/MechanicalHand";
 import { PyramidModel } from "./hollow/PyramidModel";
 import { CinderBlock } from "./hollow/CinderBlock";
@@ -78,13 +77,4 @@ fcubeScene.add(pyramid);
 fcubeScene.add(block);
 fcubeScene.add(hollowCube);
 
-const fcubeAnimations: Animation[] = [];
-const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
-animalAnimation.play();
-const animal2Animation = new Animation(animal2, AnimalModel.frames, 60);
-animal2Animation.convertFrames(Vec3.easeInOutBack);
-animal2Animation.play();
-
-fcubeAnimations.push(animalAnimation, animal2Animation);
-
-export { fcubeScene, fcubeAnimations };
+export { fcubeScene };

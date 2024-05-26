@@ -5,7 +5,7 @@ import { Scene } from "../types/objects/Scene";
 import { useAppAction } from "../stores";
 
 const Header = () => {
-  const { setScene, setActiveObject } = useAppAction()
+  const { setScene, setActiveObject, setAnimations } = useAppAction()
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSave = () => {
@@ -30,10 +30,17 @@ const Header = () => {
       const content = e.target?.result;
       if (typeof content === "string") {
         const scene: Scene = GLTFConverter.load(content);
+
+        const animatedChildren = scene.children.filter((child) => {
+          return child.animation.isAnimated();
+        });
+        const fcubeAnimations = animatedChildren.map((child) => child.animation);
+
         Renderer.setScene(scene);
         setScene(scene)
         Renderer.setActiveObject(scene.id)
         setActiveObject(scene.id)
+        setAnimations(fcubeAnimations);
         Renderer.renderScene();
         console.log(scene)
       }

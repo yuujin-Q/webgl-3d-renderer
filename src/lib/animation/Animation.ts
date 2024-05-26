@@ -16,13 +16,20 @@ export class Animation {
   private playing: boolean = false;
   private reverse: boolean = false;
   private autoReplay: boolean = true;
-  private fps: number = 30;
+  private fps: number = 60;
   private intervalId: number | null = null;
 
-  constructor(object: ObjectNode, frames: AnimationFrame[], fps: number = 30) {
+  constructor(object: ObjectNode, frames?: AnimationFrame[], fps?: number) {
     this.object = object;
-    this.frames = frames;
-    this.fps = fps;
+
+    if (frames && fps) {
+      this.frames = frames;
+      this.fps = fps;
+    }
+
+    if (this.isAnimated()) {
+      this.play();
+    }
   }
 
   // Methods for controlling animation
@@ -133,6 +140,10 @@ export class Animation {
     return this.frames.length - 1;
   }
 
+  isAnimated(): boolean {
+    return this.frames.length > 0;
+  }
+
   // Convert the frames using the specified easing function
   convertFrames(easingFunction: (t: number) => number): void {
     const totalFrames = this.frames.length;
@@ -223,6 +234,26 @@ export class Animation {
     });
 
     return combinedFrames;
+  }
+
+  static toJSON(animation: Animation): any {
+    if (!animation.isAnimated()) {
+      return {};
+    }
+
+    return {
+      object: animation.object.name,
+      frames: animation.frames,
+      fps: animation.fps,
+    };
+  }
+
+  static fromJSON(object: ObjectNode, json: any): Animation {
+    if (!json.frames) {
+      return new Animation(object);
+    }
+
+    return new Animation(object, json.frames, json.fps);
   }
 
   // Apply the properties of the current frame to the articulated model
