@@ -89,4 +89,4 @@ fcubeScene.add(hollowCube);
 fcubeScene.add(trapzz);
 fcubeScene.add(creeper);
 
-export { fcubeScene };
+export { fcubeScene, animal, robot, creeper, claw, trapzz, hollowCube, pyramid, block };

@@ -6,9 +6,14 @@ import * as RadixSlider from '@radix-ui/react-slider';
 import { DirectionalLight } from "../types/objects/light/DirectionalLight";
 import { Vec3 } from "../types/math/Vec3";
 import { Color } from "../types/objects/Color";
+import { useAppAction, useAppStore } from "../stores";
 
+type EnumModel = "animal" | "mechanic_hand" | "robot" | "creeper" | "pyramid" | "cinder_block" | "hollow_cube" | "trapzz"
 
 const Leftbar = () => {
+  const { model } = useAppStore(state => state)
+  const { setModel } = useAppAction()
+  
 
   return (
     <div className="border-r border-gray-600 bg-black w-3/12 overflow-auto">
@@ -19,17 +24,24 @@ const Leftbar = () => {
             htmlFor="model"
             className="block text-xl font-bold text-white w-5/12"
           >
-            Articulated Model
+            Select Model
           </label>
           <select
             id="model"
             className="border text-sm font-semibold rounded-lg w-7/12 p-3 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-
+            value={model}
+            onChange={(e) => {
+              setModel(e.target.value as EnumModel)
+            }}
           >
-            <option value="3D1">3D Satu</option>
-            <option value="3D2">3D Dua</option>
-            <option value="3D3">3D Tiga</option>
-            <option value="3D4">3D Empat</option>
+            <option value="animal">Animal Model</option>
+            <option value="mechanic_hand">Mechanic Hand</option>
+            <option value="robot">Robot Model</option>
+            <option value="creeper">Creeper</option>
+            <option value="pyramid">Pyramid</option>
+            <option value="cinder_block">Cinder Block</option>
+            <option value="hollow_cube">Hollow Cube</option>
+            <option value="trapzz">Trapzz</option>
           </select>
         </div>
       </div>

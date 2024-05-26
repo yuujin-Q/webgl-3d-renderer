@@ -2,23 +2,55 @@ import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/renderer/Renderer";
 import { MouseInput } from "../lib/Mouse";
-import { fcubeScene } from "../examples/Example";
-import { useAppAction } from "../stores";
+import { animal, block, claw, creeper, fcubeScene, hollowCube, pyramid, robot, trapzz } from "../examples/Example";
+import { useAppAction, useAppStore } from "../stores";
 import { DirectionalLight } from "../types/objects/light/DirectionalLight";
 import { Vec3 } from "../types/math/Vec3";
+import { Scene } from "../types/objects/Scene";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
   const { setScene, setActiveObject, setAnimations } = useAppAction();
+  const { model} = useAppStore(state => state);
   const [drag, setDrag] = useState(false);
 
   // INIT WEBGL
   useEffect(() => {
-    const scene = fcubeScene;
+    const scene = new Scene();
+    scene.name = "Root"
     const gl = canvasRef?.current?.getContext("webgl");
     if (!gl) {
       console.error("No GL");
       return;
+    }
+
+    switch (model) {
+      case "animal":
+        scene.add(animal)
+        break;
+      case "creeper":
+        scene.add(creeper)
+        break;
+      case "mechanic_hand":
+        scene.add(claw)
+        break;
+      case "robot":
+        scene.add(robot)
+        break;
+      case "cinder_block":
+        scene.add(block)
+        break
+      case "hollow_cube":
+        scene.add(hollowCube)
+        break
+      case "pyramid":
+        scene.add(pyramid)
+        break
+      case "trapzz":
+        scene.add(trapzz)
+        break
+      default:
+        break;
     }
 
     const animatedChildren = scene.children.filter((child) => {
@@ -28,7 +60,6 @@ const Canvas = () => {
 
     const light = new DirectionalLight();
     light.setDirection(new Vec3(1, 1, 1));
-    console.log(light);
     Renderer.initializeRenderer(gl);
 
     Renderer.setScene(scene);
@@ -39,7 +70,7 @@ const Canvas = () => {
     Renderer.setLight(light);
     Renderer.renderScene();
     console.log(scene);
-  }, [canvasRef]);
+  }, [canvasRef, model]);
 
   return (
     <div className="flex flex-col w-6/12 bg-gray-700 h-full">

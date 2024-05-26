@@ -10,6 +10,7 @@ type AppState = {
     canvasRef: React.LegacyRef<HTMLCanvasElement>;
     gl: WebGLRenderingContext | null;
     glProgram: ProgramInfo | null;
+    model: "animal" | "mechanic_hand" | "robot" | "creeper" | "pyramid" | "cinder_block" | "hollow_cube" | "trapzz"
 
     // shaders
     defaultVertexShader: string;
@@ -39,6 +40,7 @@ type AppState = {
         setGlobalRotate: (glGlobalRotate: Vec3) => void,
         setGlobalScale: (glGlobalTranslate: Vec3) => void,
         setAnimations: (glAnimations: Animation[]) => void,
+        setModel: (model: "animal" | "mechanic_hand" | "robot" | "creeper" | "pyramid" | "cinder_block" | "hollow_cube" | "trapzz") => void
     };
 };
 
@@ -105,6 +107,7 @@ export const useAppStore = create<AppState>((set) => ({
     globalRotate: new Vec3(0, 0, 0),
     globalScale: new Vec3(1, 1, 1),
     animations: [],
+    model: "animal",
 
     actions: {
         setCanvasRef(canvasRef){
@@ -137,6 +140,9 @@ export const useAppStore = create<AppState>((set) => ({
         setAnimations(animations) {
             set({ animations });
         },
+        setModel(model){
+            set({model})
+        }
     }
 }));
 
