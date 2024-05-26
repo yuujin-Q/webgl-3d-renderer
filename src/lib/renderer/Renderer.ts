@@ -214,14 +214,12 @@ export class Renderer {
     if (!(object instanceof Mesh)) {
       object.children.forEach((obj) => this.setMeshColorRecurrent(obj, color));
     } else {
-      if (object.material instanceof BasicMaterial) {
-        object.material.attributes["a_color"] = new Float32Array([
-          color.r,
-          color.g,
-          color.b,
-        ]);
-        console.log(object.material.attributes["a_color"]);
-      }
+      object.material.attributes["a_color"] = new Float32Array([
+        color.r,
+        color.g,
+        color.b,
+      ]);
+      console.log(object.material.attributes["a_color"]);
       object.children.forEach(obj => this.setMeshColorRecurrent(obj, color))
     }
   }
@@ -404,7 +402,9 @@ export class Renderer {
         object.material = newMaterial
       }
       if(material == "phong" && (object.material instanceof BasicMaterial)){
-        
+        const newMaterial =  new PhongMaterial()
+        newMaterial.attributes["a_color"] = new Float32Array([0.5, 0.4, 0])
+        object.material = newMaterial
       }
     }
     object.children.forEach(child => this.changeMaterialChildRecurrent(child, material))
