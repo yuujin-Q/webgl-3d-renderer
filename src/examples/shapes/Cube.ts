@@ -2,6 +2,7 @@ import { WebGLType } from "../../lib/webglutils/WebGLType";
 import { Color } from "../../types/objects/Color";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 import { CubeGeometry } from "../../types/objects/mesh/geometry/CubeGeometry";
+import { brickPreset, fPreset } from "../../types/objects/mesh/material/DefaultTexture";
 import { PhongMaterial } from "../../types/objects/mesh/material/PhongMaterial";
 import { Mesh } from "../../types/objects/mesh/Mesh";
 
@@ -16,8 +17,42 @@ export class Cube extends Mesh {
 
     cubeMaterial.defaultColor = new Color(0.5, 0.5, 0.5);
     cubeMaterial.enableDefaultColor(true);
+    const vertices = geometry.attributes["a_position"].data;
+    const texCoord: number[] = [];
+    for (let index = 0; index < vertices.length; index += 9) {
+      const v0 = vertices.slice(index, index + 3);
+      const v1 = vertices.slice(index + 3, index + 6);
+      const v2 = vertices.slice(index + 6, index + 9);
+
+      const mapping = (e: number) => {
+        if (e <= 0) return 0;
+        else return 1;
+      };
+      if (v0[0] == v1[0] && v1[0] == v2[0]) {
+        texCoord.push(mapping(v0[2]), mapping(v0[1]));
+        texCoord.push(mapping(v1[2]), mapping(v1[1]));
+        texCoord.push(mapping(v2[2]), mapping(v2[1]));
+      }
+      if (v0[1] == v1[1] && v1[1] == v2[1]) {
+        if (v0[1] < 0) {
+          texCoord.push(mapping(v0[2]), mapping(v0[0]));
+          texCoord.push(mapping(v1[2]), mapping(v1[0]));
+          texCoord.push(mapping(v2[2]), mapping(v2[0]));
+        } else {
+          texCoord.push(mapping(-v0[2]), mapping(v0[0]));
+          texCoord.push(mapping(-v1[2]), mapping(v1[0]));
+          texCoord.push(mapping(-v2[2]), mapping(v2[0]));
+        }
+      }
+      if (v0[2] == v1[2] && v1[2] == v2[2]) {
+        texCoord.push(mapping(v0[0]), mapping(v0[1]));
+        texCoord.push(mapping(v1[0]), mapping(v1[1]));
+        texCoord.push(mapping(v2[0]), mapping(v2[1]));
+      }
+    }
+    // console.log(texCoord.length / 2, vertices.length / 3);
     geometry.attributes["a_texcoord"] = new BufferAttribute(
-      new Float32Array(Array(100).fill([0, 0, 0, 1, 1, 0, 1, 1]).flat()),
+      new Float32Array(texCoord),
       2
     );
     cubeMaterial.attributes["a_color"] = new BufferAttribute(
@@ -95,6 +130,8 @@ export class Cube extends Mesh {
         offset: offset,
       }
     );
+    cubeMaterial.setTexture(brickPreset.u_diffuseMap);
+    
     super(geometry, cubeMaterial);
     this.name = "Cube";
   }

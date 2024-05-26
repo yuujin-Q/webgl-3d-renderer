@@ -24,4 +24,11 @@ const brickPreset: TexturePreset = {
   u_displacementMap: brickDisplacementMap,
 };
 
-export { brickPreset };
+// F
+const fTexture = new Texture();
+fTexture.setData("/f-texture.png");
+const fPreset: TexturePreset = {
+  u_diffuseMap: fTexture,
+};
+
+export { brickPreset, fPreset };

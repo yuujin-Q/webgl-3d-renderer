@@ -40,21 +40,32 @@ export class PhongMaterial extends ShaderMaterial {
       options?.displacementMap || brickPreset.u_displacementMap!;
     this.shininess = options?.shininess || 32;
 
+    this.uniforms["u_ambient"] = this.ambientColor.toArray(false);
+    this.uniforms["u_diffuseMap"] = this.diffuseMap;
+    this.uniforms["u_diffuseColor"] = this.diffuseColor.toArray(true);
+    this.uniforms["u_specularMap"] = this.specularMap;
+    this.uniforms["u_specularColor"] = this.specularColor.toArray(true);
+    this.uniforms["u_shininess"] = [this.shininess];
+    this.uniforms["u_normalMap"] = this.normalMap;
+    this.uniforms["u_displacementMap"] = this.displacementMap;
+    this.uniforms["u_useNormalMap"] = [+this.useNormalMap];
+
     this._id = "PhongMaterial";
   }
 
-  get uniforms() {
-    return {
-      ...super.uniforms,
-      u_ambientColor: this.ambientColor.toArray(true),
-      u_diffuseMap: this.diffuseMap,
-      u_diffuseColor: this.diffuseColor.toArray(true),
-      u_specularMap: this.specularMap,
-      u_specularColor: this.specularColor.toArray(true),
-      u_shininess: [this.shininess],
-      u_normalMap: this.normalMap,
-      u_displacementMap: this.displacementMap,
-      u_useNormalMap: [+this.useNormalMap],
-    };
+  useTexture(val: boolean, key?: string) {
+    if (key) {
+      this.uniforms[key] = [val ? 1 : 0];
+    } else {
+      this.uniforms["u_useTexture"] = [val ? 1 : 0];
+    }
+  }
+  setTexture(t: Texture, key?: string) {
+    if (key) {
+      this.uniforms[key] = t;
+    } else {
+      this.uniforms["u_texture"] = t;
+    }
+    this.useTexture(true);
   }
 }

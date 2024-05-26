@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/renderer/Renderer";
 import { MouseInput } from "../lib/Mouse";
-import { animal, block, claw, creeper, fcubeScene, hollowCube, pyramid, robot, trapzz } from "../examples/Example";
+import { animal, block, claw, creeper, hollowCube, pyramid, robot, trapzz } from "../examples/Example";
 import { useAppAction, useAppStore } from "../stores";
 import { DirectionalLight } from "../types/objects/light/DirectionalLight";
 import { Vec3 } from "../types/math/Vec3";
