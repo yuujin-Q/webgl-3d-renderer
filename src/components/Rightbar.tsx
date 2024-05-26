@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { Download, Plus, Trash, Upload } from "phosphor-react";
 import { Cube } from "../examples/shapes/Cube";
 import { GLTFConverter } from "../lib/GLTFConverter";
-import { Scene } from "../types/objects/Scene";
 
 const Rightbar = () => {
   const {
@@ -278,21 +277,27 @@ const Rightbar = () => {
       <div className="p-2">
         <h1 className="text-md text-white font-bold">Component Editor:</h1>
         <div className="flex w-full justify-evenly mt-2">
-          <span className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" 
+          <span
+            className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95"
             onClick={() => {
-              const newChild = new Cube()
-              console.log(newChild)
-              Renderer.addChildOnCurrentObject(newChild)
-              Renderer.setActiveObject(newChild.id)
-              setActiveObject(newChild.id)
+              const newChild = new Cube();
+              console.log(newChild);
+              Renderer.addChildOnCurrentObject(newChild);
+              Renderer.setActiveObject(newChild.id);
+              setActiveObject(newChild.id);
             }}
-          ><Plus weight="bold"/></span>
-          <span className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" 
+          >
+            <Plus weight="bold" />
+          </span>
+          <span
+            className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95"
             onClick={() => {
-              console.log(Renderer.getActiveObject(), Renderer.getScene())
-              const rootNode = Renderer.getObjectById(Renderer.getActiveObject());
-              console.log(rootNode)
-              if(rootNode){
+              console.log(Renderer.getActiveObject(), Renderer.getScene());
+              const rootNode = Renderer.getObjectById(
+                Renderer.getActiveObject()
+              );
+              console.log(rootNode);
+              if (rootNode) {
                 const gltf = GLTFConverter.save(rootNode);
                 // alert("gltf: " + gltf);
                 const blob = new Blob([gltf], { type: "application/json" });
@@ -304,7 +309,9 @@ const Rightbar = () => {
                 URL.revokeObjectURL(url);
               }
             }}
-          ><Download weight="bold"/></span>
+          >
+            <Download weight="bold" />
+          </span>
           <input
             className="hidden"
             type="file"
@@ -320,27 +327,35 @@ const Rightbar = () => {
                 const content = e.target?.result;
                 if (typeof content === "string") {
                   const object: ObjectNode = GLTFConverter.load(content);
-                  console.log(object)
-                  Renderer.addChildOnCurrentObject(object)
-                  Renderer.setActiveObject(object.id)
-                  setActiveObject(object.id)
+                  console.log(object);
+                  Renderer.addChildOnCurrentObject(object);
+                  Renderer.setActiveObject(object.id);
+                  setActiveObject(object.id);
                 }
               };
               reader.readAsText(file);
             }}
           />
-          <label htmlFor="importChild" className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" ><Upload weight="bold"/></label>
-          <span className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95" 
+          <label
+            htmlFor="importChild"
+            className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95"
+          >
+            <Upload weight="bold" />
+          </label>
+          <span
+            className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95"
             onClick={() => {
-              const object = Renderer.getObjectById(Renderer.getActiveObject())
-              if(object){
-                Renderer.removeObject(object)
-                Renderer.setActiveObject(Renderer.getScene().id)
-                setActiveObject(Renderer.getScene().id)
-                Renderer.renderScene()
+              const object = Renderer.getObjectById(Renderer.getActiveObject());
+              if (object) {
+                Renderer.removeObject(object);
+                Renderer.setActiveObject(Renderer.getScene().id);
+                setActiveObject(Renderer.getScene().id);
+                Renderer.renderScene();
               }
             }}
-          ><Trash weight="bold"/></span>
+          >
+            <Trash weight="bold" />
+          </span>
         </div>
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
@@ -595,390 +610,397 @@ const Rightbar = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
-        <h1 className="text-md font-bold">Animation</h1>
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-animation-play"
-              className="w-1/2 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => playAnimation()}
-            >
-              Play
-            </button>
-            <button
-              id="button-animation-pause"
-              className="w-1/2 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => pauseAnimation()}
-            >
-              Pause
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-animation-prev"
-              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => prevAnimationFrame()}
-            >
-              Prev
-            </button>
-            <button
-              id="button-animation-next"
-              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => nextAnimationFrame()}
-            >
-              Next
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-animation-first"
-              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => firstAnimationFrame()}
-            >
-              First
-            </button>
-            <button
-              id="button-animation-last"
-              className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => lastAnimationFrame()}
-            >
-              Last
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-sine"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInSine)}
-            >
-              In Sine
-            </button>
-            <button
-              id="button-ease-out-sine"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutSine)}
-            >
-              Out Sine
-            </button>
-            <button
-              id="button-ease-in-out-sine"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutSine)}
-            >
-              In Out Sine
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-quad"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInQuad)}
-            >
-              In Quad
-            </button>
-            <button
-              id="button-ease-out-quad"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutQuad)}
-            >
-              Out Quad
-            </button>
-            <button
-              id="button-ease-in-out-quad"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutQuad)}
-            >
-              In Out Quad
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-cubic"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInCubic)}
-            >
-              In Cubic
-            </button>
-            <button
-              id="button-ease-out-cubic"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutCubic)}
-            >
-              Out Cubic
-            </button>
-            <button
-              id="button-ease-in-out-cubic"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutCubic)}
-            >
-              In Out Cubic
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-quart"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInQuart)}
-            >
-              In Quart
-            </button>
-            <button
-              id="button-ease-out-quart"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutQuart)}
-            >
-              Out Quart
-            </button>
-            <button
-              id="button-ease-in-out-quart"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutQuart)}
-            >
-              In Out Quart
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-quint"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInQuint)}
-            >
-              In Quint
-            </button>
-            <button
-              id="button-ease-out-quint"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutQuint)}
-            >
-              Out Quint
-            </button>
-            <button
-              id="button-ease-in-out-quint"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutQuint)}
-            >
-              In Out Quint
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-expo"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInExpo)}
-            >
-              In Expo
-            </button>
-            <button
-              id="button-ease-out-expo"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutExpo)}
-            >
-              Out Expo
-            </button>
-            <button
-              id="button-ease-in-out-expo"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutExpo)}
-            >
-              In Out Expo
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-circ"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInCirc)}
-            >
-              In Circ
-            </button>
-            <button
-              id="button-ease-out-circ"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutCirc)}
-            >
-              Out Circ
-            </button>
-            <button
-              id="button-ease-in-out-circ"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutCirc)}
-            >
-              In Out Circ
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-back"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInBack)}
-            >
-              In Back
-            </button>
-            <button
-              id="button-ease-out-back"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutBack)}
-            >
-              Out Back
-            </button>
-            <button
-              id="button-ease-in-out-back"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutBack)}
-            >
-              In Out Back
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-elastic"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInElastic)}
-            >
-              In Elastic
-            </button>
-            <button
-              id="button-ease-out-elastic"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutElastic)}
-            >
-              Out Elastic
-            </button>
-            <button
-              id="button-ease-in-out-elastic"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutElastic)}
-            >
-              In Out Elastic
-            </button>
-          </div>
-          <div className="flex flex-row gap-3">
-            <button
-              id="button-ease-in-bounce"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInBounce)}
-            >
-              In Bounce
-            </button>
-            <button
-              id="button-ease-out-bounce"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeOutBounce)}
-            >
-              Out Bounce
-            </button>
-            <button
-              id="button-ease-in-out-bounce"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
-              onClick={() => applyTweening(Vec3.easeInOutBounce)}
-            >
-              InOut Bounce
-            </button>
-          </div>
-          <div className="flex flex-row justify-center text-center items-center">
-            <label className="text-md font-semibold mr-3">Reverse</label>
-            <input
-              id="toggle-reverse"
-              type="checkbox"
-              checked={toggleReverse}
-              onChange={setAnimationReverse}
-            />
-            <label className="text-md font-semibold ml-5 mr-3">
-              Auto Replay
-            </label>
-            <input
-              id="toggle-auto-replay"
-              type="checkbox"
-              checked={toggleAutoReplay}
-              onChange={setAnimationAutoReplay}
-            />
-            <label className="text-md font-semibold ml-5 mr-3">FPS</label>
-            <input
-              type="number"
-              id="fps"
-              name="fps"
-              min={1}
-              step={1}
-              value={fps}
-              onChange={(e) => setAnimationFPS(e)}
-              className="w-full text-sm text-white font-semibold rounded-lg px-5 py-1.5 bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 opacity-80"
-            />
-          </div>
-          <div className="flex flex-row gap-3 my-3">
-            <label className="text-sm font-semibold w-fit">Frame</label>
-            <RadixSlider.Root
-              className="w-10/12 relative flex items-center h-5"
-              id="frame"
-              name="frame"
-              min={0}
-              max={maxFrame}
-              step={1}
-              value={[frame]}
-              onValueChange={(e) => setAnimationFrame(e[0])}
-            >
-              <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
-                <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
-              </RadixSlider.Track>
-              <RadixSlider.Thumb
-                className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
-                aria-label="Volume"
-              />
-            </RadixSlider.Root>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
-        <h1 className="text-md font-bold">Frame Controller</h1>
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-row gap-2">
-            <button
-              id="save-as-frame"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            >
-              Save as Frame
-            </button>
-            <button
-              id="delete-frame"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            >
-              Delete Frame
-            </button>
-            <div className="flex w-1/3">
-              <p className="me-2">Frame:</p>
-              <div id="idx-frame">NONE</div>
+      {activeObject === scene.id ||
+      animations.find(
+        (animation) => animation.getObject().id === activeObject
+      ) ? (
+        <div>
+          <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
+            <h1 className="text-md font-bold">Animation</h1>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-animation-play"
+                  className="w-1/2 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => playAnimation()}
+                >
+                  Play
+                </button>
+                <button
+                  id="button-animation-pause"
+                  className="w-1/2 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => pauseAnimation()}
+                >
+                  Pause
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-animation-prev"
+                  className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => prevAnimationFrame()}
+                >
+                  Prev
+                </button>
+                <button
+                  id="button-animation-next"
+                  className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => nextAnimationFrame()}
+                >
+                  Next
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-animation-first"
+                  className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => firstAnimationFrame()}
+                >
+                  First
+                </button>
+                <button
+                  id="button-animation-last"
+                  className="w-1/2 flex flex-col items-center py-1.5 bg-gray-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => lastAnimationFrame()}
+                >
+                  Last
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-sine"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInSine)}
+                >
+                  In Sine
+                </button>
+                <button
+                  id="button-ease-out-sine"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutSine)}
+                >
+                  Out Sine
+                </button>
+                <button
+                  id="button-ease-in-out-sine"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutSine)}
+                >
+                  In Out Sine
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-quad"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInQuad)}
+                >
+                  In Quad
+                </button>
+                <button
+                  id="button-ease-out-quad"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutQuad)}
+                >
+                  Out Quad
+                </button>
+                <button
+                  id="button-ease-in-out-quad"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutQuad)}
+                >
+                  In Out Quad
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-cubic"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInCubic)}
+                >
+                  In Cubic
+                </button>
+                <button
+                  id="button-ease-out-cubic"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutCubic)}
+                >
+                  Out Cubic
+                </button>
+                <button
+                  id="button-ease-in-out-cubic"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutCubic)}
+                >
+                  In Out Cubic
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-quart"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInQuart)}
+                >
+                  In Quart
+                </button>
+                <button
+                  id="button-ease-out-quart"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutQuart)}
+                >
+                  Out Quart
+                </button>
+                <button
+                  id="button-ease-in-out-quart"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutQuart)}
+                >
+                  In Out Quart
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-quint"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInQuint)}
+                >
+                  In Quint
+                </button>
+                <button
+                  id="button-ease-out-quint"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutQuint)}
+                >
+                  Out Quint
+                </button>
+                <button
+                  id="button-ease-in-out-quint"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutQuint)}
+                >
+                  In Out Quint
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-expo"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInExpo)}
+                >
+                  In Expo
+                </button>
+                <button
+                  id="button-ease-out-expo"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutExpo)}
+                >
+                  Out Expo
+                </button>
+                <button
+                  id="button-ease-in-out-expo"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutExpo)}
+                >
+                  In Out Expo
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-circ"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInCirc)}
+                >
+                  In Circ
+                </button>
+                <button
+                  id="button-ease-out-circ"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutCirc)}
+                >
+                  Out Circ
+                </button>
+                <button
+                  id="button-ease-in-out-circ"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutCirc)}
+                >
+                  In Out Circ
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-back"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInBack)}
+                >
+                  In Back
+                </button>
+                <button
+                  id="button-ease-out-back"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutBack)}
+                >
+                  Out Back
+                </button>
+                <button
+                  id="button-ease-in-out-back"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutBack)}
+                >
+                  In Out Back
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-elastic"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInElastic)}
+                >
+                  In Elastic
+                </button>
+                <button
+                  id="button-ease-out-elastic"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutElastic)}
+                >
+                  Out Elastic
+                </button>
+                <button
+                  id="button-ease-in-out-elastic"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-pink-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutElastic)}
+                >
+                  In Out Elastic
+                </button>
+              </div>
+              <div className="flex flex-row gap-3">
+                <button
+                  id="button-ease-in-bounce"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInBounce)}
+                >
+                  In Bounce
+                </button>
+                <button
+                  id="button-ease-out-bounce"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeOutBounce)}
+                >
+                  Out Bounce
+                </button>
+                <button
+                  id="button-ease-in-out-bounce"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-yellow-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500 justify-center"
+                  onClick={() => applyTweening(Vec3.easeInOutBounce)}
+                >
+                  InOut Bounce
+                </button>
+              </div>
+              <div className="flex flex-row justify-center text-center items-center">
+                <label className="text-md font-semibold mr-3">Reverse</label>
+                <input
+                  id="toggle-reverse"
+                  type="checkbox"
+                  checked={toggleReverse}
+                  onChange={setAnimationReverse}
+                />
+                <label className="text-md font-semibold ml-5 mr-3">
+                  Auto Replay
+                </label>
+                <input
+                  id="toggle-auto-replay"
+                  type="checkbox"
+                  checked={toggleAutoReplay}
+                  onChange={setAnimationAutoReplay}
+                />
+                <label className="text-md font-semibold ml-5 mr-3">FPS</label>
+                <input
+                  type="number"
+                  id="fps"
+                  name="fps"
+                  min={1}
+                  step={1}
+                  value={fps}
+                  onChange={(e) => setAnimationFPS(e)}
+                  className="w-full text-sm text-white font-semibold rounded-lg px-5 py-1.5 bg-gray-700 border border-gray-600 focus:ring-blue-500 focus:border-blue-500 opacity-80"
+                />
+              </div>
+              <div className="flex flex-row gap-3 my-3">
+                <label className="text-sm font-semibold w-fit">Frame</label>
+                <RadixSlider.Root
+                  className="w-10/12 relative flex items-center h-5"
+                  id="frame"
+                  name="frame"
+                  min={0}
+                  max={maxFrame}
+                  step={1}
+                  value={[frame]}
+                  onValueChange={(e) => setAnimationFrame(e[0])}
+                >
+                  <RadixSlider.Track className="bg-blackA7 relative grow rounded-full h-[3px] bg-black">
+                    <RadixSlider.Range className="absolute bg-green-400 shadow-[0_0_30px_2px] rounded-full h-full" />
+                  </RadixSlider.Track>
+                  <RadixSlider.Thumb
+                    className="block w-5 h-5 bg-green-400 shadow-[0_0_30px_2px] rounded-[10px] focus:outline-none focus:scale-125"
+                    aria-label="Volume"
+                  />
+                </RadixSlider.Root>
+              </div>
             </div>
           </div>
-          <div className="flex flex-row gap-2">
-            <button
-              id="save-animation"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            >
-              Save Animation
-            </button>
-            <button
-              id="swap-with-next-frame"
-              className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
-            >
-              Swap with Next Frame
-            </button>
-            <label
-              id="insert-as-next-frame"
-              htmlFor="uploadframe"
-              className="flex w-1/3 flex-col items-center gap-2 px-4 py-2.5 mr-2 bg-slate-900/30 border border-slate-900/10 text-xs font-bold bg-blue-500 rounded-lg active:bg-violet-700 cursor-pointer"
-            >
-              <p>Insert as Next Frame</p>
-            </label>
-            <input
-              className="hidden"
-              type="file"
-              accept=".json"
-              id="uploadframe"
-              name="filename"
-            />
+          <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">
+            <h1 className="text-md font-bold">Frame Controller</h1>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row gap-2">
+                <button
+                  id="save-as-frame"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+                >
+                  Save as Frame
+                </button>
+                <button
+                  id="delete-frame"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-red-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+                >
+                  Delete Frame
+                </button>
+                <div className="flex w-1/3">
+                  <p className="me-2">Frame:</p>
+                  <div id="idx-frame">NONE</div>
+                </div>
+              </div>
+              <div className="flex flex-row gap-2">
+                <button
+                  id="save-animation"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+                >
+                  Save Animation
+                </button>
+                <button
+                  id="swap-with-next-frame"
+                  className="w-1/3 flex flex-col items-center py-1.5 bg-green-500 border border-slate-900/10 text-sm font-bold rounded-lg active:bg-violet-500"
+                >
+                  Swap with Next Frame
+                </button>
+                <label
+                  id="insert-as-next-frame"
+                  htmlFor="uploadframe"
+                  className="flex w-1/3 flex-col items-center gap-2 px-4 py-2.5 mr-2 bg-slate-900/30 border border-slate-900/10 text-xs font-bold bg-blue-500 rounded-lg active:bg-violet-700 cursor-pointer"
+                >
+                  <p>Insert as Next Frame</p>
+                </label>
+                <input
+                  className="hidden"
+                  type="file"
+                  accept=".json"
+                  id="uploadframe"
+                  name="filename"
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };
