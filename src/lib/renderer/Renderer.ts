@@ -298,7 +298,7 @@ export class Renderer {
       );
     }
 
-    setUniforms(this.currentProgram, this.light.uniforms);
+    // setUniforms(this.currentProgram, this.light.uniforms);
 
     // setUniform(this.currentProgram, "u_ambient", [1, 1, 1]);
     // setUniform(this.glProgram, "uShininess", [100.0]);

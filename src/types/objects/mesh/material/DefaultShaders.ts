@@ -49,7 +49,7 @@ const phongVertexShader = `
     attribute vec4 a_position;
     attribute vec4 a_color;
     attribute vec4 a_normal;
-    attribute vec2 a_texcoord;
+    // attribute vec2 a_texcoord;
     
     uniform mat4 u_matrix;
     
@@ -57,7 +57,7 @@ const phongVertexShader = `
     varying vec4 v_color;
     // varying vec3 v_eyevec;
     varying vec4 v_normal;
-    varying vec2 v_texcoord;
+    // varying vec2 v_texcoord;
 
     void main() {
       vec4 vertex = u_matrix * a_position;
@@ -75,33 +75,33 @@ const phongFragmentShader = `
 
     varying vec4 v_color;
     varying vec4 v_normal;
-    varying vec2 v_texcoord;
+    // varying vec2 v_texcoord;
     uniform vec3 u_ambient;
     uniform vec3 u_lightSource;
     uniform vec3 u_lightColor;
     
-    uniform sampler2D u_texture;
-    uniform bool u_useTexture;
+    // uniform sampler2D u_texture;
+    // uniform bool u_useTexture;
     
     void main() {
-      vec4 activeColor;
-      if (u_useTexture) {
-        activeColor = texture2D(u_texture, v_texcoord);
-      } else {
-        activeColor = v_color;
-      }
+      // vec4 activeColor;
+      // if (u_useTexture) {
+      //   activeColor = texture2D(u_texture, v_texcoord);
+      // } else {
+      //   activeColor = v_color;
+      // }
       vec3 normal = normalize(v_normal.xyz);
       vec3 lightColor = vec3(1.0, 1.0, 1.0);
       vec3 lightSource = vec3(1.0, 0.0, 0.0);
       float diffuseStrength = max(0.0, dot(u_lightSource, normal));
       vec3 diffuse = diffuseStrength*u_lightColor;
 
-      // vec3 cameraSource = vec3(0.0, 0.0, 1.0);
-      // vec3 viewSource = normalize(cameraSource);
-      // vec3 reflectSource = normalize(reflect(-u_lightSource, normal));
-      // float specularStrength = max(0.0, dot(viewSource, reflectSource));
-      // specularStrength = pow(specularStrength, 2.0);
-      // vec3 specular = specularStrength*u_lightColor;
+      vec3 cameraSource = vec3(0.0, 0.0, 1.0);
+      vec3 viewSource = normalize(cameraSource);
+      vec3 reflectSource = normalize(reflect(-u_lightSource, normal));
+      float specularStrength = max(0.0, dot(viewSource, reflectSource));
+      specularStrength = pow(specularStrength, 2.0);
+      vec3 specular = specularStrength*u_lightColor;
 
       vec3 lighting = vec3(0.0, 0.0, 0.0);
       lighting = u_ambient;
@@ -109,9 +109,8 @@ const phongFragmentShader = `
       lighting = u_ambient*0.0+diffuse*0.5+specular*0.5;
 
       vec4 colorr = vec4(0.75, 0.75, 0.75, 0.75);
-      vec3 color = activeColor.xyz * lighting;
-      gl_FragColor = vec4(color.xyz, 1.0);
-      // gl_FragColor = texture2D(u_texture, v_texcoord) * vec4(u_ambient, 1.0);
+      vec3 color = v_color.xyz * lighting;
+      gl_FragColor = vec4(color, 1.0);
     }
     `;
 
