@@ -610,7 +610,7 @@ const Rightbar = () => {
           </div>
         </div>
       </div>
-      {activeObject === scene.id ||
+      {(activeObject === scene.id && animations.length > 0) ||
       animations.find(
         (animation) => animation.getObject().id === activeObject
       ) ? (
