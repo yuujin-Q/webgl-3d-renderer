@@ -28,6 +28,7 @@ type AppState = {
 
     // animation
     animations: Animation[];
+    toggleEditAnimation: boolean;
 
     actions: {
         setCanvasRef: (canvasRef: React.LegacyRef<HTMLCanvasElement>) => void,
@@ -40,6 +41,7 @@ type AppState = {
         setGlobalRotate: (glGlobalRotate: Vec3) => void,
         setGlobalScale: (glGlobalTranslate: Vec3) => void,
         setAnimations: (glAnimations: Animation[]) => void,
+        setToggleEditAnimation: (toggleAnimation: boolean) => void,
         setModel: (model: "animal" | "mechanic_hand" | "robot" | "creeper" | "pyramid" | "cinder_block" | "hollow_cube" | "trapzz") => void
     };
 };
@@ -107,6 +109,7 @@ export const useAppStore = create<AppState>((set) => ({
     globalRotate: new Vec3(0, 0, 0),
     globalScale: new Vec3(1, 1, 1),
     animations: [],
+    toggleEditAnimation: false,
     model: "animal",
 
     actions: {
@@ -140,7 +143,11 @@ export const useAppStore = create<AppState>((set) => ({
         setAnimations(animations) {
             set({ animations });
         },
+        setToggleEditAnimation(toggleEditAnimation) {
+            set({ toggleEditAnimation });
+        },
         setModel(model){
+            set({toggleEditAnimation: false})
             set({model})
         }
     }
