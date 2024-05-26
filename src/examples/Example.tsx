@@ -45,7 +45,7 @@ planemesh.position = new Vec3(0, 200, 0);
 
 const fmesh = new LetterF();
 const cube = new Cube();
-cube.position = new Vec3(200, 0, 200);
+cube.position = new Vec3(500, 0, 300);
 const animal = new AnimalModel();
 animal.position = new Vec3(-400, 0, 200);
 const animal2 = new AnimalModel();
