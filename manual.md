@@ -26,6 +26,12 @@
 
 
 ## Save and Load
+Fitur save dan load dapat diakses dari sebelah kiri atas tampilan.
+![saveload](img/saveload.png)
+
+- Klik tombol "Save" untuk menyimpan scene yang sedang aktif di layar. Scene yang tersimpan akan disimpan pada lokasi Download di komputer Anda dengan nama file "model.json".
+
+- Klik tombol "Load" untuk membuka scene yang telah tersimpan. Tombol ini akan membuka jendela File Explorer pada komputer Anda untuk memilih file simpanan. Pastikan file yang dibaca bertipe data .json dan merupakan hasil simpanan dari aplikasi ini.
 
 ## Animasi
 
