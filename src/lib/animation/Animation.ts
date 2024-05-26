@@ -116,6 +116,48 @@ export class Animation {
     this.applyFrame();
   }
 
+  addCustomFrame(position: Vec3, rotation: Vec3, scale: Vec3): void {
+    const currentFrame = this.frames[this.currentFrameIndex];
+    const newFrame: AnimationFrame = {};
+    Object.keys(currentFrame).forEach((key) => {
+      newFrame[key] = { position, rotation, scale };
+    });
+    this.frames.splice(this.currentFrameIndex + 1, 0, newFrame);
+  }
+
+  addFrame(): void {
+    const currentFrame = this.frames[this.currentFrameIndex];
+    this.frames.splice(this.currentFrameIndex + 1, 0, currentFrame);
+  }
+
+  deleteFrame(): void {
+    if (this.frames.length > 1) {
+      this.frames.splice(this.currentFrameIndex, 1);
+      this.currentFrameIndex = Math.min(
+        this.currentFrameIndex,
+        this.frames.length - 1
+      );
+    }
+  }
+
+  swapWithNextFrame(): void {
+    if (this.currentFrameIndex < this.frames.length - 1) {
+      const currentFrame = this.frames[this.currentFrameIndex];
+      this.frames[this.currentFrameIndex] = this.frames[this.currentFrameIndex + 1];
+      this.frames[this.currentFrameIndex + 1] = currentFrame;
+      this.currentFrameIndex++;
+    }
+  }
+
+  swapWithPreviousFrame(): void {
+    if (this.currentFrameIndex > 0) {
+      const currentFrame = this.frames[this.currentFrameIndex];
+      this.frames[this.currentFrameIndex] = this.frames[this.currentFrameIndex - 1];
+      this.frames[this.currentFrameIndex - 1] = currentFrame;
+      this.currentFrameIndex--;
+    }
+  }
+
   getObject(): ObjectNode {
     return this.object;
   }

@@ -16,7 +16,6 @@ const Canvas = () => {
 
   // INIT WEBGL
   useEffect(() => {
-    console.log("kintil")
     const scene = new Scene();
     scene.name = "Root"
     const gl = canvasRef?.current?.getContext("webgl");
@@ -28,15 +27,19 @@ const Canvas = () => {
     switch (model) {
       case "animal":
         scene.add(animal)
+        animal.animation.play();
         break;
       case "creeper":
         scene.add(creeper)
+        creeper.animation.play();
         break;
       case "mechanic_hand":
         scene.add(claw)
+        claw.animation.play();
         break;
       case "robot":
         scene.add(robot)
+        robot.animation.play();
         break;
       case "cinder_block":
         scene.add(block)
