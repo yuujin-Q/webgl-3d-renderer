@@ -144,6 +144,10 @@ export class Animation {
     return this.frames.length > 0;
   }
 
+  isPlaying(): boolean {
+    return this.playing;
+  }
+
   // Convert the frames using the specified easing function
   convertFrames(easingFunction: (t: number) => number): void {
     const totalFrames = this.frames.length;
