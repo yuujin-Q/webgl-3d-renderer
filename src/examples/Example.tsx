@@ -13,6 +13,7 @@ import { Animation } from "../lib/animation/Animation";
 import { MechanicalHand } from "./articulated/MechanicalHand";
 import { PyramidModel } from "./hollow/PyramidModel";
 import { CinderBlock } from "./hollow/CinderBlock";
+import { HollowCube } from "./hollow/HollowCube";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -56,7 +57,13 @@ claw.position.x = 500;
 const pyramid = new PyramidModel();
 pyramid.position = new Vec3(0, 400, 0);
 const block = new CinderBlock(0.4);
-block.position.y = -300;
+block.position.y = -250;
+block.rotation.x = 1.5;
+const hollowCube = new HollowCube(100, 100, 100, 8)
+hollowCube.position.x = -500;
+hollowCube.position.y = 200;
+hollowCube.rotation.y = 0.5;
+hollowCube.rotation.x = 0.5;
 
 const fcubeScene = new Scene();
 fcubeScene.name = "F Cube Scene";
@@ -69,6 +76,7 @@ fcubeScene.add(robot);
 fcubeScene.add(claw);
 fcubeScene.add(pyramid);
 fcubeScene.add(block);
+fcubeScene.add(hollowCube);
 
 const fcubeAnimations: Animation[] = [];
 const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
