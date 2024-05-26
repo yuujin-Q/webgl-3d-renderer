@@ -16,6 +16,7 @@ const Canvas = () => {
 
   // INIT WEBGL
   useEffect(() => {
+    console.log("kintil")
     const scene = new Scene();
     scene.name = "Root"
     const gl = canvasRef?.current?.getContext("webgl");
@@ -70,7 +71,7 @@ const Canvas = () => {
     Renderer.setLight(light);
     Renderer.renderScene();
     console.log(scene);
-  }, [canvasRef, model]);
+  }, [canvasRef,model]);
 
   return (
     <div className="flex flex-col w-6/12 bg-gray-700 h-full">

@@ -217,6 +217,7 @@ export class Renderer {
         object.material.attributes["a_color"] = new Float32Array([color.r, color.g, color.b])
         console.log(object.material.attributes["a_color"]);
       }
+      object.children.forEach(obj => this.setMeshColorRecurrent(obj, color))
     }
   }
 
@@ -276,8 +277,8 @@ export class Renderer {
 
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
     if(material instanceof PhongMaterial){
-      console.log(setUniform(this.currentProgram, "u_lightColor", [this.light.color.r, this.light.color.g, this.light.color.b]))
-      console.log(setUniform(this.currentProgram, "u_lightSource", [(this.light as DirectionalLight).getDirection.x, (this.light as DirectionalLight).getDirection.y, (this.light as DirectionalLight).getDirection.z]))
+      // console.log(setUniform(this.currentProgram, "u_lightColor", [this.light.color.r, this.light.color.g, this.light.color.b]))
+      // console.log(setUniform(this.currentProgram, "u_lightSource", [(this.light as DirectionalLight).getDirection.x, (this.light as DirectionalLight).getDirection.y, (this.light as DirectionalLight).getDirection.z]))
     }
 
     // setUniform(this.currentProgram, "u_ambient", [1, 1, 1]);
@@ -299,7 +300,7 @@ export class Renderer {
 
   static renderScene() {
     const gl = this.gl;
-    console.log(this.scene)
+    // console.log(this.scene)
 
     // todo: viewport and resize canvas?
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -362,5 +363,31 @@ export class Renderer {
         this.getAttribObjectRecurrent(child, translate, rotation, scale)
       );
     }
+  }
+
+  static changeMaterial(material: "basic" | "phong"){
+    this.changeMaterialRecurrent(this.scene, material)
+  }
+
+  static changeMaterialRecurrent(parent: ObjectNode, material: "basic" | "phong"){
+    if(parent.id !== this.activeObject){
+      parent.children.forEach(obj => this.changeMaterialRecurrent(obj, material))
+    }else{
+      this.changeMaterialChildRecurrent(parent, material)
+    }
+  }
+
+  static changeMaterialChildRecurrent(object: ObjectNode, material:  "basic" | "phong"){
+    if(object instanceof Mesh){
+      if(material == "basic" && !(object.material instanceof BasicMaterial)){
+        const newMaterial =  new BasicMaterial()
+        newMaterial.attributes["a_color"] = new Float32Array([0.5, 0.4, 0])
+        object.material = newMaterial
+      }
+      if(material == "phong" && (object.material instanceof BasicMaterial)){
+        
+      }
+    }
+    object.children.forEach(child => this.changeMaterialChildRecurrent(child, material))
   }
 }
