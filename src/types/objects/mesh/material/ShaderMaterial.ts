@@ -77,7 +77,7 @@ export class ShaderMaterial {
     material._id = json.id;
     // set uniforms
     for (const name in json.uniforms) {
-      if (name === "u_texture" && json.uniforms[name]) {
+      if (name === "u_texture" || json.uniforms[name].isTexture) {
         material.uniforms[name] = Texture.fromJSON(json.uniforms[name]);
       } else {
         material.uniforms[name] = json.uniforms[name];
@@ -114,7 +114,7 @@ export class ShaderMaterial {
       attributes: {},
     };
     for (const name in material.uniforms) {
-      if (name === "u_texture" && material.uniforms[name]) {
+      if (material.uniforms[name] instanceof Texture) {
         json.uniforms[name] = Texture.toJSON(
           material.uniforms[name] as Texture
         );
