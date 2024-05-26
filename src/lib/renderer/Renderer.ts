@@ -21,8 +21,6 @@ import { PhongMaterial } from "../../types/objects/mesh/material/PhongMaterial";
 import { DirectionalLight } from "../../types/objects/light/DirectionalLight";
 import { Color } from "../../types/objects/Color";
 import { BasicMaterial } from "../../types/objects/mesh/material/BasicMaterial";
-import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
-import { WebGLType } from "../webglutils/WebGLType";
 
 export class Renderer {
   // gl classes
@@ -84,7 +82,7 @@ export class Renderer {
   static getCamera() {
     return this.camera;
   }
-  static getLight(){
+  static getLight() {
     return this.light;
   }
   static switchCamera(index: number) {
@@ -151,8 +149,8 @@ export class Renderer {
     MouseInput.camera = cam;
   }
 
-  static setLight(light: Light){
-    this.light = light
+  static setLight(light: Light) {
+    this.light = light;
   }
 
   static setTexture() {
@@ -163,58 +161,65 @@ export class Renderer {
     this.scene = sc;
   }
 
-  static addChildOnCurrentObject(newChild: ObjectNode){
-    this.addChildOnCurrentObjectRecurrent(this.scene, newChild)
-    this.renderScene()
+  static addChildOnCurrentObject(newChild: ObjectNode) {
+    this.addChildOnCurrentObjectRecurrent(this.scene, newChild);
+    this.renderScene();
   }
 
-  static addChildOnCurrentObjectRecurrent(object: ObjectNode, newChild: ObjectNode){
-    if(object.id != this.activeObject){
+  static addChildOnCurrentObjectRecurrent(
+    object: ObjectNode,
+    newChild: ObjectNode
+  ) {
+    if (object.id != this.activeObject) {
       object.children.forEach((obj) => {
-        this.addChildOnCurrentObjectRecurrent(obj, newChild)
-      })
-    }else{
-      object.add(newChild)
+        this.addChildOnCurrentObjectRecurrent(obj, newChild);
+      });
+    } else {
+      object.add(newChild);
     }
   }
 
-  static getObjectById(id: string){
-    return this.getObjectByIdRecurrent(this.scene, id)
+  static getObjectById(id: string) {
+    return this.getObjectByIdRecurrent(this.scene, id);
   }
 
-  static getObjectByIdRecurrent(object: ObjectNode, id: string){
-    if(object.id !== id){
+  static getObjectByIdRecurrent(object: ObjectNode, id: string) {
+    if (object.id !== id) {
       let res;
       object.children.forEach((obj) => {
-        const tmp = this.getObjectByIdRecurrent(obj, id)
-        if(tmp != undefined){
-          res = tmp
+        const tmp = this.getObjectByIdRecurrent(obj, id);
+        if (tmp != undefined) {
+          res = tmp;
         }
-      })
-      return res
-    }else{
-      return object
+      });
+      return res;
+    } else {
+      return object;
     }
   }
 
-  static setColor(color: Color){
-    this.setColorRecurrent(this.scene, color)
+  static setColor(color: Color) {
+    this.setColorRecurrent(this.scene, color);
   }
 
-  static setColorRecurrent(object: ObjectNode, color: Color){
-    if(object.id == this.activeObject){
-      this.setMeshColorRecurrent(object, color)
-    }else{
-      object.children.forEach(obj => this.setColorRecurrent(obj, color))
+  static setColorRecurrent(object: ObjectNode, color: Color) {
+    if (object.id == this.activeObject) {
+      this.setMeshColorRecurrent(object, color);
+    } else {
+      object.children.forEach((obj) => this.setColorRecurrent(obj, color));
     }
   }
 
-  static setMeshColorRecurrent(object: ObjectNode, color: Color){
-    if(!(object instanceof Mesh)){
-      object.children.forEach(obj => this.setMeshColorRecurrent(obj, color))
-    }else{
-      if(object.material instanceof BasicMaterial){
-        object.material.attributes["a_color"] = new Float32Array([color.r, color.g, color.b])
+  static setMeshColorRecurrent(object: ObjectNode, color: Color) {
+    if (!(object instanceof Mesh)) {
+      object.children.forEach((obj) => this.setMeshColorRecurrent(obj, color));
+    } else {
+      if (object.material instanceof BasicMaterial) {
+        object.material.attributes["a_color"] = new Float32Array([
+          color.r,
+          color.g,
+          color.b,
+        ]);
         console.log(object.material.attributes["a_color"]);
       }
       object.children.forEach(obj => this.setMeshColorRecurrent(obj, color))
@@ -227,13 +232,13 @@ export class Renderer {
     this.removeObjectRecurrent(this.scene, obj)
   }
 
-  static removeObjectRecurrent(parent: ObjectNode, obj: ObjectNode){
-    if(parent.children.indexOf(obj) >= 0){
-      parent.remove(obj)
-    }else{
+  static removeObjectRecurrent(parent: ObjectNode, obj: ObjectNode) {
+    if (parent.children.indexOf(obj) >= 0) {
+      parent.remove(obj);
+    } else {
       parent.children.forEach((child) => {
-        this.removeObjectRecurrent(child, obj)
-      })
+        this.removeObjectRecurrent(child, obj);
+      });
     }
   }
 
@@ -276,10 +281,24 @@ export class Renderer {
     // transformationMatrix = M4.scale(transformationMatrix, object.scale);
 
     setUniform(this.currentProgram, "u_matrix", transformationMatrix.elements);
-    if(material instanceof PhongMaterial){
-      // console.log(setUniform(this.currentProgram, "u_lightColor", [this.light.color.r, this.light.color.g, this.light.color.b]))
-      // console.log(setUniform(this.currentProgram, "u_lightSource", [(this.light as DirectionalLight).getDirection.x, (this.light as DirectionalLight).getDirection.y, (this.light as DirectionalLight).getDirection.z]))
+    if (material instanceof PhongMaterial) {
+      console.log(
+        setUniform(this.currentProgram, "u_lightColor", [
+          this.light.color.r,
+          this.light.color.g,
+          this.light.color.b,
+        ])
+      );
+      console.log(
+        setUniform(this.currentProgram, "u_lightSource", [
+          (this.light as DirectionalLight).getDirection.x,
+          (this.light as DirectionalLight).getDirection.y,
+          (this.light as DirectionalLight).getDirection.z,
+        ])
+      );
     }
+
+    setUniforms(this.currentProgram, this.light.uniforms);
 
     // setUniform(this.currentProgram, "u_ambient", [1, 1, 1]);
     // setUniform(this.glProgram, "uShininess", [100.0]);

@@ -15,7 +15,7 @@ export class Light extends ObjectNode {
     super();
     const { color, uniforms } = options || {};
     this._uniforms = uniforms || this._uniforms;
-    this._uniforms["lightColor"] = color || this._color; // La
+    this._uniforms["u_lightColor"] = color || this._color.toArray(false); // La
   }
 
   setColor(color: Color){

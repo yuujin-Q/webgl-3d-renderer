@@ -3,8 +3,8 @@ import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribu
 import { FreeformGeometry } from "../../types/objects/mesh/geometry/FreeformGeometry";
 import { BasicMaterial } from "../../types/objects/mesh/material/BasicMaterial";
 import { Color } from "../../types/objects/Color";
-// import { Texture } from "../../types/objects/mesh/material/Texture";
 import { Mesh } from "../../types/objects/mesh/Mesh";
+import { Texture } from "../../types/objects/mesh/material/Texture";
 
 export class LetterF extends Mesh {
   constructor() {
@@ -157,6 +157,7 @@ export class LetterF extends Mesh {
     );
 
     // TEXTURE TEST
+    // TEXTURE TEST
     // const fTexture = new Texture();
     // fTexture.setData("/f-texture.png");
     // fmaterial.setTexture(
@@ -165,56 +166,97 @@ export class LetterF extends Mesh {
     //     new Float32Array([
     //       // left column front
     //       0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+    const fTexture = new Texture();
+    fTexture.setData("/f-texture.png");
+    fmaterial.setTexture(fTexture);
+    fobject.attributes["a_texcoord"] = new BufferAttribute(
+      new Float32Array([
+        // left column front
+        0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
 
-    //       // top rung front
-    //       0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+        //       // top rung front
+        //       0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+        // top rung front
+        0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
 
-    //       // middle rung front
-    //       0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+        //       // middle rung front
+        //       0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
+        // middle rung front
+        0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0,
 
-    //       // left column back
-    //       0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+        //       // left column back
+        //       0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+        // left column back
+        0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
 
-    //       // top rung back
-    //       0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+        //       // top rung back
+        //       0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+        // top rung back
+        0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
 
-    //       // middle rung back
-    //       0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+        //       // middle rung back
+        //       0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
+        // middle rung back
+        0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
 
-    //       // top
-    //       0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+        //       // top
+        //       0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+        // top
+        0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
 
-    //       // top rung right
-    //       0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+        //       // top rung right
+        //       0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+        // top rung right
+        0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
 
-    //       // under top rung
-    //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        //       // under top rung
+        //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        // under top rung
+        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
 
-    //       // between top rung and middle
-    //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        //       // between top rung and middle
+        //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        // between top rung and middle
+        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
 
-    //       // top of middle rung
-    //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        //       // top of middle rung
+        //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        // top of middle rung
+        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
 
-    //       // right of middle rung
-    //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        //       // right of middle rung
+        //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        // right of middle rung
+        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
 
-    //       // bottom of middle rung.
-    //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        //       // bottom of middle rung.
+        //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        // bottom of middle rung.
+        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
 
-    //       // right of bottom
-    //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        //       // right of bottom
+        //       0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        // right of bottom
+        0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
 
-    //       // bottom
-    //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        //       // bottom
+        //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        // bottom
+        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
 
-    //       // left side
-    //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-    //     ]),
-    //     2,
-    //     {}
-    //   )
-    // );
+        //       // left side
+        //       0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+        //     ]),
+        //     2,
+        //     {}
+        //   )
+        // );
+        // left side
+        0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
+      ]),
+      2,
+      {}
+    );
     fmaterial.ambient = new Color(1, 1, 1);
 
     // VERTEX COLOR TEST

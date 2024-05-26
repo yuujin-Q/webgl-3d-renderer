@@ -109,6 +109,7 @@ export class Texture {
 
   static toJSON(texture: Texture) {
     return {
+      isTexture: true,
       src: texture._img.src,
       wrapS: texture.wrapS,
       wrapT: texture.wrapT,

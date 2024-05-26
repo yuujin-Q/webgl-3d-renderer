@@ -5,6 +5,7 @@ import { Mesh } from "../../types/objects/mesh/Mesh";
 import { ObjectNode } from "../../types/objects/ObjectNode";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 import { WebGLType } from "../../lib/webglutils/WebGLType";
+import { Animation } from "../../lib/animation/Animation";
 
 export class RobotModel extends ObjectNode {
   static defaultColor = new Uint8Array([
@@ -38,7 +39,7 @@ export class RobotModel extends ObjectNode {
   public headPos = new Vec3(0, 100, 0);
   public arm = new CubeGeometry(30, 100, 25);
   public leg = new CubeGeometry(30, 100, 25);
-  public legPos = new Vec3(25, -125, 0);
+  public legPos = new Vec3(25, -120, 0);
   public armPos = new Vec3(65, 10, 0);
   public armRotation = new Vec3(0, 0, Math.PI / 6);
   public legRotation = new Vec3(0, 0, 0);
@@ -160,7 +161,43 @@ export class RobotModel extends ObjectNode {
     rightLeg.position = this.legPos;
     body.add(rightLeg);
 
+    this.animation = new Animation(this, RobotModel.walkingFrames, 60);
+
     // Initialize world matrices
     this.computeWorldMatrix(true, true);
   }
+
+  static walkingFrames = Animation.generateFrames(
+    [
+      "head",
+      "leftArm",
+      "rightArm",
+      "leftLeg",
+      "rightLeg"
+    ],
+    [
+      [new Vec3(0, 100, 0), new Vec3(0, 100, 0)],
+      [new Vec3(-65, 10, 0), new Vec3(-65, 10, 0)],
+      [new Vec3(65, 10, 0), new Vec3(65, 10, 0)],
+      [new Vec3(-25, -120, 0), new Vec3(-25, -120, 0)],
+      [new Vec3(25, -120, 0), new Vec3(25, -120, 0)]
+    ],
+    [
+      [new Vec3(0, -0.25, 0), new Vec3(0, 0.25, 0)],
+      [new Vec3(-0.25, 0, -Math.PI / 6), new Vec3(0.25, 0, -Math.PI / 6)],
+      [new Vec3(0.25, 0, Math.PI / 6), new Vec3(-0.25, 0, Math.PI / 6)],
+      [new Vec3(0.25, 0, 0), new Vec3(-0.25, 0, 0)],
+      [new Vec3(-0.25, 0, 0), new Vec3(0.25, 0, 0)]
+    ],
+    [
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+      [new Vec3(1, 1, 1), new Vec3(1, 1, 1)],
+    ],
+    120,
+    true,
+    Vec3.easeInOutSine
+  );
 }

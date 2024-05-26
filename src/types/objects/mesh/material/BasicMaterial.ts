@@ -1,5 +1,4 @@
 import { UniformDataType } from "../../../../lib/webglutils/UniformSetter";
-import { BufferAttribute } from "../geometry/BufferAttribute";
 import { Color } from "../../Color";
 import { basicFragmentShader, basicVertexShader } from "./DefaultShaders";
 import { ShaderMaterial } from "./ShaderMaterial";
@@ -31,9 +30,8 @@ export class BasicMaterial extends ShaderMaterial {
   useTexture(val: boolean) {
     this.uniforms["u_useTexture"] = [val ? 1 : 0];
   }
-  setTexture(t: Texture, coords: BufferAttribute) {
+  setTexture(t: Texture) {
     this.uniforms["u_texture"] = t;
-    this.attributes["a_texcoord"] = coords;
     this.useTexture(true);
   }
 }
