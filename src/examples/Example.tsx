@@ -14,6 +14,7 @@ import { PyramidModel } from "./hollow/PyramidModel";
 import { CinderBlock } from "./hollow/CinderBlock";
 import { HollowCube } from "./hollow/HollowCube";
 import { TrapzzModel } from "./hollow/TrapzzModel";
+import { CreeperModel } from "./articulated/CreeperModel";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -67,6 +68,11 @@ hollowCube.rotation.x = 0.5;
 const trapzz = new TrapzzModel();
 trapzz.position.x = -500;
 trapzz.position.y = 400;
+const creeper = new CreeperModel();
+creeper.position.x = -400;
+creeper.position.y = -500;
+creeper.rotation.x = -1.6;
+creeper.rotation.z = -1.6;
 
 const fcubeScene = new Scene();
 fcubeScene.name = "F Cube Scene";
@@ -81,5 +87,6 @@ fcubeScene.add(pyramid);
 fcubeScene.add(block);
 fcubeScene.add(hollowCube);
 fcubeScene.add(trapzz);
+fcubeScene.add(creeper);
 
 export { fcubeScene };
