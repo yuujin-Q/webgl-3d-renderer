@@ -13,6 +13,7 @@ import { MechanicalHand } from "./articulated/MechanicalHand";
 import { PyramidModel } from "./hollow/PyramidModel";
 import { CinderBlock } from "./hollow/CinderBlock";
 import { HollowCube } from "./hollow/HollowCube";
+import { TrapzzModel } from "./hollow/TrapzzModel";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -63,6 +64,9 @@ hollowCube.position.x = -500;
 hollowCube.position.y = 200;
 hollowCube.rotation.y = 0.5;
 hollowCube.rotation.x = 0.5;
+const trapzz = new TrapzzModel();
+trapzz.position.x = -500;
+trapzz.position.y = 400;
 
 const fcubeScene = new Scene();
 fcubeScene.name = "F Cube Scene";
@@ -76,5 +80,6 @@ fcubeScene.add(claw);
 fcubeScene.add(pyramid);
 fcubeScene.add(block);
 fcubeScene.add(hollowCube);
+fcubeScene.add(trapzz);
 
 export { fcubeScene };
