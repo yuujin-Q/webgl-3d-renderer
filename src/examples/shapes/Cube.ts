@@ -2,7 +2,7 @@ import { WebGLType } from "../../lib/webglutils/WebGLType";
 import { Color } from "../../types/objects/Color";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 import { CubeGeometry } from "../../types/objects/mesh/geometry/CubeGeometry";
-import { brickPreset, fPreset } from "../../types/objects/mesh/material/DefaultTexture";
+import { brickPreset } from "../../types/objects/mesh/material/DefaultTexture";
 import { PhongMaterial } from "../../types/objects/mesh/material/PhongMaterial";
 import { Mesh } from "../../types/objects/mesh/Mesh";
 
