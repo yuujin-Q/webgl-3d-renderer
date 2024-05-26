@@ -5,9 +5,10 @@ import { Vec3 } from "../types/math/Vec3";
 import { radToDeg } from "../types/math/Degree";
 import * as RadixSlider from "@radix-ui/react-slider";
 import { useEffect, useState } from "react";
-import { Download, Plus, Trash, Upload } from "phosphor-react";
+import { Download, PaintRoller, Plus, Trash, Upload } from "phosphor-react";
 import { Cube } from "../examples/shapes/Cube";
 import { GLTFConverter } from "../lib/GLTFConverter";
+import { Color } from "../types/objects/Color";
 
 const Rightbar = () => {
   const {
@@ -356,6 +357,24 @@ const Rightbar = () => {
           >
             <Trash weight="bold" />
           </span>
+          <input
+            className="hidden"
+            type="color"
+            id="changeColor"
+            name="filename"
+            onChange={(event) => {
+              const color = new Color(1,1,1)
+              color.setHex(event.currentTarget.value)
+              Renderer.setColor(color)
+              Renderer.renderScene()
+            }}
+          />
+          <label
+            htmlFor="changeColor"
+            className="block ml-2 p-3 shadow-[0_0_15px_0px] shadow-green-400 text-green-400 w-min h-min rounded-full cursor-pointer hover:bg-green-400 hover:text-black active:scale-95"
+          >
+            <PaintRoller weight="bold" />
+          </label>
         </div>
       </div>
       <div className="flex flex-col pl-4 pr-6 py-2 gap-1 border-b border-gray-500 text-white w-full">

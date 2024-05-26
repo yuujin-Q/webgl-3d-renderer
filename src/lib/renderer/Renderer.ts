@@ -19,6 +19,10 @@ import { fetchShaderProgram } from "./ShaderManager";
 import { Light } from "../../types/objects/light/Light";
 import { PhongMaterial } from "../../types/objects/mesh/material/PhongMaterial";
 import { DirectionalLight } from "../../types/objects/light/DirectionalLight";
+import { Color } from "../../types/objects/Color";
+import { BasicMaterial } from "../../types/objects/mesh/material/BasicMaterial";
+import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
+import { WebGLType } from "../webglutils/WebGLType";
 
 export class Renderer {
   // gl classes
@@ -192,6 +196,31 @@ export class Renderer {
       return object
     }
   }
+
+  static setColor(color: Color){
+    this.setColorRecurrent(this.scene, color)
+  }
+
+  static setColorRecurrent(object: ObjectNode, color: Color){
+    if(object.id == this.activeObject){
+      this.setMeshColorRecurrent(object, color)
+    }else{
+      object.children.forEach(obj => this.setColorRecurrent(obj, color))
+    }
+  }
+
+  static setMeshColorRecurrent(object: ObjectNode, color: Color){
+    if(!(object instanceof Mesh)){
+      object.children.forEach(obj => this.setMeshColorRecurrent(obj, color))
+    }else{
+      if(object.material instanceof BasicMaterial){
+        object.material.attributes["a_color"] = new Float32Array([color.r, color.g, color.b])
+        console.log(object.material.attributes["a_color"]);
+      }
+    }
+  }
+
+  
 
   static removeObject(obj: ObjectNode){
     this.removeObjectRecurrent(this.scene, obj)
