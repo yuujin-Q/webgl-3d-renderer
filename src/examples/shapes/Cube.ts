@@ -1,4 +1,5 @@
 import { WebGLType } from "../../lib/webglutils/WebGLType";
+import { Color } from "../../types/objects/Color";
 import { BufferAttribute } from "../../types/objects/mesh/geometry/BufferAttribute";
 import { CubeGeometry } from "../../types/objects/mesh/geometry/CubeGeometry";
 import { PhongMaterial } from "../../types/objects/mesh/material/PhongMaterial";
@@ -12,6 +13,13 @@ export class Cube extends Mesh {
     const offset = 0;
     const geometry = new CubeGeometry(100, 100, 200);
     const cubeMaterial = new PhongMaterial();
+
+    cubeMaterial.defaultColor = new Color(0.5, 0.5, 0.5);
+    cubeMaterial.enableDefaultColor(true);
+    geometry.attributes["a_texcoord"] = new BufferAttribute(
+      new Float32Array(Array(100).fill([0, 0, 0, 1, 1, 0, 1, 1]).flat()),
+      2
+    );
     cubeMaterial.attributes["a_color"] = new BufferAttribute(
       new Uint8Array([
         // 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,

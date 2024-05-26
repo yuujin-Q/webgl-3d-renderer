@@ -78,7 +78,7 @@ export class AnimalModel extends ObjectNode {
     const leftFrontLegGeometry = new CubeGeometry(50, 150, 50);
     const leftFrontLegMaterial = new PhongMaterial();
     leftFrontLegGeometry.setAttribute(
-      "color",
+      "a_color",
       new BufferAttribute(AnimalModel.defaultColor, 3, {
         dtype: AnimalModel.colorType,
         normalize: AnimalModel.normalizeColor,
@@ -95,7 +95,7 @@ export class AnimalModel extends ObjectNode {
     const rightFrontLegGeometry = new CubeGeometry(50, 150, 50);
     const rightFrontLegMaterial = new PhongMaterial();
     rightFrontLegGeometry.setAttribute(
-      "color",
+      "a_color",
       new BufferAttribute(AnimalModel.defaultColor, 3, {
         dtype: AnimalModel.colorType,
         normalize: AnimalModel.normalizeColor,
@@ -115,7 +115,7 @@ export class AnimalModel extends ObjectNode {
     const leftBackLegGeometry = new CubeGeometry(50, 150, 50);
     const leftBackLegMaterial = new PhongMaterial();
     leftBackLegGeometry.setAttribute(
-      "color",
+      "a_color",
       new BufferAttribute(AnimalModel.defaultColor, 3, {
         dtype: AnimalModel.colorType,
         normalize: AnimalModel.normalizeColor,
@@ -132,7 +132,7 @@ export class AnimalModel extends ObjectNode {
     const rightBackLegGeometry = new CubeGeometry(50, 150, 50);
     const rightBackLegMaterial = new PhongMaterial();
     rightBackLegGeometry.setAttribute(
-      "color",
+      "a_color",
       new BufferAttribute(AnimalModel.defaultColor, 3, {
         dtype: AnimalModel.colorType,
         normalize: AnimalModel.normalizeColor,

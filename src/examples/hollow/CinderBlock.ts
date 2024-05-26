@@ -406,6 +406,12 @@ export class CinderBlock extends Mesh {
     const material = new PhongMaterial();
     material.defaultColor = new Color(0.5, 0.5, 0.5);
     material.enableDefaultColor(true);
+    
+    geometry.attributes["a_texcoord"] = new BufferAttribute(
+      new Float32Array(Array(100).fill([0, 0, 0, 1, 1, 0, 1, 1]).flat()),
+      2
+    );
+    geometry.calculateNormals();
 
     super(geometry, material);
     this.name = "Cinder Block";
