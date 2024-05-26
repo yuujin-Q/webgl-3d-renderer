@@ -164,13 +164,23 @@ export class AnimalModel extends ObjectNode {
     tail.rotation = new Vec3(0, 0, -0.25);
     body.add(tail);
 
+    this.animation = new Animation(this, AnimalModel.frames, 60);
+
     // Initialize world matrices
     this.computeWorldMatrix(true, true);
   }
 
   // Generate frames for walking animation
   static frames = Animation.generateFrames(
-    ["body", "head", "leftFrontLeg", "rightFrontLeg", "leftBackLeg", "rightBackLeg", "tail"],
+    [
+      "body",
+      "head",
+      "leftFrontLeg",
+      "rightFrontLeg",
+      "leftBackLeg",
+      "rightBackLeg",
+      "tail",
+    ],
     [
       [new Vec3(0, 0, 0), new Vec3(200, 0, 0)],
       [new Vec3(100, 60, 0), new Vec3(100, 60, 0)],

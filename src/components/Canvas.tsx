@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useCanvas } from "./CanvasContext";
 import { Renderer } from "../lib/renderer/Renderer";
 import { MouseInput } from "../lib/Mouse";
-import { fcubeScene, fcubeAnimations } from "../examples/Example";
+import { fcubeScene } from "../examples/Example";
 import { useAppAction } from "../stores";
 import { DirectionalLight } from "../types/objects/light/DirectionalLight";
 import { Vec3 } from "../types/math/Vec3";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
-  const { setScene, setActiveObject, setAnimations } = useAppAction()
+  const { setScene, setActiveObject, setAnimations } = useAppAction();
   const [drag, setDrag] = useState(false);
 
   // INIT WEBGL
@@ -21,19 +21,24 @@ const Canvas = () => {
       return;
     }
 
-    const light = new DirectionalLight()
-    light.setDirection(new Vec3(1,1,1))
-    console.log(light)
+    const animatedChildren = scene.children.filter((child) => {
+      return child.animation.isAnimated();
+    });
+    const fcubeAnimations = animatedChildren.map((child) => child.animation);
+
+    const light = new DirectionalLight();
+    light.setDirection(new Vec3(1, 1, 1));
+    console.log(light);
     Renderer.initializeRenderer(gl);
-    
+
     Renderer.setScene(scene);
-    setScene(scene)
-    Renderer.setActiveObject(scene.id)
-    setActiveObject(scene.id)
-    setAnimations(fcubeAnimations)
-    Renderer.setLight(light)
+    setScene(scene);
+    Renderer.setActiveObject(scene.id);
+    setActiveObject(scene.id);
+    setAnimations(fcubeAnimations);
+    Renderer.setLight(light);
     Renderer.renderScene();
-    console.log(scene)
+    console.log(scene);
   }, [canvasRef]);
 
   return (

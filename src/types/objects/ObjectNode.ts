@@ -2,6 +2,7 @@
 import { v4 } from "uuid";
 import { M4 } from "../math/M4";
 import { Vec3 } from "../math/Vec3";
+import { Animation } from "../../lib/animation/Animation";
 
 export class ObjectNode {
   private _position: Vec3 = new Vec3();
@@ -11,8 +12,9 @@ export class ObjectNode {
   private _worldMatrix: M4 = M4.identity();
   private _parent?: ObjectNode;
   private _children: ObjectNode[] = [];
-  private _name = v4(); 
+  private _name = v4();
   private _id = v4();
+  private _animation: Animation = new Animation(this);
   visible = true;
 
   // Public getter, prevent re-instance new object
@@ -42,6 +44,9 @@ export class ObjectNode {
   }
   get id() {
     return this._id;
+  }
+  get animation() {
+    return this._animation;
   }
 
   set name(name: string) {
@@ -73,6 +78,9 @@ export class ObjectNode {
     this._children = c;
     this.computeWorldMatrix(false, true);
   }
+  set animation(animation: Animation) {
+    this._animation = animation;
+  }
 
   // convert to json gltf format
   static toJSON(node: ObjectNode): object {
@@ -80,6 +88,7 @@ export class ObjectNode {
       position: Vec3.toJSON(node.position),
       rotation: Vec3.toJSON(node.rotation),
       scale: Vec3.toJSON(node.scale),
+      animation: Animation.toJSON(node.animation),
       name: node.name,
       // children logic is implemented in GLTFConverter
       // children: node.children.map((child) => ObjectNode.toJSON(child)),
@@ -95,6 +104,7 @@ export class ObjectNode {
     if (json.position) node.position = Vec3.fromJSON(json.position);
     if (json.rotation) node.rotation = Vec3.fromJSON(json.rotation);
     if (json.scale) node.scale = Vec3.fromJSON(json.scale);
+    if (json.animation) node.animation = Animation.fromJSON(node, json.animation);
     if (json.name) node._name = json.name;
     // if (json.children)
     //   node.children = json.children.map((child: any) => ObjectNode.fromJSON(child));

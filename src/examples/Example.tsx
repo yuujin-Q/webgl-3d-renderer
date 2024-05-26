@@ -9,11 +9,12 @@ import { RobotModel } from "./articulated/RobotModel";
 import { LetterF } from "./shapes/LetterF";
 import { Cube } from "./shapes/Cube";
 import { BasicMaterial } from "../types/objects/mesh/material/BasicMaterial";
-import { Animation } from "../lib/animation/Animation";
 import { MechanicalHand } from "./articulated/MechanicalHand";
 import { PyramidModel } from "./hollow/PyramidModel";
 import { CinderBlock } from "./hollow/CinderBlock";
 import { HollowCube } from "./hollow/HollowCube";
+import { TrapzzModel } from "./hollow/TrapzzModel";
+import { CreeperModel } from "./articulated/CreeperModel";
 
 const colorType = WebGLType.UNSIGNED_BYTE;
 const normalizeColor = true;
@@ -64,6 +65,14 @@ hollowCube.position.x = -500;
 hollowCube.position.y = 200;
 hollowCube.rotation.y = 0.5;
 hollowCube.rotation.x = 0.5;
+const trapzz = new TrapzzModel();
+trapzz.position.x = -500;
+trapzz.position.y = 400;
+const creeper = new CreeperModel();
+creeper.position.x = -400;
+creeper.position.y = -500;
+creeper.rotation.x = -1.6;
+creeper.rotation.z = 1.6;
 
 const fcubeScene = new Scene();
 fcubeScene.name = "F Cube Scene";
@@ -77,14 +86,7 @@ fcubeScene.add(claw);
 fcubeScene.add(pyramid);
 fcubeScene.add(block);
 fcubeScene.add(hollowCube);
+fcubeScene.add(trapzz);
+fcubeScene.add(creeper);
 
-const fcubeAnimations: Animation[] = [];
-const animalAnimation = new Animation(animal, AnimalModel.frames, 60);
-animalAnimation.play();
-const animal2Animation = new Animation(animal2, AnimalModel.frames, 60);
-animal2Animation.convertFrames(Vec3.easeInOutBack);
-animal2Animation.play();
-
-fcubeAnimations.push(animalAnimation, animal2Animation);
-
-export { fcubeScene, fcubeAnimations };
+export { fcubeScene };

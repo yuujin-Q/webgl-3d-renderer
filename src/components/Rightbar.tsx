@@ -24,6 +24,7 @@ const Rightbar = () => {
     setGlobalTranslate,
     setGlobalRotate,
     setGlobalScale,
+    setAnimations,
   } = useAppAction();
   const setTransformation = (translate: Vec3, rotate: Vec3, scale: Vec3) => {
     setGlobalRotate(
@@ -332,6 +333,10 @@ const Rightbar = () => {
                   Renderer.addChildOnCurrentObject(object);
                   Renderer.setActiveObject(object.id);
                   setActiveObject(object.id);
+
+                  if (object.animation.isAnimated()) {
+                    setAnimations([...animations, object.animation]);
+                  }
                 }
               };
               reader.readAsText(file);
@@ -629,7 +634,7 @@ const Rightbar = () => {
           </div>
         </div>
       </div>
-      {activeObject === scene.id ||
+      {(activeObject === scene.id && animations.length > 0) ||
       animations.find(
         (animation) => animation.getObject().id === activeObject
       ) ? (
