@@ -72,7 +72,7 @@ const creeper = new CreeperModel();
 creeper.position.x = -400;
 creeper.position.y = -500;
 creeper.rotation.x = -1.6;
-creeper.rotation.z = -1.6;
+creeper.rotation.z = 1.6;
 
 const fcubeScene = new Scene();
 fcubeScene.name = "F Cube Scene";
